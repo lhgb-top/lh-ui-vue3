@@ -1,0 +1,42 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "esnext",
+        "lib": [
+            "esnext",
+            "dom",
+            "dom.iterable"
+        ],
+        "ignoreDeprecations":"6.0",
+        "moduleResolution": "node",
+        "strict": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "declaration": true,
+        "declarationMap": true,
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ],
+            "lh-ui": [
+                "src/index.ts"
+            ]
+        },
+        "types": [
+            "vite/client"
+        ],
+        "outDir": "dist/types",
+    },
+    "include": [
+        "src/**/*",
+        "packages/**/*",
+        "types/**/*",
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
