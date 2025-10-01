@@ -14,9 +14,12 @@
     </button>
 </template>
 
-<script lang="ts"  setup>
-import {useLhButton} from './index'
-const {props, emits, handleClick, buttonStyle}= useLhButton()
+<script lang="ts" setup>
+defineOptions({
+    name: 'LhButton'
+})
+import { useLhButton } from './index'
+const { props, emits, handleClick, buttonStyle } = useLhButton()
 </script>
 
 <style lang="scss" scoped>

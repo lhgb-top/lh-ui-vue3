@@ -1,8 +1,8 @@
 import { App } from 'vue'
-import Input from './src/index.vue'
+import LhInput from './src/index.vue'
 
-Input.install = (app: App): void => {
-  app.component(Input.name as string, Input)
+LhInput.install = (app: App): void => {
+  app.component(LhInput.name as string, LhInput)
 }
 
-export default Input
+export default LhInput

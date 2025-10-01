@@ -21,7 +21,6 @@ class LhLocale {
             if (result === undefined || result === null) break;
             result = result[key];
         }
-
         return result || '';
     }
 
