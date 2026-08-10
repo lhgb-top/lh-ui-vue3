@@ -18,8 +18,10 @@ export interface LhDialogProps {
   closeOnPressEscape?: boolean
   /** 是否可拖拽 */
   draggable?: boolean
-  /** 是否居中显示 */
+  /** 是否居中显示（兼容旧版，建议使用 position） */
   center?: boolean
+  /** 弹窗位置：top / center / bottom */
+  position?: 'top' | 'center' | 'bottom'
   /** 是否锁定滚动 */
   lockScroll?: boolean
   /** 关闭前回调 */

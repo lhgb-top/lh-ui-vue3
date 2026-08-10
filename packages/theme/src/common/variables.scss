@@ -1,83 +1,108 @@
 // ==============================
-// lh-ui-plus Theme Variables
+// lh-ui-plus 国风主题变量
+// 设计灵感：宣纸 · 水墨 · 朱砂 · 靛蓝
+// "素雅留白，墨韵含香"
 // ==============================
 
-// Primary Colors
-$lh-primary: #409eff !default;
-$lh-primary-hover: #66b1ff !default;
-$lh-primary-active: #3a8ee6 !default;
-$lh-primary-light: #ecf5ff !default;
-$lh-primary-lighter: #d9ecff !default;
+// ——— Primary (靛蓝 — 青花瓷之蓝) ———
+$lh-primary: #2B4C7C !default;
+$lh-primary-hover: #3D649E !default;
+$lh-primary-active: #1F3A5F !default;
+$lh-primary-light: #E8EDF3 !default;
+$lh-primary-lighter: #D4DCE8 !default;
 
-// Success Colors
-$lh-success: #67c23a !default;
-$lh-success-hover: #85ce61 !default;
-$lh-success-active: #5daf34 !default;
-$lh-success-light: #f0f9eb !default;
+// ——— Success (松花绿 — 竹影青翠) ———
+$lh-success: #5B8C5A !default;
+$lh-success-hover: #6FA36E !default;
+$lh-success-active: #4B7A4A !default;
+$lh-success-light: #EDF5EC !default;
 
-// Warning Colors
-$lh-warning: #e6a23c !default;
-$lh-warning-hover: #ebb563 !default;
-$lh-warning-active: #cf9236 !default;
-$lh-warning-light: #fdf6ec !default;
+// ——— Warning (藤黄 — 秋叶金黄) ———
+$lh-warning: #C4A35A !default;
+$lh-warning-hover: #D4B76F !default;
+$lh-warning-active: #B3924A !default;
+$lh-warning-light: #FBF6EA !default;
 
-// Danger / Error Colors
-$lh-danger: #f56c6c !default;
-$lh-danger-hover: #f78989 !default;
-$lh-danger-active: #dd6161 !default;
-$lh-danger-light: #fef0f0 !default;
+// ——— Danger / Error (朱砂 — 印泥朱红) ———
+$lh-danger: #B23A3A !default;
+$lh-danger-hover: #C45050 !default;
+$lh-danger-active: #9A3030 !default;
+$lh-danger-light: #FDF0F0 !default;
 
-// Info Colors
-$lh-info: #909399 !default;
-$lh-info-hover: #a6a9ad !default;
-$lh-info-active: #82848a !default;
-$lh-info-light: #f4f4f5 !default;
+// ——— Info (黛色 — 水墨淡彩) ———
+$lh-info: #7A7A7A !default;
+$lh-info-hover: #8F8F8F !default;
+$lh-info-active: #6A6A6A !default;
+$lh-info-light: #F2F2F2 !default;
 
-// Neutral Colors
-$lh-white: #ffffff !default;
-$lh-black: #000000 !default;
+// ——— 新增：金色点缀（华贵古韵） ———
+$lh-gold: #B8860B !default;
+$lh-gold-hover: #D4A843 !default;
+$lh-gold-active: #9A7208 !default;
+$lh-gold-light: #FBF6EA !default;
+$lh-gold-lighter: #FDFAF3 !default;
 
-// Text Colors
-$lh-text-primary: #303133 !default;
-$lh-text-regular: #606266 !default;
-$lh-text-secondary: #909399 !default;
-$lh-text-placeholder: #c0c4cc !default;
-$lh-text-disabled: #c0c4cc !default;
+// ——— 新增：朱砂点缀（印泥朱红） ———
+$lh-vermilion: #C43A31 !default;
+$lh-vermilion-hover: #E85D4A !default;
+$lh-vermilion-active: #A92E26 !default;
+$lh-vermilion-light: #FDF0EE !default;
 
-// Border Colors
-$lh-border-color-base: #dcdfe6 !default;
-$lh-border-color-light: #e4e7ed !default;
-$lh-border-color-lighter: #ebeef5 !default;
-$lh-border-color-extra-light: #f2f6fc !default;
-$lh-border-radius-base: 4px !default;
+// ——— 新增：玉色（翠竹清雅） ———
+$lh-jade: #5B8C5A !default;
+$lh-jade-hover: #7AAE7A !default;
+$lh-jade-active: #4B7A4A !default;
+$lh-jade-light: #EDF5EC !default;
+
+// ——— 新增：花纹装饰色 ———
+$lh-decoration-color: rgba(184, 134, 11, 0.12) !default;
+$lh-decoration-color-dark: rgba(212, 168, 67, 0.08) !default;
+
+// ——— Neutral ———
+$lh-white: #FAF6F0 !default;
+$lh-black: #1A1A1A !default;
+
+// ——— Text (墨色体系) ———
+$lh-text-primary: #2C2C2C !default;
+$lh-text-regular: #5A5A5A !default;
+$lh-text-secondary: #8A8A8A !default;
+$lh-text-placeholder: #B0B0B0 !default;
+$lh-text-disabled: #C8C8C8 !default;
+
+// ——— Border (素雅边框) ———
+$lh-border-color-base: #D8D3CC !default;
+$lh-border-color-light: #E5E0D8 !default;
+$lh-border-color-lighter: #EEE9E2 !default;
+$lh-border-color-extra-light: #F5F0EB !default;
+$lh-border-radius-base: 2px !default;
 $lh-border-radius-small: 2px !default;
 $lh-border-radius-round: 20px !default;
 $lh-border-radius-circle: 50% !default;
 
-// Background Colors
-$lh-bg-color: #ffffff !default;
-$lh-bg-color-page: #f2f3f5 !default;
-$lh-bg-color-disabled: #f5f7fa !default;
-$lh-bg-color-overlay: rgba(0, 0, 0, 0.5) !default;
+// ——— Background (宣纸色系) ———
+$lh-bg-color: #FAF6F0 !default;
+$lh-bg-color-page: #F5F0EB !default;
+$lh-bg-color-disabled: #EDE8E0 !default;
+$lh-bg-color-overlay: rgba(26, 26, 26, 0.4) !default;
 
-// Shadow
-$lh-box-shadow-base: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !default;
-$lh-box-shadow-light: 0 2px 4px 0 rgba(0, 0, 0, 0.06) !default;
-$lh-box-shadow-lighter: 0 0 4px 0 rgba(0, 0, 0, 0.04) !default;
+// ——— Shadow (柔和墨影) ———
+$lh-box-shadow-base: 0 2px 12px 0 rgba(26, 26, 26, 0.08) !default;
+$lh-box-shadow-light: 0 2px 4px 0 rgba(26, 26, 26, 0.06) !default;
+$lh-box-shadow-lighter: 0 0 4px 0 rgba(26, 26, 26, 0.04) !default;
 
-// Font
-$lh-font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif !default;
+// ——— Font (国风字体) ———
+$lh-font-family: 'Noto Serif SC', 'STSong', 'SimSun', 'Source Han Serif SC', 'PingFang SC', 'Microsoft YaHei', serif !default;
 $lh-font-size-extra-large: 20px !default;
 $lh-font-size-large: 18px !default;
 $lh-font-size-medium: 16px !default;
 $lh-font-size-base: 14px !default;
 $lh-font-size-small: 13px !default;
 $lh-font-size-extra-small: 12px !default;
-$lh-font-weight-primary: 500 !default;
-$lh-font-weight-bold: 700 !default;
-$lh-font-line-height-primary: 1.5 !default;
+$lh-font-weight-primary: 400 !default;
+$lh-font-weight-bold: 600 !default;
+$lh-font-line-height-primary: 1.8 !default;
 
-// Spacing
+// ——— Spacing ———
 $lh-spacing-xs: 4px !default;
 $lh-spacing-sm: 8px !default;
 $lh-spacing-md: 12px !default;
@@ -86,7 +111,7 @@ $lh-spacing-lg: 20px !default;
 $lh-spacing-xl: 24px !default;
 $lh-spacing-xxl: 32px !default;
 
-// Z-index
+// ——— Z-index ———
 $lh-z-index-normal: 1 !default;
 $lh-z-index-dropdown: 1000 !default;
 $lh-z-index-sticky: 1020 !default;
@@ -96,13 +121,13 @@ $lh-z-index-modal: 1050 !default;
 $lh-z-index-popover: 1060 !default;
 $lh-z-index-tooltip: 2000 !default;
 
-// Transitions
-$lh-transition-duration-fast: 0.2s !default;
+// ——— Transitions ———
+$lh-transition-duration-fast: 0.25s !default;
 $lh-transition-duration-base: 0.3s !default;
 $lh-transition-duration-slow: 0.4s !default;
 $lh-transition-function-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1) !default;
 
-// Disabled
+// ——— Disabled ———
 $lh-disabled-bg-color: $lh-bg-color-disabled !default;
 $lh-disabled-text-color: $lh-text-disabled !default;
 $lh-disabled-border-color: $lh-border-color-light !default;

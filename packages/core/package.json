@@ -1,0 +1,11 @@
+{
+  "name": "@lh-ui/core",
+  "version": "1.0.0",
+  "description": "lh-ui-plus 纯函数核心库（框架无关）",
+  "main": "index.ts",
+  "types": "index.ts",
+  "files": [
+    "*/",
+    "!*/__tests__"
+  ]
+}

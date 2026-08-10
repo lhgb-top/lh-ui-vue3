@@ -1,12 +1,9 @@
 <template>
   <div
-    :ref="triggerRef"
+    ref="triggerRef"
     class="lh-tooltip"
-    @mouseenter="trigger === 'hover' && show()"
-    @mouseleave="trigger === 'hover' && hide()"
-    @click="trigger === 'click' && toggle()"
-    @focusin="trigger === 'focus' && show()"
-    @focusout="trigger === 'focus' && hide()"
+    @mouseenter="show"
+    @mouseleave="hide"
   >
     <slot></slot>
 
@@ -14,7 +11,7 @@
       <Transition name="lh-tooltip-fade">
         <div
           v-if="isVisible"
-          :ref="tooltipRef"
+          ref="tooltipRef"
           :id="tooltipId"
           :class="popperClass"
           :style="popperStyle"
@@ -43,7 +40,7 @@ const props = withDefaults(defineProps<LhTooltipProps>(), {
   disabled: false,
   manual: false,
   visible: undefined,
-  showAfter: 200,
+  showAfter: 0,
   hideAfter: 0,
   openDelay: undefined,
   closeDelay: undefined,

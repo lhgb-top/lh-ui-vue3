@@ -10,7 +10,15 @@ export interface LhConfigProviderProps {
   size?: LhSizes
   /** 全局语言 */
   locale?: LocaleType
-  /** 全局主题变量 */
+  /** 全局主题变量
+   * 支持键（会自动添加 --lh- 前缀）：
+   * - `primary-color`, `success-color`, `warning-color`, `danger-color`, `info-color`
+   * - `gold-color`, `vermilion-color`, `jade-color`
+   * - `bg-color`, `text-color`, `border-color`
+   * - `bg-pattern` — 花纹背景 URL（如 `var(--lh-pattern-willow)`）
+   * - `bg-pattern-opacity` — 花纹透明度
+   * - `bg-pattern-color` — 花纹颜色
+   * - `decoration-color` — 装饰色 */
   themeVars?: Record<string, string>
 }
 

@@ -92,9 +92,9 @@ export function deepMerge<T extends Record<string, any>>(
       const targetVal = target[key]
       const sourceVal = source[key]
       if (isPlainObject(targetVal) && isPlainObject(sourceVal)) {
-        target[key] = deepMerge(targetVal, sourceVal)
+        (target as Record<string, any>)[key] = deepMerge(targetVal as Record<string, any>, sourceVal as Record<string, any>)
       } else if (sourceVal !== undefined) {
-        target[key] = sourceVal
+        (target as Record<string, any>)[key] = sourceVal
       }
     }
   }

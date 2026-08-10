@@ -2,18 +2,25 @@ import { computed, provide, reactive, inject } from 'vue'
 import type { LhConfigProviderProps, LhConfigContext } from './types'
 import { CONFIG_PROVIDER_KEY } from './types'
 import { lhlocale } from '~/locales/index'
+import { mergeConfig } from '@lh-ui/core/config/logic'
 
 /**
  * ConfigProvider 核心逻辑
  * @param props 组件 props
  */
 export function useConfigProvider(props: LhConfigProviderProps) {
-  /** 将 themeVars 转为 CSS 变量对象 */
+  /** 将 themeVars 转为 CSS 变量对象，并添加容器花纹背景 */
   const cssVars = computed(() => {
     if (!props.themeVars) return {}
     const result: Record<string, string> = {}
     for (const [key, value] of Object.entries(props.themeVars)) {
       result[`--lh-${key}`] = value
+    }
+    // 当设置了 bg-pattern 时，容器本身也应用花纹背景
+    if (result['--lh-bg-pattern']) {
+      result['background-image'] = result['--lh-bg-pattern']
+      result['background-repeat'] = result['--lh-bg-pattern-repeat'] || 'repeat'
+      result['background-size'] = result['--lh-bg-pattern-size'] || '40px'
     }
     return result
   })

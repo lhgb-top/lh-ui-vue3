@@ -59,4 +59,5 @@ export interface LhInputProps {
   tabindex?: number | string
   form?: string
   inputStyle?: Record<string, string>
+  label?: string
 }

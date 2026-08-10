@@ -1,6 +1,7 @@
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import type { LhTooltipProps } from './types'
 import { generateId } from '~/utils/index'
+import { getPopperClass, getPopperStyle, getDefaultDelay } from '@lh-ui/core/tooltip/logic'
 
 /**
  * Tooltip Composable
@@ -19,11 +20,8 @@ export function useLhTooltip(props: LhTooltipProps) {
   // 获取触发方式
   const trigger = computed(() => props.trigger || 'hover')
   
-  // 展示延迟
-  const showAfter = computed(() => props.showAfter ?? props.openDelay ?? 0)
-  
-  // 隐藏延迟
-  const hideAfter = computed(() => props.hideAfter ?? props.closeDelay ?? 0)
+  // 延迟（使用 core 纯函数）
+  const delay = computed(() => getDefaultDelay(props.showAfter ?? props.openDelay, props.hideAfter ?? props.closeDelay))
 
   /**
    * 显示 Tooltip
@@ -34,15 +32,15 @@ export function useLhTooltip(props: LhTooltipProps) {
       clearTimeout(hideTimer)
       hideTimer = null
     }
-    if (showAfter.value > 0) {
+    if (delay.value.show > 0) {
       showTimer = setTimeout(() => {
         isVisible.value = true
-        updatePosition()
+        nextTick(() => updatePosition())
         showTimer = null
-      }, showAfter.value)
+      }, delay.value.show)
     } else {
       isVisible.value = true
-      updatePosition()
+      nextTick(() => updatePosition())
     }
   }
 
@@ -54,11 +52,11 @@ export function useLhTooltip(props: LhTooltipProps) {
       clearTimeout(showTimer)
       showTimer = null
     }
-    if (hideAfter.value > 0) {
+    if (delay.value.hide > 0) {
       hideTimer = setTimeout(() => {
         isVisible.value = false
         hideTimer = null
-      }, hideAfter.value)
+      }, delay.value.hide)
     } else {
       isVisible.value = false
     }
@@ -85,37 +83,43 @@ export function useLhTooltip(props: LhTooltipProps) {
       const triggerRect = triggerRef.value.getBoundingClientRect()
       const tooltipRect = tooltipRef.value.getBoundingClientRect()
       const placement = props.placement || 'top'
-      
-      let top = 0
-      let left = 0
       const gap = 8
 
-      switch (placement) {
-        case 'top':
-          top = triggerRect.top - tooltipRect.height - gap
-          left = triggerRect.left + (triggerRect.width - tooltipRect.width) / 2
-          break
-        case 'bottom':
-          top = triggerRect.bottom + gap
-          left = triggerRect.left + (triggerRect.width - tooltipRect.width) / 2
-          break
-        case 'left':
-          top = triggerRect.top + (triggerRect.height - tooltipRect.height) / 2
-          left = triggerRect.left - tooltipRect.width - gap
-          break
-        case 'right':
-          top = triggerRect.top + (triggerRect.height - tooltipRect.height) / 2
-          left = triggerRect.right + gap
-          break
-        default:
-          top = triggerRect.top - tooltipRect.height - gap
-          left = triggerRect.left + (triggerRect.width - tooltipRect.width) / 2
+      // 解析方向和对齐方式
+      const [dir, align] = placement.includes('-') ? placement.split('-') as [string, string] : [placement, 'center']
+
+      let top = 0
+      let left = 0
+
+      // 垂直位置
+      if (dir === 'top') {
+        top = triggerRect.top - tooltipRect.height - gap
+      } else if (dir === 'bottom') {
+        top = triggerRect.bottom + gap
+      } else {
+        top = triggerRect.top + (triggerRect.height - tooltipRect.height) / 2
+        if (align === 'start') {
+          top = triggerRect.top
+        } else if (align === 'end') {
+          top = triggerRect.bottom - tooltipRect.height
+        }
       }
 
-      // 加上滚动偏移
-      top += window.scrollY
-      left += window.scrollX
+      // 水平位置
+      if (dir === 'left') {
+        left = triggerRect.left - tooltipRect.width - gap
+      } else if (dir === 'right') {
+        left = triggerRect.right + gap
+      } else {
+        left = triggerRect.left + (triggerRect.width - tooltipRect.width) / 2
+        if (align === 'start') {
+          left = triggerRect.left
+        } else if (align === 'end') {
+          left = triggerRect.right - tooltipRect.width
+        }
+      }
 
+      // 使用 fixed 定位，不需要 scroll 偏移
       tooltipRef.value.style.top = `${Math.max(0, top)}px`
       tooltipRef.value.style.left = `${Math.max(0, left)}px`
     } catch {
@@ -144,17 +148,27 @@ export function useLhTooltip(props: LhTooltipProps) {
   })
 
   const popperClass = computed(() => {
-    return [
-      'lh-tooltip__popper',
-      `lh-tooltip__popper--${props.effect || 'dark'}`,
-      props.placement ? `lh-tooltip__popper--${props.placement}` : '',
-    ]
+    const cls = getPopperClass({
+      effect: props.effect || 'dark',
+      placement: props.placement || 'top',
+    })
+    if (props.type) {
+      cls.push(`lh-tooltip__popper--${props.type}`)
+    }
+    return cls
   })
 
   const popperStyle = computed(() => {
-    const style: Record<string, string> = {}
-    if (props.maxWidth) {
-      style.maxWidth = typeof props.maxWidth === 'number' ? `${props.maxWidth}px` : props.maxWidth
+    const style = getPopperStyle({
+      maxWidth: props.maxWidth,
+    })
+    // 优先使用 bgColor，其次 type，最后 fallback 给 effect
+    const bg = props.bgColor || (props.type ? `var(--lh-${props.type}-color, var(--lh-primary-color))` : undefined)
+    if (bg) {
+      style['--lh-tooltip-bg'] = bg
+      style['--lh-tooltip-text'] = '#fff'
+      // 箭头颜色同步
+      style['--lh-tooltip-arrow-color'] = bg
     }
     return style
   })

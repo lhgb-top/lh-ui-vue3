@@ -1,6 +1,7 @@
 import { computed } from 'vue'
 import type { LhButtonProps } from './types'
 import { useConfigContext } from '~/components/config-provider/src/index'
+import { isClickable, getSize, getStyle } from '@lh-ui/core/button/logic'
 
 /**
  * Button 组件 Composable
@@ -12,14 +13,14 @@ export function useLhButton(props: LhButtonProps, emit: (event: 'click', e: Mous
 
   // 有效的尺寸（props > ConfigProvider > 默认值）
   const effectiveSize = computed(() => {
-    return props.size || configContext?.size || 'default'
+    return getSize(props.size, configContext?.size)
   })
 
   /**
    * 点击事件处理
    */
   const handleClick = (e: MouseEvent) => {
-    if (!props.loading && !props.disabled) {
+    if (isClickable({ loading: props.loading, disabled: props.disabled })) {
       emit('click', e)
     }
   }
@@ -27,15 +28,7 @@ export function useLhButton(props: LhButtonProps, emit: (event: 'click', e: Mous
   /**
    * 计算按钮内联样式（主题变量）
    */
-  const buttonStyle = computed(() => {
-    return {
-      '--lh-primary-color': 'var(--lh-primary-color, #409EFF)',
-      '--lh-primary-color-border': 'var(--lh-primary-color-border, #c6e2ff)',
-      '--lh-primary-color-bg': 'var(--lh-primary-color-bg, #ecf5ff)',
-      '--lh-primary-color-hover': 'var(--lh-primary-color-hover, #66b1ff)',
-      '--lh-border-radius-base': 'var(--lh-border-radius-base, 4px)',
-    }
-  })
+  const buttonStyle = computed(() => getStyle())
 
   return {
     handleClick,

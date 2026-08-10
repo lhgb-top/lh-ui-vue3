@@ -1,0 +1,14 @@
+/**
+ * Button 组件纯类型定义（无框架依赖）
+ */
+
+export interface ButtonState {
+  type: string
+  size: string
+  loading: boolean
+  disabled: boolean
+  plain: boolean
+  block: boolean
+  round: boolean
+  circle: boolean
+}

@@ -13,7 +13,6 @@ export const LhTypesConst = {
  * 组件尺寸常量
  */
 export const LhSizeConst = {
-    default: 'default',
     small: 'small',
     medium: 'medium',
     large: 'large',

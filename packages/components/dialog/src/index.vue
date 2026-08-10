@@ -1,24 +1,29 @@
 <template>
   <Teleport to="body">
     <Transition name="lh-dialog-fade">
-      <div
-        v-if="isVisible"
-        ref="dialogRef"
-        :class="['lh-dialog__wrapper', { 'lh-dialog__wrapper--center': props.center }]"
-        :style="dialogStyle"
-        @click.self="handleModalClick"
-      >
+      <div v-if="isVisible" class="lh-dialog__container">
+        <div class="lh-dialog__overlay" @click="handleModalClick"></div>
+        <div
+          ref="dialogRef"
+          :class="['lh-dialog__wrapper', `lh-dialog__wrapper--${props.position}`]"
+          :style="dialogStyle"
+        >
         <div
           :class="[
             'lh-dialog',
             { 'lh-dialog--fullscreen': props.fullscreen }
           ]"
+          :style="[dialogContentStyle, dialogDragStyle]"
           role="dialog"
           aria-modal="true"
           :aria-label="props.title || 'dialog'"
         >
           <!-- Header -->
-          <div class="lh-dialog__header">
+          <div
+            ref="headerRef"
+            :class="['lh-dialog__header', { 'lh-dialog__header--draggable': props.draggable }]"
+            @mousedown="handleHeaderMousedown"
+          >
             <slot name="header">
               <span class="lh-dialog__title">{{ props.title }}</span>
             </slot>
@@ -45,6 +50,7 @@
           </div>
         </div>
       </div>
+      </div>
     </Transition>
   </Teleport>
 </template>
@@ -67,6 +73,7 @@ const props = withDefaults(defineProps<LhDialogProps>(), {
   closeOnPressEscape: true,
   draggable: false,
   center: false,
+  position: 'center',
   lockScroll: true,
   top: '15vh',
   zIndex: undefined,
@@ -81,10 +88,15 @@ const emit = defineEmits<{
 }>()
 
 const {
+  dialogRef,
+  headerRef,
   isVisible,
   close,
   handleModalClick,
   dialogStyle,
+  dialogContentStyle,
+  dialogDragStyle,
+  handleHeaderMousedown,
 } = useLhDialog(props, emit)
 
 defineExpose({

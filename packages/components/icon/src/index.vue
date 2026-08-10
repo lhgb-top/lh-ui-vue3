@@ -1,15 +1,25 @@
 <template>
-  <i
-    :class="['lh-icon', iconName]"
+  <span
+    :class="['lh-icon', props.name ? `lh-icon--${props.name}` : '']"
     :style="iconStyle"
     v-bind="$attrs"
   >
-    <slot></slot>
-  </i>
+    <svg
+      v-if="svgPath"
+      viewBox="0 0 24 24"
+      :width="iconSize"
+      :height="iconSize"
+      fill="currentColor"
+    >
+      <path :d="svgPath" />
+    </svg>
+    <slot v-else></slot>
+  </span>
 </template>
 
 <script lang="ts" setup>
-import { useLhIcon } from './index'
+import { computed } from 'vue'
+import { getIconSvg, getIconStyle, getIconSize } from '@lh-ui/core/icon'
 import type { LhIconProps } from './types'
 
 defineOptions({
@@ -23,5 +33,7 @@ const props = withDefaults(defineProps<LhIconProps>(), {
   color: undefined,
 })
 
-const { iconStyle, iconName } = useLhIcon(props)
+const svgPath = computed(() => getIconSvg(props.name))
+const iconStyle = computed(() => getIconStyle({ size: props.size, color: props.color }))
+const iconSize = computed(() => getIconSize(props.size))
 </script>

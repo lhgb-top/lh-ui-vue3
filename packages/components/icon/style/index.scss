@@ -1,32 +1,29 @@
 @use '../../../theme/src/common/index.scss' as *;
 
-$lh-icon-font-size: 16px !default;
-$lh-icon-color: #606266 !default;
+// ==============================
+// 图标样式 — 工笔细描
+// ==============================
+
+$lh-icon-color: var(--lh-text-regular, #5A5A5A) !default;
 
 .lh-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: $lh-icon-font-size;
   color: $lh-icon-color;
   line-height: 1;
   vertical-align: middle;
   transition: color 0.2s ease;
 
-  // 支持旋转动画
-  &--loading {
-    animation: lh-icon-spin 1s linear infinite;
+  svg {
+    display: block;
   }
 
-  // 图标占位（无名称时显示默认外观）
-  &:empty::before {
-    content: '';
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    border-radius: 50%;
-    border: 2px solid currentColor;
-    border-right-color: transparent;
+  // 支持旋转动画
+  &--loading {
+    svg {
+      animation: lh-icon-spin 1s linear infinite;
+    }
   }
 }
 

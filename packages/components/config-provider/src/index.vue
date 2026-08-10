@@ -20,3 +20,10 @@ const props = withDefaults(defineProps<LhConfigProviderProps>(), {
 
 const { cssVars } = useConfigProvider(props)
 </script>
+
+<style>
+.lh-config-provider {
+  background-blend-mode: soft-light;
+  min-height: 0;
+}
+</style>

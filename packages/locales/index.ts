@@ -1,3 +1,4 @@
+import { ref } from 'vue'
 import zh_CN from './lang/zh-CN';
 import en_US from './lang/en-US';
 import type { LhLocaleMessages, LhLocaleType } from 'types/locale';
@@ -27,6 +28,8 @@ const locales: Record<string, LhLocaleMessages> = {
 class LhLocale {
     private current: LhLocaleType = LH_LANGUAGE_DEFAULT;
     private messages: LhLocaleMessages = locales[LH_LANGUAGE_DEFAULT];
+    /** 响应式版本号，用于触发 Vue computed 重新计算 */
+    public version = ref(0)
 
     /**
      * 设置语言
@@ -35,6 +38,7 @@ class LhLocale {
         this.current = options.locale;
         this.messages = options.messages;
         locales[options.locale] = options.messages;
+        this.version.value++
     }
 
     /**
@@ -71,6 +75,7 @@ class LhLocale {
         if (msgs) {
             this.messages = msgs;
         }
+        this.version.value++
     }
 
     /**

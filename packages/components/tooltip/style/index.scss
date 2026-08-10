@@ -1,10 +1,14 @@
 @use '../../../theme/src/common/index.scss' as *;
 
-$lh-tooltip-bg-dark: #303133 !default;
-$lh-tooltip-bg-light: #fff !default;
-$lh-tooltip-text-dark: #fff !default;
-$lh-tooltip-text-light: #303133 !default;
-$lh-tooltip-border-light: #e4e7ed !default;
+// ==============================
+// 提示框样式 — 墨染素笺
+// ==============================
+
+$lh-tooltip-bg-dark: var(--lh-text-primary, #2C2C2C) !default;
+$lh-tooltip-bg-light: var(--lh-bg-color, #FAF6F0) !default;
+$lh-tooltip-text-dark: var(--lh-bg-color, #FAF6F0) !default;
+$lh-tooltip-text-light: var(--lh-text-regular, #5A5A5A) !default;
+$lh-tooltip-border-light: var(--lh-border-color-light, #E5E0D8) !default;
 $lh-tooltip-arrow-size: 6px !default;
 
 .lh-tooltip {
@@ -12,24 +16,24 @@ $lh-tooltip-arrow-size: 6px !default;
   position: relative;
 
   &__popper {
-    position: absolute;
+    position: fixed;
     z-index: 2000;
     padding: 6px 12px;
     font-size: 12px;
     line-height: 1.5;
-    border-radius: 4px;
+    border-radius: 2px;
     word-break: break-word;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px 0 rgba(26, 26, 26, 0.08);
     max-width: 200px;
 
     &--dark {
-      background-color: $lh-tooltip-bg-dark;
-      color: $lh-tooltip-text-dark;
+      background-color: var(--lh-tooltip-bg, $lh-tooltip-bg-dark);
+      color: var(--lh-tooltip-text, $lh-tooltip-text-dark);
     }
 
     &--light {
-      background-color: $lh-tooltip-bg-light;
-      color: $lh-tooltip-text-light;
+      background-color: var(--lh-tooltip-bg, $lh-tooltip-bg-light);
+      color: var(--lh-tooltip-text, $lh-tooltip-text-light);
       border: 1px solid $lh-tooltip-border-light;
     }
   }
@@ -49,44 +53,54 @@ $lh-tooltip-arrow-size: 6px !default;
     bottom: -#{$lh-tooltip-arrow-size * 2};
     left: 50%;
     margin-left: -#{$lh-tooltip-arrow-size};
-    border-top-color: $lh-tooltip-bg-dark;
+    border-top-color: var(--lh-tooltip-arrow-color, $lh-tooltip-bg-dark);
   }
 
   &__popper--bottom &__arrow {
     top: -#{$lh-tooltip-arrow-size * 2};
     left: 50%;
     margin-left: -#{$lh-tooltip-arrow-size};
-    border-bottom-color: $lh-tooltip-bg-dark;
+    border-bottom-color: var(--lh-tooltip-arrow-color, $lh-tooltip-bg-dark);
   }
 
   &__popper--left &__arrow {
     right: -#{$lh-tooltip-arrow-size * 2};
     top: 50%;
     margin-top: -#{$lh-tooltip-arrow-size};
-    border-left-color: $lh-tooltip-bg-dark;
+    border-left-color: var(--lh-tooltip-arrow-color, $lh-tooltip-bg-dark);
   }
 
   &__popper--right &__arrow {
     left: -#{$lh-tooltip-arrow-size * 2};
     top: 50%;
     margin-top: -#{$lh-tooltip-arrow-size};
-    border-right-color: $lh-tooltip-bg-dark;
+    border-right-color: var(--lh-tooltip-arrow-color, $lh-tooltip-bg-dark);
   }
 
   // Light 主题箭头颜色
   &__popper--light {
     &.lh-tooltip__popper--top .lh-tooltip__arrow {
-      border-top-color: $lh-tooltip-border-light;
+      border-top-color: var(--lh-tooltip-arrow-color, $lh-tooltip-border-light);
     }
     &.lh-tooltip__popper--bottom .lh-tooltip__arrow {
-      border-bottom-color: $lh-tooltip-border-light;
+      border-bottom-color: var(--lh-tooltip-arrow-color, $lh-tooltip-border-light);
     }
     &.lh-tooltip__popper--left .lh-tooltip__arrow {
-      border-left-color: $lh-tooltip-border-light;
+      border-left-color: var(--lh-tooltip-arrow-color, $lh-tooltip-border-light);
     }
     &.lh-tooltip__popper--right .lh-tooltip__arrow {
-      border-right-color: $lh-tooltip-border-light;
+      border-right-color: var(--lh-tooltip-arrow-color, $lh-tooltip-border-light);
     }
+  }
+
+  // 内置主题色类型（通过 themeVars 自动覆盖）
+  &--primary,
+  &--success,
+  &--warning,
+  &--danger,
+  &--info {
+    background-color: var(--lh-tooltip-bg, var(--lh-primary-color));
+    color: var(--lh-tooltip-text, #fff);
   }
 }
 

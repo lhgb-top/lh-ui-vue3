@@ -4,17 +4,27 @@
     {
       'lh-input__wrapper--disabled': props.disabled,
       'lh-input__wrapper--focused': isFocused,
+      'lh-input__wrapper--has-label': props.label,
+      'lh-input__wrapper--has-value': inputValue,
     },
   ]">
+    <!-- Label -->
+    <label
+      v-if="props.label"
+      :class="['lh-input__label', { 'lh-input__label--float': isFocused || inputValue }]"
+    >
+      {{ props.label }}
+    </label>
+
     <!-- Textarea -->
     <template v-if="isTextarea">
-      <div :class="['lh-input', 'lh-input--textarea', `lh-input--${props.size}`]">
+      <div :class="['lh-input', 'lh-input--textarea', `lh-input--${props.size}`, { 'lh-input--disabled': props.disabled }]">
         <textarea
           :class="'lh-input__inner'"
           :value="inputValue"
           :disabled="props.disabled"
           :readonly="props.readonly"
-          :placeholder="props.placeholder"
+          :placeholder="props.label ? '' : props.placeholder"
           :maxlength="props.maxlength"
           :minlength="props.minlength"
           :data-autosize="props.autosize"
@@ -41,6 +51,7 @@
         {
           'lh-input--prefix': props.prefixIcon,
           'lh-input--suffix': props.suffixIcon || props.clearable,
+          'lh-input--disabled': props.disabled,
         },
       ]">
         <span v-if="props.prefixIcon" class="lh-input__prefix">
@@ -54,7 +65,7 @@
           :value="inputValue"
           :disabled="props.disabled"
           :readonly="props.readonly"
-          :placeholder="props.placeholder"
+          :placeholder="props.label ? '' : props.placeholder"
           :maxlength="props.maxlength"
           :minlength="props.minlength"
           :autofocus="props.autofocus"
@@ -70,11 +81,15 @@
         <span v-if="props.suffixIcon || props.clearable" class="lh-input__suffix">
           <slot name="suffix">
             <i v-if="props.suffixIcon" :class="props.suffixIcon"></i>
-            <i
+            <svg
               v-if="props.clearable && inputValue"
-              class="lh-input__suffix-icon lh-icon-close"
-              @click="onClear"
-            ></i>
+              class="lh-input__suffix-icon lh-input__clear"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              @click.stop="onClear"
+            >
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
           </slot>
         </span>
       </div>
