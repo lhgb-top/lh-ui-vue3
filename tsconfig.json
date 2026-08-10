@@ -1,14 +1,13 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es2020",
         "module": "esnext",
         "lib": [
             "esnext",
             "dom",
             "dom.iterable"
         ],
-        "ignoreDeprecations":"6.0",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "strict": true,
         "sourceMap": true,
         "resolveJsonModule": true,
@@ -16,6 +15,7 @@
         "declaration": true,
         "declarationMap": true,
         "skipLibCheck": true,
+        "ignoreDeprecations": "6.0",
         "baseUrl": ".",
         "paths": {
             "@/*": [
@@ -32,6 +32,9 @@
             ],
             "packages/*": [
                 "packages/*"
+            ],
+            "@lh-ui/core/*": [
+                "packages/core/*"
             ]
         },
         "types": [
@@ -44,6 +47,7 @@
         "src/**/*",
         "packages/**/*",
         "types/**/*",
+        "dev/**/*",
     ],
     "exclude": [
         "node_modules",

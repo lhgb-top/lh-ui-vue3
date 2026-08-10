@@ -66,9 +66,6 @@ function createBasePlugins() {
       inject: true,
       prefixId: false,
       additionalData: '',
-      sassOptions: {
-        additionalData: '@use "packages/theme/src/index.scss" as *;',
-      },
       autoprefixer: {
         autoprefixer,
       },
@@ -138,9 +135,6 @@ function createStyleEntry(name) {
         inject: false,
         prefixId: false,
         outputDir: resolvePath(`es/${name}/style`),
-        sassOptions: {
-          additionalData: '@use "packages/theme/src/index.scss" as *;',
-        },
         autoprefixer: {
           autoprefixer,
         },
