@@ -1,7 +1,14 @@
-import { App } from 'vue'
+import type { App, Component } from 'vue'
 import LhConfigProvider from './src/index.vue'
+import { useConfigContext } from './src/index'
+import type { LhConfigProviderProps, LhConfigContext } from './src/types'
 
-LhConfigProvider.install = (app: App): void => {
-  app.component(LhConfigProvider.name as string, LhConfigProvider)
+const name = LhConfigProvider.name ?? 'LhConfigProvider'
+
+;(LhConfigProvider as Component & { install?: (app: App) => void }).install = (app: App): void => {
+  app.component(name, LhConfigProvider)
 }
+
 export default LhConfigProvider
+export { useConfigContext }
+export type { LhConfigProviderProps, LhConfigContext }

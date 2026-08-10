@@ -1,0 +1,102 @@
+@use '../../../theme/src/common/index.scss' as *;
+
+$lh-tooltip-bg-dark: #303133 !default;
+$lh-tooltip-bg-light: #fff !default;
+$lh-tooltip-text-dark: #fff !default;
+$lh-tooltip-text-light: #303133 !default;
+$lh-tooltip-border-light: #e4e7ed !default;
+$lh-tooltip-arrow-size: 6px !default;
+
+.lh-tooltip {
+  display: inline-flex;
+  position: relative;
+
+  &__popper {
+    position: absolute;
+    z-index: 2000;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 4px;
+    word-break: break-word;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    max-width: 200px;
+
+    &--dark {
+      background-color: $lh-tooltip-bg-dark;
+      color: $lh-tooltip-text-dark;
+    }
+
+    &--light {
+      background-color: $lh-tooltip-bg-light;
+      color: $lh-tooltip-text-light;
+      border: 1px solid $lh-tooltip-border-light;
+    }
+  }
+
+  &__content {
+    display: inline-block;
+  }
+
+  &__arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: $lh-tooltip-arrow-size solid transparent;
+  }
+
+  &__popper--top &__arrow {
+    bottom: -#{$lh-tooltip-arrow-size * 2};
+    left: 50%;
+    margin-left: -#{$lh-tooltip-arrow-size};
+    border-top-color: $lh-tooltip-bg-dark;
+  }
+
+  &__popper--bottom &__arrow {
+    top: -#{$lh-tooltip-arrow-size * 2};
+    left: 50%;
+    margin-left: -#{$lh-tooltip-arrow-size};
+    border-bottom-color: $lh-tooltip-bg-dark;
+  }
+
+  &__popper--left &__arrow {
+    right: -#{$lh-tooltip-arrow-size * 2};
+    top: 50%;
+    margin-top: -#{$lh-tooltip-arrow-size};
+    border-left-color: $lh-tooltip-bg-dark;
+  }
+
+  &__popper--right &__arrow {
+    left: -#{$lh-tooltip-arrow-size * 2};
+    top: 50%;
+    margin-top: -#{$lh-tooltip-arrow-size};
+    border-right-color: $lh-tooltip-bg-dark;
+  }
+
+  // Light 主题箭头颜色
+  &__popper--light {
+    &.lh-tooltip__popper--top .lh-tooltip__arrow {
+      border-top-color: $lh-tooltip-border-light;
+    }
+    &.lh-tooltip__popper--bottom .lh-tooltip__arrow {
+      border-bottom-color: $lh-tooltip-border-light;
+    }
+    &.lh-tooltip__popper--left .lh-tooltip__arrow {
+      border-left-color: $lh-tooltip-border-light;
+    }
+    &.lh-tooltip__popper--right .lh-tooltip__arrow {
+      border-right-color: $lh-tooltip-border-light;
+    }
+  }
+}
+
+// 过渡动画
+.lh-tooltip-fade-enter-active,
+.lh-tooltip-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.lh-tooltip-fade-enter-from,
+.lh-tooltip-fade-leave-to {
+  opacity: 0;
+}

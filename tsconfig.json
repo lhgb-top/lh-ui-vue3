@@ -23,6 +23,15 @@
             ],
             "lh-ui": [
                 "src/index.ts"
+            ],
+            "constants": [
+                "packages/constants/index.ts"
+            ],
+            "~/*": [
+                "packages/*"
+            ],
+            "packages/*": [
+                "packages/*"
             ]
         },
         "types": [
@@ -31,6 +40,7 @@
         "outDir": "dist/types",
     },
     "include": [
+        "env.d.ts",
         "src/**/*",
         "packages/**/*",
         "types/**/*",

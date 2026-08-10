@@ -1,3 +1,5 @@
-:root{
-    --lh-primary-color: #{ $lh-primary-color};
+@use './index' as *;
+
+:root {
+  --lh-primary-color: #{$lh-primary-color};
 }

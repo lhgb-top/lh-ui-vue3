@@ -1,0 +1,109 @@
+// ==============================
+// lh-ui-plus Theme Variables
+// ==============================
+
+// Primary Colors
+$lh-primary: #409eff !default;
+$lh-primary-hover: #66b1ff !default;
+$lh-primary-active: #3a8ee6 !default;
+$lh-primary-light: #ecf5ff !default;
+$lh-primary-lighter: #d9ecff !default;
+
+// Success Colors
+$lh-success: #67c23a !default;
+$lh-success-hover: #85ce61 !default;
+$lh-success-active: #5daf34 !default;
+$lh-success-light: #f0f9eb !default;
+
+// Warning Colors
+$lh-warning: #e6a23c !default;
+$lh-warning-hover: #ebb563 !default;
+$lh-warning-active: #cf9236 !default;
+$lh-warning-light: #fdf6ec !default;
+
+// Danger / Error Colors
+$lh-danger: #f56c6c !default;
+$lh-danger-hover: #f78989 !default;
+$lh-danger-active: #dd6161 !default;
+$lh-danger-light: #fef0f0 !default;
+
+// Info Colors
+$lh-info: #909399 !default;
+$lh-info-hover: #a6a9ad !default;
+$lh-info-active: #82848a !default;
+$lh-info-light: #f4f4f5 !default;
+
+// Neutral Colors
+$lh-white: #ffffff !default;
+$lh-black: #000000 !default;
+
+// Text Colors
+$lh-text-primary: #303133 !default;
+$lh-text-regular: #606266 !default;
+$lh-text-secondary: #909399 !default;
+$lh-text-placeholder: #c0c4cc !default;
+$lh-text-disabled: #c0c4cc !default;
+
+// Border Colors
+$lh-border-color-base: #dcdfe6 !default;
+$lh-border-color-light: #e4e7ed !default;
+$lh-border-color-lighter: #ebeef5 !default;
+$lh-border-color-extra-light: #f2f6fc !default;
+$lh-border-radius-base: 4px !default;
+$lh-border-radius-small: 2px !default;
+$lh-border-radius-round: 20px !default;
+$lh-border-radius-circle: 50% !default;
+
+// Background Colors
+$lh-bg-color: #ffffff !default;
+$lh-bg-color-page: #f2f3f5 !default;
+$lh-bg-color-disabled: #f5f7fa !default;
+$lh-bg-color-overlay: rgba(0, 0, 0, 0.5) !default;
+
+// Shadow
+$lh-box-shadow-base: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !default;
+$lh-box-shadow-light: 0 2px 4px 0 rgba(0, 0, 0, 0.06) !default;
+$lh-box-shadow-lighter: 0 0 4px 0 rgba(0, 0, 0, 0.04) !default;
+
+// Font
+$lh-font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif !default;
+$lh-font-size-extra-large: 20px !default;
+$lh-font-size-large: 18px !default;
+$lh-font-size-medium: 16px !default;
+$lh-font-size-base: 14px !default;
+$lh-font-size-small: 13px !default;
+$lh-font-size-extra-small: 12px !default;
+$lh-font-weight-primary: 500 !default;
+$lh-font-weight-bold: 700 !default;
+$lh-font-line-height-primary: 1.5 !default;
+
+// Spacing
+$lh-spacing-xs: 4px !default;
+$lh-spacing-sm: 8px !default;
+$lh-spacing-md: 12px !default;
+$lh-spacing-base: 16px !default;
+$lh-spacing-lg: 20px !default;
+$lh-spacing-xl: 24px !default;
+$lh-spacing-xxl: 32px !default;
+
+// Z-index
+$lh-z-index-normal: 1 !default;
+$lh-z-index-dropdown: 1000 !default;
+$lh-z-index-sticky: 1020 !default;
+$lh-z-index-fixed: 1030 !default;
+$lh-z-index-modal-backdrop: 1040 !default;
+$lh-z-index-modal: 1050 !default;
+$lh-z-index-popover: 1060 !default;
+$lh-z-index-tooltip: 2000 !default;
+
+// Transitions
+$lh-transition-duration-fast: 0.2s !default;
+$lh-transition-duration-base: 0.3s !default;
+$lh-transition-duration-slow: 0.4s !default;
+$lh-transition-function-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1) !default;
+
+// Disabled
+$lh-disabled-bg-color: $lh-bg-color-disabled !default;
+$lh-disabled-text-color: $lh-text-disabled !default;
+$lh-disabled-border-color: $lh-border-color-light !default;
+$lh-disabled-opacity: 0.5 !default;

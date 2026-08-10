@@ -1,41 +1,98 @@
 <template>
-    <button :class="[
-        'lh-button',
-        {
+  <button
+    v-if="!props.href"
+    :type="props.nativeType || 'button'"
+    :class="[
+      'lh-button',
+      `lh-button--${props.type}`,
+      `lh-button--${effectiveSize}`,
+      {
+        'lh-button--plain': props.plain,
+        'lh-button--block': props.block,
+        'lh-button--round': props.round,
+        'lh-button--circle': props.circle,
+        'lh-button--loading': props.loading,
+        'lh-button--disabled': props.disabled,
+      },
+    ]"
+    :disabled="props.disabled || props.loading"
+    :style="buttonStyle"
+    @click="handleClick"
+  >
+    <span
+      v-if="props.loading"
+      class="lh-button__loading"
+    >
+      <svg class="lh-button__spinner" viewBox="0 0 100 100">
+        <circle class="lh-button__path" cx="50" cy="50" r="20" fill="none" stroke-width="16"/>
+      </svg>
+    </span>
+    <span v-if="props.icon" class="lh-button__icon">
+      <slot name="icon">
+        <i :class="props.icon"></i>
+      </slot>
+    </span>
+    <span v-if="$slots.default" class="lh-button__text">
+      <slot></slot>
+    </span>
+  </button>
 
-        }
-    ]" :style="buttonStyle">
-        <div class="lh-button__icon">
-            <slot name="icon" v-if="props.icon">
-
-            </slot>
-        </div>
-        <slot></slot>
-    </button>
+  <a
+    v-else
+    :href="props.href"
+    :target="props.target"
+    :class="[
+      'lh-button',
+      `lh-button--${props.type}`,
+      `lh-button--${effectiveSize}`,
+      {
+        'lh-button--plain': props.plain,
+        'lh-button--block': props.block,
+        'lh-button--round': props.round,
+        'lh-button--circle': props.circle,
+        'lh-button--disabled': props.disabled,
+      },
+    ]"
+    :style="buttonStyle"
+  >
+    <span v-if="props.icon" class="lh-button__icon">
+      <slot name="icon">
+        <i :class="props.icon"></i>
+      </slot>
+    </span>
+    <span v-if="$slots.default" class="lh-button__text">
+      <slot></slot>
+    </span>
+  </a>
 </template>
 
 <script lang="ts" setup>
-defineOptions({
-    name: 'LhButton'
-})
 import { useLhButton } from './index'
-const { props, emits, handleClick, buttonStyle } = useLhButton()
+import type { LhButtonProps } from './types'
+import { LhButtonTypeConst, LhButtonSizeConst } from './types'
+
+defineOptions({
+  name: 'LhButton'
+})
+
+const props = withDefaults(defineProps<LhButtonProps>(), {
+  type: () => LhButtonTypeConst.default,
+  size: undefined,
+  loading: false,
+  disabled: false,
+  plain: false,
+  block: false,
+  round: false,
+  circle: false,
+  icon: '',
+  nativeType: 'button',
+  href: '',
+  target: '_self',
+})
+
+const emit = defineEmits<{
+  click: [e: MouseEvent]
+}>()
+
+const { handleClick, buttonStyle, effectiveSize } = useLhButton(props, emit)
 </script>
-
-<style lang="scss" scoped>
-@use '../../../theme/src/index.scss' as *;
-
-.lh-button {
-    display: inline-block;
-    padding: var(--lh-button-padding);
-    font-size: var(--lh-button-font-size);
-    line-height: var(--lh-button-line-height);
-    border-radius: var(--lh-button-border-radius);
-
-    &:hover {}
-
-    &:active {}
-
-    &:focus {}
-}
-</style>

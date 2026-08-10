@@ -1,5 +1,9 @@
 node_modules
 dist
+es
+lib
 .env
 .env.example
 .env.development.local
+*.log
+.DS_Store

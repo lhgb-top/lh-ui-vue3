@@ -1,0 +1,136 @@
+@use '../../../theme/src/common/index.scss' as *;
+
+$lh-dialog-bg: #fff !default;
+$lh-dialog-radius: 8px !default;
+$lh-dialog-padding: 20px !default;
+$lh-dialog-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.12) !default;
+$lh-dialog-header-font-size: 16px !default;
+$lh-dialog-body-font-size: 14px !default;
+$lh-dialog-body-color: #606266 !default;
+
+.lh-dialog__wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  &--center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.lh-dialog {
+  position: relative;
+  margin: 0 auto 50px;
+  background-color: $lh-dialog-bg;
+  border-radius: $lh-dialog-radius;
+  box-shadow: $lh-dialog-shadow;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 100px);
+
+  &--fullscreen {
+    width: 100vw !important;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $lh-dialog-padding;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ebeef5;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-size: $lh-dialog-header-font-size;
+    font-weight: 600;
+    color: #303133;
+    line-height: 1.4;
+  }
+
+  &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: #909399;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    &:hover {
+      color: #303133;
+      background-color: #f5f7fa;
+    }
+  }
+
+  &__body {
+    padding: $lh-dialog-padding;
+    font-size: $lh-dialog-body-font-size;
+    color: $lh-dialog-body-color;
+    line-height: 1.6;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  &__footer {
+    padding: 10px $lh-dialog-padding $lh-dialog-padding;
+    text-align: right;
+    border-top: 1px solid #ebeef5;
+    flex-shrink: 0;
+
+    > * + * {
+      margin-left: 8px;
+    }
+  }
+}
+
+// 过渡动画
+.lh-dialog-fade-enter-active {
+  transition: opacity 0.3s ease;
+
+  .lh-dialog {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+}
+
+.lh-dialog-fade-leave-active {
+  transition: opacity 0.2s ease;
+
+  .lh-dialog {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+}
+
+.lh-dialog-fade-enter-from {
+  opacity: 0;
+
+  .lh-dialog {
+    transform: scale(0.9) translateY(-20px);
+    opacity: 0;
+  }
+}
+
+.lh-dialog-fade-leave-to {
+  opacity: 0;
+
+  .lh-dialog {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}

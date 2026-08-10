@@ -1,6 +1,6 @@
-import type { LhLanguageConst, LhSizeConst, LhTypesConst } from './const';
+import type { LhLanguageConst, LhSizeConst, LhTypesConst } from 'constants';
 
-type Types = typeof LhTypesConst[keyof typeof LhSizeConst]
+type Types = typeof LhTypesConst[keyof typeof LhTypesConst]
 type Languages = typeof LhLanguageConst[keyof typeof LhLanguageConst]
 type Sizes = typeof LhSizeConst[keyof typeof LhSizeConst]
 export type LhTypes<T extends (string | undefined) = undefined> = T extends string ? (Types | T) : Types;

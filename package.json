@@ -1,23 +1,75 @@
 {
   "name": "lh-ui-plus",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "A Vue 3 UI Component Library - Enterprise-grade open-source framework",
+  "main": "lib/index.js",
+  "module": "es/index.mjs",
+  "unpkg": "dist/lh-ui-plus.umd.js",
+  "jsdelivr": "dist/lh-ui-plus.umd.js",
+  "types": "es/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./es/index.d.ts",
+      "import": "./es/index.mjs",
+      "require": "./lib/index.js"
+    },
+    "./lib": "./lib/index.js",
+    "./es": "./es/index.mjs",
+    "./dist": "./dist/lh-ui-plus.umd.js",
+    "./style/*": "./packages/components/*/style/index.scss"
   },
-  "keywords": [],
+  "files": [
+    "es",
+    "lib",
+    "dist",
+    "packages"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "rollup -c --environment BUILD:production",
+    "build:esm": "rollup -c --environment FORMAT:esm",
+    "build:cjs": "rollup -c --environment FORMAT:cjs",
+    "build:umd": "rollup -c --environment FORMAT:umd",
+    "lint": "echo \"TODO: Add ESLint configuration\"",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "ui",
+    "components",
+    "component-library",
+    "frontend",
+    "lh-ui-plus",
+    "enterprise"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "vue": "^3.2.0"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-replace": "^6.0.0",
     "@rollup/plugin-typescript": "^12.1.4",
+    "@vitejs/plugin-vue": "^5.2.4",
     "@vue/compiler-sfc": "^3.5.21",
+    "autoprefixer": "^10.4.0",
     "pnpm": "^10.17.1",
     "rollup": "^4.52.2",
     "rollup-plugin-dts": "^6.2.3",
+    "rollup-plugin-multi-input": "^1.5.0",
     "rollup-plugin-scss": "^4.0.1",
+    "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-typescript2": "^0.36.0",
     "rollup-plugin-vue": "^6.0.0",
     "sass": "^1.93.1",

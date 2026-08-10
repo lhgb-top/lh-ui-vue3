@@ -1,0 +1,39 @@
+/**
+ * Dialog 组件 Props
+ */
+export interface LhDialogProps {
+  /** 是否显示 */
+  modelValue?: boolean
+  /** 标题 */
+  title?: string
+  /** 宽度 */
+  width?: string | number
+  /** 是否全屏 */
+  fullscreen?: boolean
+  /** 是否显示关闭按钮 */
+  showClose?: boolean
+  /** 点击遮罩是否关闭 */
+  closeOnClickModal?: boolean
+  /** 按 ESC 是否关闭 */
+  closeOnPressEscape?: boolean
+  /** 是否可拖拽 */
+  draggable?: boolean
+  /** 是否居中显示 */
+  center?: boolean
+  /** 是否锁定滚动 */
+  lockScroll?: boolean
+  /** 关闭前回调 */
+  beforeClose?: (done: () => void) => void
+  /** 顶部距离(px) */
+  top?: string
+  /** z-index */
+  zIndex?: number
+}
+
+export interface LhDialogEmits {
+  'update:modelValue': [value: boolean]
+  open: []
+  close: []
+  opened: []
+  closed: []
+}

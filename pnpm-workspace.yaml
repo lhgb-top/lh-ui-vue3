@@ -1,7 +1,11 @@
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
 
 packages:
-# 指定包的位置
+  # 指定包的位置
   - 'packages/*'
