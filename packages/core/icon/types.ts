@@ -4,7 +4,7 @@
 
 import type { LhIconName } from './svgs'
 
-export interface IconState {
+export interface LhIconState {
   size: string | number | undefined
   color: string | undefined
   name?: LhIconName

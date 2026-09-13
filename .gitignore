@@ -1,9 +1,37 @@
-node_modules
-dist
-es
-lib
+# Dependencies and package-manager caches
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+dist-**/
+es/
+lib/
+./theme/
+docs/.vitepress/dist/
+
+# Test, coverage, and tooling output
+coverage/
+playwright-report/
+test-results/
+.eslintcache
+*.tsbuildinfo
+
+# Local environment and secrets
 .env
-.env.example
-.env.development.local
+.env.*
+!.env.example
+
+# Logs and temporary files
 *.log
+*.tmp
+*.temp
+*.tgz
+
+# Operating-system files
 .DS_Store
+Thumbs.db
+
+# Documentation and VitePress caches
+# docs/**/cache/
+docs/.vitepress/cache/

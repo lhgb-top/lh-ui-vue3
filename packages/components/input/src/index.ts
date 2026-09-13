@@ -1,11 +1,15 @@
 import { computed, ref, type Ref } from 'vue'
 import type { LhInputProps } from './types'
+import { useLhConfigContext } from '~/components/config-provider/src/index'
+import { useLhComponentTheme } from '~/utils/composables'
 import { getInputStyle, shouldShowWordLimit, getWordCount, clampValue } from '@lh-ui/core/input/logic'
 
 export const useLhInput = (props: LhInputProps) => {
+  const configContext = useLhConfigContext()
   const inputValue: Ref<string> = ref(props.modelValue ?? '')
 
   const inputStyle = computed(() => getInputStyle(props.size || 'medium'))
+  const { componentStyle } = useLhComponentTheme('input', props, configContext)
 
   const isDisabled = computed(() => props.disabled)
   const isTextarea = computed(() => props.type === 'textarea')
@@ -34,6 +38,7 @@ export const useLhInput = (props: LhInputProps) => {
   return {
     inputValue,
     inputStyle,
+    componentStyle,
     isDisabled,
     isTextarea,
     isFocused,

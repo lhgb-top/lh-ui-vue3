@@ -1,12 +1,16 @@
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import type { LhTooltipProps } from './types'
 import { generateId } from '~/utils/index'
+import { useLhConfigContext } from '~/components/config-provider/src/index'
+import { useLhComponentTheme } from '~/utils/composables'
 import { getPopperClass, getPopperStyle, getDefaultDelay } from '@lh-ui/core/tooltip/logic'
 
 /**
  * Tooltip Composable
  */
 export function useLhTooltip(props: LhTooltipProps) {
+  const configContext = useLhConfigContext()
+  const { componentStyle } = useLhComponentTheme('tooltip', props, configContext)
   const tooltipId = generateId('lh-tooltip')
   const isVisible = ref(false)
   const tooltipRef = ref<HTMLElement | null>(null)
@@ -184,6 +188,7 @@ export function useLhTooltip(props: LhTooltipProps) {
     updatePosition,
     popperClass,
     popperStyle,
+    componentStyle,
     trigger,
   }
 }

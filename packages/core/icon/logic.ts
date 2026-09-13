@@ -2,8 +2,8 @@
  * Icon 纯函数逻辑（无框架依赖）
  */
 
-import type { IconState } from './types'
-import { ICON_SVGS, type LhIconName } from './svgs'
+import type { LhIconState } from './types'
+import { LH_ICON_SVGS_CONST, type LhIconName } from './svgs'
 
 /**
  * 获取图标尺寸（返回数值，不含单位，用于 SVG width/height）
@@ -27,13 +27,13 @@ export function getIconSize(size: string | number | undefined): number {
  */
 export function getIconSvg(name: LhIconName | undefined): string | null {
   if (!name) return null
-  return ICON_SVGS[name] || null
+  return LH_ICON_SVGS_CONST[name] || null
 }
 
 /**
  * 获取图标内联样式（SVG 使用 width/height）
  */
-export function getIconStyle(state: IconState): Record<string, string> {
+export function getIconStyle(state: LhIconState): Record<string, string> {
   const style: Record<string, string> = {}
   const size = getIconSize(state.size)
   style.width = `${size}px`

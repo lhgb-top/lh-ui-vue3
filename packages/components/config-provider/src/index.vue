@@ -10,7 +10,7 @@ defineOptions({
 })
 
 import type { LhConfigProviderProps } from './types'
-import { useConfigProvider } from './index'
+import { useLhConfigProvider } from './index'
 
 const props = withDefaults(defineProps<LhConfigProviderProps>(), {
   size: undefined,
@@ -18,12 +18,11 @@ const props = withDefaults(defineProps<LhConfigProviderProps>(), {
   themeVars: undefined,
 })
 
-const { cssVars } = useConfigProvider(props)
+const { cssVars } = useLhConfigProvider(props)
 </script>
 
-<style>
+<style lang="scss">
 .lh-config-provider {
-  background-blend-mode: soft-light;
   min-height: 0;
 }
 </style>

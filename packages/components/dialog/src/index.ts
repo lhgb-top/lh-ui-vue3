@@ -1,5 +1,7 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import type { LhDialogProps } from './types'
+import { useLhConfigContext } from '~/components/config-provider/src/index'
+import { useLhComponentTheme } from '~/utils/composables'
 import { canClose, getDialogStyle } from '@lh-ui/core/dialog/logic'
 
 /**
@@ -18,8 +20,11 @@ export function useLhDialog(
   let startY = 0
   let initialX = 0
   let initialY = 0
-  let scrollBarWidth = 0
   let bodyOverflow = ''
+
+  // 组件主题
+  const configContext = useLhConfigContext()
+  const { componentStyle } = useLhComponentTheme('dialog', props, configContext)
 
   // 同步外部 modelValue
   watch(() => props.modelValue, (val) => {
@@ -214,6 +219,7 @@ export function useLhDialog(
     dialogStyle,
     dialogContentStyle,
     dialogDragStyle,
+    componentStyle,
     handleHeaderMousedown,
   }
 }

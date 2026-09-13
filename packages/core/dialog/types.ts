@@ -2,7 +2,7 @@
  * Dialog 纯类型定义（无框架依赖）
  */
 
-export interface DialogState {
+export interface LhDialogState {
   visible: boolean
   lockScroll: boolean
   closeOnClickModal: boolean

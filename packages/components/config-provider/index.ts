@@ -1,6 +1,6 @@
 import type { App, Component } from 'vue'
 import LhConfigProvider from './src/index.vue'
-import { useConfigContext } from './src/index'
+import { useLhConfigContext } from './src/index'
 import type { LhConfigProviderProps, LhConfigContext } from './src/types'
 
 const name = LhConfigProvider.name ?? 'LhConfigProvider'
@@ -10,5 +10,5 @@ const name = LhConfigProvider.name ?? 'LhConfigProvider'
 }
 
 export default LhConfigProvider
-export { useConfigContext }
+export { useLhConfigContext }
 export type { LhConfigProviderProps, LhConfigContext }

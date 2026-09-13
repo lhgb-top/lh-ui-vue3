@@ -10,6 +10,10 @@ export interface LhIconProps {
   size?: string | number
   /** 图标颜色 */
   color?: string
+  /** 组件级主题变量，覆盖 ConfigProvider 配置 */
+  themeVars?: Record<string, string>
+  /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
+  bgPattern?: string
 }
 
 export type LhIconSize = string | number

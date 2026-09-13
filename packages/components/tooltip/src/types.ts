@@ -38,4 +38,8 @@ export interface LhTooltipProps {
   bgColor?: string
   /** 最大宽度 */
   maxWidth?: string | number
+  /** 组件级主题变量，覆盖 ConfigProvider 配置 */
+  themeVars?: Record<string, string>
+  /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
+  bgPattern?: string
 }

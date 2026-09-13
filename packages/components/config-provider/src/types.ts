@@ -3,6 +3,11 @@ import type { LhSizes } from 'types/components'
 import type { LhLocaleType as LocaleType } from 'types/locale'
 
 /**
+ * 可配置主题的组件名称集合
+ */
+export type LhThemeableComponent = 'button' | 'input' | 'dialog' | 'tooltip' | 'icon'
+
+/**
  * ConfigProvider 配置项
  */
 export interface LhConfigProviderProps {
@@ -20,6 +25,17 @@ export interface LhConfigProviderProps {
    * - `bg-pattern-color` — 花纹颜色
    * - `decoration-color` — 装饰色 */
   themeVars?: Record<string, string>
+  /** 启用背景花纹的组件白名单
+   * - 只有白名单中的组件会应用全局 `themeVars` 中的 bg-pattern
+   * - 空数组或 undefined 表示所有组件均禁用背景花纹
+   * - 组件自身通过 `bgPattern` 或 `themeVars` 传入的花纹不受此限制
+   */
+  patternComponents?: LhThemeableComponent[]
+  /** 按组件单独配置主题变量（覆盖全局 themeVars）
+   * 键为组件名，值为该组件的主题变量对象
+   * 优先级: 组件自身 props > componentTheme[组件名] > 全局 themeVars
+   */
+  componentTheme?: Partial<Record<LhThemeableComponent, Record<string, string>>>
 }
 
 /**
@@ -29,6 +45,8 @@ export interface LhConfigContext {
   size: LhSizes | undefined
   locale: LocaleType | undefined
   themeVars: Record<string, string> | undefined
+  patternComponents?: LhThemeableComponent[]
+  componentTheme?: Partial<Record<LhThemeableComponent, Record<string, string>>>
 }
 
 /**

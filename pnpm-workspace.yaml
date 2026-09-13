@@ -7,5 +7,5 @@ onlyBuiltDependencies:
   - esbuild
 
 packages:
-  # 指定包的位置
+  - '.'
   - 'packages/*'

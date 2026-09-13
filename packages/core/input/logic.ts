@@ -2,13 +2,13 @@
  * Input 纯函数逻辑（无框架依赖）
  */
 
-import type { InputState } from './types'
+import type { LhInputState } from './types'
 
-export function getWordCount(state: InputState): string {
+export function getWordCount(state: Pick<LhInputState, 'value' | 'maxlength'>): string {
   return `${state.value.length}/${state.maxlength ?? '∞'}`
 }
 
-export function shouldShowWordLimit(state: InputState): boolean {
+export function shouldShowWordLimit(state: Pick<LhInputState, 'maxlength' | 'minlength'>): boolean {
   return state.maxlength !== undefined || state.minlength !== undefined
 }
 

@@ -1,12 +1,12 @@
-import type { ComponentSize } from '../shared/types'
+import type { LhComponentLanguage, LhComponentSize } from '../shared/types'
 
-export interface ConfigState {
-  size: ComponentSize | undefined
+export interface LhConfigState {
+  size: LhComponentSize | undefined
   zIndex: number
-  locale: string
+  locale: LhComponentLanguage
 }
 
-export function createDefaultConfig(): ConfigState {
+export function createDefaultConfig(): LhConfigState {
   return {
     size: undefined,
     zIndex: 2000,

@@ -1,7 +1,7 @@
 <template>
   <span
     :class="['lh-icon', props.name ? `lh-icon--${props.name}` : '']"
-    :style="iconStyle"
+    :style="mergedStyle"
     v-bind="$attrs"
   >
     <svg
@@ -19,7 +19,8 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { getIconSvg, getIconStyle, getIconSize } from '@lh-ui/core/icon'
+import { getIconSvg, getIconSize } from '@lh-ui/core/icon'
+import { useLhIcon } from './index'
 import type { LhIconProps } from './types'
 
 defineOptions({
@@ -31,9 +32,14 @@ const props = withDefaults(defineProps<LhIconProps>(), {
   name: undefined,
   size: undefined,
   color: undefined,
+  themeVars: undefined,
+  bgPattern: undefined,
 })
 
-const svgPath = computed(() => getIconSvg(props.name))
-const iconStyle = computed(() => getIconStyle({ size: props.size, color: props.color }))
-const iconSize = computed(() => getIconSize(props.size))
+const { svgPath, iconStyle, iconSize, componentStyle } = useLhIcon(props)
+
+const mergedStyle = computed(() => ({
+  ...iconStyle.value,
+  ...componentStyle.value,
+}))
 </script>

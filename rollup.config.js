@@ -1,11 +1,11 @@
 import resolve from '@rollup/plugin-node-resolve';
+import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
-import vue from 'rollup-plugin-vue';
+import vue from '@vitejs/plugin-vue';
+import esbuild from 'rollup-plugin-esbuild';
 import scss from 'rollup-plugin-scss';
 import replace from '@rollup/plugin-replace';
-import typescript from '@rollup/plugin-typescript';
 import { string } from 'rollup-plugin-string';
-import { multiInput } from 'rollup-plugin-multi-input';
 import autoprefixer from 'autoprefixer';
 import path from 'path';
 import fs from 'fs';
@@ -36,6 +36,14 @@ function createBasePlugins() {
       preventAssignment: true,
       'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
     }),
+    alias({
+      entries: [
+        { find: '~', replacement: resolvePath('packages') },
+        { find: 'constants', replacement: resolvePath('packages/constants') },
+        { find: 'types', replacement: resolvePath('types') },
+        { find: '@lh-ui/core', replacement: resolvePath('packages/core') },
+      ],
+    }),
     vue({
       template: {
         compilerOptions: {
@@ -43,18 +51,13 @@ function createBasePlugins() {
         },
       },
     }),
-    typescript({
-      declaration: true,
-      rootDir: resolvePath('.'),
-      tsconfig: resolvePath('tsconfig.json'),
+    esbuild({
+      include: /\.(ts|tsx)(\?.*)?$/,
+      target: 'es2020',
+      sourceMap: true,
     }),
     resolve({
       extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json', '.vue'],
-      alias: {
-        '~': resolvePath('packages'),
-        'constants': resolvePath('packages/constants'),
-        'types': resolvePath('types'),
-      },
     }),
     commonjs(),
     string({
@@ -85,7 +88,7 @@ const mainEntry = {
     {
       file: resolvePath('lib/index.js'),
       format: 'cjs',
-      exports: 'default',
+      exports: 'named',
     },
   ],
   external: ['vue'],
@@ -108,7 +111,7 @@ function createComponentEntry(name) {
       {
         file: resolvePath(`lib/${name}/index.js`),
         format: 'cjs',
-        exports: 'default',
+        exports: 'named',
       },
     ],
     external: ['vue'],
@@ -175,10 +178,10 @@ const constantsEntry = {
     {
       file: resolvePath('lib/constants/index.js'),
       format: 'cjs',
-      exports: 'default',
+      exports: 'named',
     },
   ],
-  plugins: [typescript({ declaration: true, rootDir: resolvePath('.') })],
+  plugins: [esbuild({ target: 'es2020', sourceMap: true })],
 };
 
 // 语言包
@@ -192,11 +195,11 @@ const localeEntry = {
     {
       file: resolvePath('lib/locale/index.js'),
       format: 'cjs',
-      exports: 'default',
+      exports: 'named',
     },
   ],
   plugins: [
-    typescript({ declaration: true, rootDir: resolvePath('.') }),
+    esbuild({ target: 'es2020', sourceMap: true }),
     resolve(),
     commonjs(),
   ],

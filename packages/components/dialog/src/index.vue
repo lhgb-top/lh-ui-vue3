@@ -13,7 +13,7 @@
             'lh-dialog',
             { 'lh-dialog--fullscreen': props.fullscreen }
           ]"
-          :style="[dialogContentStyle, dialogDragStyle]"
+          :style="mergedDialogContentStyle"
           role="dialog"
           aria-modal="true"
           :aria-label="props.title || 'dialog'"
@@ -56,6 +56,7 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useLhDialog } from './index'
 import type { LhDialogProps } from './types'
 
@@ -77,6 +78,8 @@ const props = withDefaults(defineProps<LhDialogProps>(), {
   lockScroll: true,
   top: '15vh',
   zIndex: undefined,
+  themeVars: undefined,
+  bgPattern: undefined,
 })
 
 const emit = defineEmits<{
@@ -96,8 +99,15 @@ const {
   dialogStyle,
   dialogContentStyle,
   dialogDragStyle,
+  componentStyle,
   handleHeaderMousedown,
 } = useLhDialog(props, emit)
+
+const mergedDialogContentStyle = computed(() => ({
+  ...dialogContentStyle.value,
+  ...dialogDragStyle.value,
+  ...componentStyle.value,
+}))
 
 defineExpose({
   close,

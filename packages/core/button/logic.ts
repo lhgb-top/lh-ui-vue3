@@ -2,7 +2,7 @@
  * Button 组件纯函数逻辑（无框架依赖）
  */
 
-import type { ButtonState } from './types'
+import type { LhButtonState } from './types'
 
 /**
  * 判断按钮是否可点击
@@ -21,7 +21,7 @@ export function getSize(localSize: string | undefined, globalSize: string | unde
 /**
  * 计算按钮的 class 名称数组
  */
-export function getClassNames(state: ButtonState): string[] {
+export function getClassNames(state: LhButtonState): string[] {
   return [
     'lh-button',
     `lh-button--${state.type}`,

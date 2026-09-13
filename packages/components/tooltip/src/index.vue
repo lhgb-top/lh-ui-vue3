@@ -14,7 +14,7 @@
           ref="tooltipRef"
           :id="tooltipId"
           :class="popperClass"
-          :style="popperStyle"
+          :style="mergedPopperStyle"
           role="tooltip"
         >
           <span class="lh-tooltip__content">{{ content }}</span>
@@ -26,6 +26,7 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useLhTooltip } from './index'
 import type { LhTooltipProps } from './types'
 
@@ -46,6 +47,8 @@ const props = withDefaults(defineProps<LhTooltipProps>(), {
   closeDelay: undefined,
   effect: 'dark',
   maxWidth: '200px',
+  themeVars: undefined,
+  bgPattern: undefined,
 })
 
 const {
@@ -58,8 +61,14 @@ const {
   toggle,
   popperClass,
   popperStyle,
+  componentStyle,
   trigger,
 } = useLhTooltip(props)
+
+const mergedPopperStyle = computed(() => ({
+  ...popperStyle.value,
+  ...componentStyle.value,
+}))
 
 defineExpose({
   show,

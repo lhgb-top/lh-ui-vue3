@@ -19,22 +19,22 @@
         "baseUrl": ".",
         "paths": {
             "@/*": [
-                "src/*"
+                "./src/*"
             ],
             "lh-ui": [
-                "src/index.ts"
+                "./src/index.ts"
             ],
             "constants": [
-                "packages/constants/index.ts"
+                "./packages/constants/index.ts"
             ],
             "~/*": [
-                "packages/*"
+                "./packages/*"
             ],
             "packages/*": [
-                "packages/*"
+                "./packages/*"
             ],
             "@lh-ui/core/*": [
-                "packages/core/*"
+                "./packages/core/*"
             ]
         },
         "types": [
@@ -51,6 +51,7 @@
     ],
     "exclude": [
         "node_modules",
-        "dist"
+        "dist",
+        "coverage"
     ]
 }

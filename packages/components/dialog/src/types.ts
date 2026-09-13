@@ -30,6 +30,10 @@ export interface LhDialogProps {
   top?: string
   /** z-index */
   zIndex?: number
+  /** 组件级主题变量，覆盖 ConfigProvider 配置 */
+  themeVars?: Record<string, string>
+  /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
+  bgPattern?: string
 }
 
 export interface LhDialogEmits {

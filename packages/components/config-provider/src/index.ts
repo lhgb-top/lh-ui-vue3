@@ -8,19 +8,13 @@ import { mergeConfig } from '@lh-ui/core/config/logic'
  * ConfigProvider 核心逻辑
  * @param props 组件 props
  */
-export function useConfigProvider(props: LhConfigProviderProps) {
-  /** 将 themeVars 转为 CSS 变量对象，并添加容器花纹背景 */
+export function useLhConfigProvider(props: LhConfigProviderProps) {
+  /** 将 themeVars 转为 CSS 变量对象（仅传递变量，不消费花纹背景） */
   const cssVars = computed(() => {
     if (!props.themeVars) return {}
     const result: Record<string, string> = {}
     for (const [key, value] of Object.entries(props.themeVars)) {
       result[`--lh-${key}`] = value
-    }
-    // 当设置了 bg-pattern 时，容器本身也应用花纹背景
-    if (result['--lh-bg-pattern']) {
-      result['background-image'] = result['--lh-bg-pattern']
-      result['background-repeat'] = result['--lh-bg-pattern-repeat'] || 'repeat'
-      result['background-size'] = result['--lh-bg-pattern-size'] || '40px'
     }
     return result
   })
@@ -30,6 +24,8 @@ export function useConfigProvider(props: LhConfigProviderProps) {
     size: props.size,
     locale: props.locale,
     themeVars: props.themeVars,
+    patternComponents: props.patternComponents,
+    componentTheme: props.componentTheme,
   })
 
   // 注入 provide
@@ -50,6 +46,6 @@ export function useConfigProvider(props: LhConfigProviderProps) {
  * 子组件中注入 ConfigProvider 配置
  * @returns 配置上下文，如果未找到 provider 则返回 undefined
  */
-export function useConfigContext(): LhConfigContext | null {
+export function useLhConfigContext(): LhConfigContext | null {
   return inject(CONFIG_PROVIDER_KEY, null)
 }

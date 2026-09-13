@@ -73,14 +73,14 @@
 <script lang="ts" setup>
 import { useLhButton } from "./index";
 import type { LhButtonProps } from "./types";
-import { LhButtonTypeConst, LhButtonSizeConst } from "./types";
+import { LH_BUTTON_TYPE_CONST } from "./types";
 
 defineOptions({
   name: "LhButton",
 });
 
 const props = withDefaults(defineProps<LhButtonProps>(), {
-  type: LhButtonTypeConst.default,
+  type: LH_BUTTON_TYPE_CONST.default,
   size: undefined,
   loading: false,
   disabled: false,
@@ -92,6 +92,8 @@ const props = withDefaults(defineProps<LhButtonProps>(), {
   nativeType: "button",
   href: "",
   target: "_self",
+  themeVars: undefined,
+  bgPattern: undefined,
 });
 
 const emit = defineEmits<{

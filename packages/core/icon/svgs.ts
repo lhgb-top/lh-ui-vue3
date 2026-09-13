@@ -2,7 +2,7 @@
  * 内置 SVG 图标 path 集合
  * 采用极简国风图标
  */
-export const ICON_SVGS = {
+export const LH_ICON_SVGS_CONST = {
   // 星标
   star: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
   // 搜索
@@ -79,4 +79,4 @@ export const ICON_SVGS = {
   link: 'M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z',
 } as const
 
-export type LhIconName = keyof typeof ICON_SVGS
+export type LhIconName = keyof typeof LH_ICON_SVGS_CONST

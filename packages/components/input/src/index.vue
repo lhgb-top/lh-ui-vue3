@@ -7,7 +7,8 @@
       'lh-input__wrapper--has-label': props.label,
       'lh-input__wrapper--has-value': inputValue,
     },
-  ]">
+  ]"
+  :style="componentStyle">
     <!-- Label -->
     <label
       v-if="props.label"
@@ -119,6 +120,8 @@ const props = withDefaults(defineProps<LhInputProps>(), {
   autofocus: false,
   autosize: false,
   resize: 'vertical',
+  themeVars: undefined,
+  bgPattern: undefined,
 })
 
 const emits = defineEmits<{
@@ -131,7 +134,7 @@ const emits = defineEmits<{
   keydown: [e: KeyboardEvent]
 }>()
 
-const { inputValue, isDisabled, isTextarea, isFocused, showsWordLimit, wordCount, handleInput, handleClear } = useLhInput(props)
+const { inputValue, componentStyle, isDisabled, isTextarea, isFocused, showsWordLimit, wordCount, handleInput, handleClear } = useLhInput(props)
 
 // Sync external modelValue changes
 watch(() => props.modelValue, (val) => {

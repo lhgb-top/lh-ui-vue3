@@ -1,12 +1,15 @@
-import { LhLanguageConst } from "./components";
+import { LH_LANGUAGE_CONST } from './components'
 
-//  国际化类型声明
-export type LhLocaleType = typeof LhLanguageConst[keyof typeof LhLanguageConst];
-export type LhLocaleMessages = {
-    [key: string]: any
-}
+export type LhLocaleType = (typeof LH_LANGUAGE_CONST)[keyof typeof LH_LANGUAGE_CONST]
+export type LhLocaleMessageValue =
+  | string
+  | readonly LhLocaleMessageValue[]
+  | {
+      readonly [key: string]: LhLocaleMessageValue
+    }
+export type LhLocaleMessages = Record<string, LhLocaleMessageValue>
 
 export interface LocaleOptions {
-    locale: LhLocaleType;
-    messages: LhLocaleMessages;
+  locale: LhLocaleType
+  messages: LhLocaleMessages
 }
