@@ -4,6 +4,14 @@
 
 ## 基础用法
 
+<DemoBlock title="基础用法">
+  <div class="demo-row">
+    <LhTooltip content="这是一个提示信息">
+      <LhButton>悬停显示提示</LhButton>
+    </LhTooltip>
+  </div>
+</DemoBlock>
+
 ```vue
 <template>
   <LhTooltip content="这是一个提示信息">
@@ -13,6 +21,23 @@
 ```
 
 ## 不同位置
+
+<DemoBlock title="不同位置">
+  <div class="demo-row">
+    <LhTooltip content="上方提示" placement="top">
+      <LhButton>上</LhButton>
+    </LhTooltip>
+    <LhTooltip content="下方提示" placement="bottom">
+      <LhButton>下</LhButton>
+    </LhTooltip>
+    <LhTooltip content="左侧提示" placement="left">
+      <LhButton>左</LhButton>
+    </LhTooltip>
+    <LhTooltip content="右侧提示" placement="right">
+      <LhButton>右</LhButton>
+    </LhTooltip>
+  </div>
+</DemoBlock>
 
 ```vue
 <template>
@@ -32,6 +57,12 @@
 ```
 
 ## 自定义延迟
+
+<DemoBlock title="自定义延迟">
+  <LhTooltip content="延迟1秒显示" :delay="1000">
+    <LhButton>延迟提示</LhButton>
+  </LhTooltip>
+</DemoBlock>
 
 ```vue
 <template>
@@ -59,3 +90,12 @@
 |--------|------|
 | default | 触发提示的元素 |
 | content | 自定义提示内容 |
+
+<style scoped>
+.demo-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+</style>

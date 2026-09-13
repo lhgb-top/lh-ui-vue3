@@ -1,0 +1,32 @@
+/* DemoBlock 组件样式 */
+.demo-block {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.demo-block-title {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-bg-soft);
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.demo-block-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 演示区域暗色模式适配 */
+:root.dark .demo-block {
+  border-color: var(--vp-c-divider-dark);
+}
+
+:root.dark .demo-block-title {
+  background: var(--vp-c-bg-soft-dark);
+}

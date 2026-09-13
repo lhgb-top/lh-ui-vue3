@@ -66,3 +66,33 @@ const config = ref({
   </LhConfigProvider>
 </template>
 ```
+
+## 在线示例
+
+以下演示了 lh-ui-plus 的基本使用效果：
+
+<DemoBlock>
+  <div class="demo-row">
+    <LhButton type="primary">主要按钮</LhButton>
+    <LhButton type="success">成功按钮</LhButton>
+    <LhButton type="warning">警告按钮</LhButton>
+    <LhButton type="danger">危险按钮</LhButton>
+    <LhButton>默认按钮</LhButton>
+  </div>
+  <div class="demo-row" style="margin-top: 12px;">
+    <LhButton type="primary" plain>朴素按钮</LhButton>
+    <LhButton type="primary" round>圆角按钮</LhButton>
+    <LhButton type="primary" circle>圆</LhButton>
+    <LhButton type="primary" loading>加载中</LhButton>
+    <LhButton type="primary" disabled>禁用</LhButton>
+  </div>
+</DemoBlock>
+
+<style scoped>
+.demo-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+</style>

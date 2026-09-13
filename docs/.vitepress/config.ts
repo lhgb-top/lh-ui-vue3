@@ -1,9 +1,25 @@
 import { defineConfig } from 'vitepress'
+import { resolve } from 'node:path'
 
 export default defineConfig({
   title: 'lh-ui-plus',
   description: '企业级 Vue 3 国风组件库',
   lang: 'zh-CN',
+  lastUpdated: true,
+  vite: {
+    resolve: {
+      alias: {
+        '~': resolve(__dirname, '../../packages'),
+        constants: resolve(__dirname, '../../packages/constants'),
+        types: resolve(__dirname, '../../types'),
+        '@lh-ui/core': resolve(__dirname, '../../packages/core'),
+      },
+    },
+    optimizeDeps: {
+      include: ['vue'],
+    },
+  },
+
   themeConfig: {
     logo: null,
     siteTitle: 'lh-ui-plus',
@@ -28,6 +44,14 @@ export default defineConfig({
             { text: 'Button 按钮', link: '/components/button' },
             { text: 'Icon 图标', link: '/components/icon' },
             { text: 'Input 输入框', link: '/components/input' },
+            { text: 'Form 表单', link: '/components/form' },
+            { text: 'Select 选择器', link: '/components/select' },
+            { text: 'Checkbox 复选框', link: '/components/checkbox' },
+            { text: 'Radio 单选框', link: '/components/radio' },
+            { text: 'Switch 开关', link: '/components/switch' },
+            { text: 'InputNumber 输入框', link: '/components/input-number' },
+            { text: 'Slider 滑块', link: '/components/slider' },
+            { text: 'DatePicker 日期选择器', link: '/components/date-picker' },
           ],
         },
         {
@@ -39,16 +63,14 @@ export default defineConfig({
         },
         {
           text: '配置组件',
-          items: [
-            { text: 'ConfigProvider 配置', link: '/components/config-provider' },
-          ],
+          items: [{ text: 'ConfigProvider 配置', link: '/components/config-provider' }],
         },
       ],
     },
-    socialLinks: [],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/lhgb-top/lh-ui-plus' }],
     footer: {
       message: '以国风之美，筑代码之基',
-      copyright: 'MIT Licensed',
+      copyright: 'Copyright © 2026 lhgb.top',
     },
   },
 })

@@ -4,27 +4,51 @@
 
 ## 基础用法
 
-```vue
-<template>
-  <LhInput v-model="value" placeholder="请输入内容" />
-</template>
+<DemoBlock title="基础用法">
+  <LhInput v-model="demoInput1" placeholder="请输入内容" style="width: 300px" />
+  <div style="margin-top: 8px; color: var(--vp-c-text-2); font-size: 14px;">
+    当前值: {{ demoInput1 }}
+  </div>
+</DemoBlock>
 
+```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 const value = ref('')
 </script>
+
+<template>
+  <LhInput v-model="value" placeholder="请输入内容" />
+</template>
 ```
 
 ## 不同类型
+
+<DemoBlock title="不同类型">
+  <div class="demo-row">
+    <LhInput v-model="demoInput2" placeholder="文本输入" style="width: 300px" />
+  </div>
+  <div class="demo-row">
+    <LhInput v-model="demoInput3" type="password" placeholder="密码输入" show-password style="width: 300px" />
+  </div>
+  <div class="demo-row">
+    <LhInput v-model="demoInput4" placeholder="可清空输入" clearable style="width: 300px" />
+  </div>
+</DemoBlock>
 
 ```vue
 <template>
   <LhInput v-model="text" placeholder="文本输入" />
   <LhInput v-model="password" type="password" placeholder="密码输入" show-password />
+  <LhInput v-model="clearable" placeholder="可清空输入" clearable />
 </template>
 ```
 
 ## 禁用状态
+
+<DemoBlock title="禁用状态">
+  <LhInput v-model="demoInput5" disabled placeholder="禁用输入框" style="width: 300px" />
+</DemoBlock>
 
 ```vue
 <template>
@@ -33,6 +57,10 @@ const value = ref('')
 ```
 
 ## 字数统计
+
+<DemoBlock title="字数统计">
+  <LhInput v-model="demoInput6" maxlength="10" show-word-limit placeholder="最多10个字" style="width: 300px" />
+</DemoBlock>
 
 ```vue
 <template>
@@ -73,5 +101,19 @@ const value = ref('')
 |--------|------|
 | prefix | 输入框头部内容 |
 | suffix | 输入框尾部内容 |
-| prepend | 输入框前置内容 |
-| append | 输入框后置内容 |
+
+<script setup lang="ts">
+import { ref } from 'vue'
+const demoInput1 = ref('')
+const demoInput2 = ref('')
+const demoInput3 = ref('')
+const demoInput4 = ref('')
+const demoInput5 = ref('禁用状态')
+const demoInput6 = ref('')
+</script>
+
+<style scoped>
+.demo-row {
+  margin-bottom: 8px;
+}
+</style>

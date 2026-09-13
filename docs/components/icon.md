@@ -4,33 +4,70 @@
 
 ## 基础用法
 
+<DemoBlock title="基础用法">
+  <div class="demo-row">
+    <LhIcon name="star" />
+    <LhIcon name="search" />
+    <LhIcon name="check" />
+    <LhIcon name="close" />
+    <LhIcon name="edit" />
+    <LhIcon name="delete" />
+    <LhIcon name="loading" />
+    <LhIcon name="arrow-up" />
+    <LhIcon name="arrow-down" />
+    <LhIcon name="arrow-left" />
+    <LhIcon name="arrow-right" />
+  </div>
+</DemoBlock>
+
 ```vue
 <template>
-  <LhIcon name="edit" />
-  <LhIcon name="delete" />
+  <LhIcon name="star" />
   <LhIcon name="search" />
   <LhIcon name="check" />
   <LhIcon name="close" />
+  <LhIcon name="edit" />
+  <LhIcon name="delete" />
 </template>
 ```
 
 ## 不同尺寸
 
+<DemoBlock title="不同尺寸">
+  <div class="demo-row">
+    <LhIcon name="star" size="small" />
+    <LhIcon name="star" size="default" />
+    <LhIcon name="star" size="large" />
+    <LhIcon name="star" size="x-large" />
+  </div>
+</DemoBlock>
+
 ```vue
 <template>
-  <LhIcon name="edit" size="small" />
-  <LhIcon name="edit" size="default" />
-  <LhIcon name="edit" size="large" />
+  <LhIcon name="star" size="small" />
+  <LhIcon name="star" size="default" />
+  <LhIcon name="star" size="large" />
+  <LhIcon name="star" size="x-large" />
 </template>
 ```
 
 ## 自定义颜色
 
+<DemoBlock title="自定义颜色">
+  <div class="demo-row">
+    <LhIcon name="star" color="#e6a23c" />
+    <LhIcon name="search" color="#409eff" />
+    <LhIcon name="check" color="#67c23a" />
+    <LhIcon name="close" color="#f56c6c" />
+  </div>
+</DemoBlock>
+
 ```vue
 <template>
-  <LhIcon name="edit" color="#2B4C7C" />
-  <LhIcon name="edit" color="#C23B22" />
-  <LhIcon name="edit" color="#4A7B3D" />
+  <LhIcon name="star" color="#e6a23c" />
+  <LhIcon name="search" color="#409eff" />
+  <LhIcon name="check" color="#67c23a" />
+  <LhIcon name="close" color="#f56c6c" />
 </template>
 ```
 
@@ -49,3 +86,13 @@
 | 插槽名 | 说明 |
 |--------|------|
 | default | 自定义图标内容 |
+
+<style scoped>
+.demo-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 20px;
+}
+</style>
