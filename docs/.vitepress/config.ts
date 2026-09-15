@@ -9,8 +9,11 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
+        // 与 tsconfig.json compilerOptions.paths 保持一致
         '~': resolve(__dirname, '../../packages'),
-        constants: resolve(__dirname, '../../packages/constants'),
+        '@': resolve(__dirname, '../../../src'),
+        'lh-ui': resolve(__dirname, '../../../src/index.ts'),
+        'lh-constants': resolve(__dirname, '../../packages/constants'),
         types: resolve(__dirname, '../../types'),
         '@lh-ui/core': resolve(__dirname, '../../packages/core'),
       },
@@ -18,10 +21,13 @@ export default defineConfig({
     optimizeDeps: {
       include: ['vue'],
     },
+    server: {
+      host: '0.0.0.0',
+    },
   },
 
   themeConfig: {
-    logo: null,
+    logo: '.',
     siteTitle: 'lh-ui-plus',
     nav: [
       { text: '指南', link: '/guide/installation', activeMatch: '/guide/' },
@@ -52,6 +58,14 @@ export default defineConfig({
             { text: 'InputNumber 输入框', link: '/components/input-number' },
             { text: 'Slider 滑块', link: '/components/slider' },
             { text: 'DatePicker 日期选择器', link: '/components/date-picker' },
+            { text: 'TimePicker 时间选择器', link: '/components/time-picker' },
+            { text: 'Cascader 级联选择器', link: '/components/cascader' },
+            { text: 'Tag 标签', link: '/components/tag' },
+            { text: 'Badge 徽标', link: '/components/badge' },
+            { text: 'Avatar 头像', link: '/components/avatar' },
+            { text: 'Progress 进度条', link: '/components/progress' },
+            { text: 'Statistic 统计数值', link: '/components/statistic' },
+            { text: 'Descriptions 描述列表', link: '/components/descriptions' },
           ],
         },
         {

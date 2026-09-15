@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getSwitchClassNames, getSwitchLabel } from '../../../packages/core/switch'
+import { getSwitchClassNames, getSwitchLabel } from '~/core/switch'
 
 describe('Switch Core Logic', () => {
   it('should return base class', () => {

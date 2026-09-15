@@ -8,7 +8,7 @@ describe('LhDialog', () => {
   })
 
   it('renders nothing when modelValue is false', () => {
-    const wrapper = mount(LhDialog, { props: { modelValue: false } })
+    mount(LhDialog, { props: { modelValue: false } })
     expect(document.querySelector('.lh-dialog__container')).toBeNull()
   })
 

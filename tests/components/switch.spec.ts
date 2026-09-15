@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import LhSwitch from '../../packages/components/switch/src/index.vue'
+import LhSwitch from '~/components/switch/src/index.vue'
 
 describe('LhSwitch', () => {
   it('should render correctly', () => {

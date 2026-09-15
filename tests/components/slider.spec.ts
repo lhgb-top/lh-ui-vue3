@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import LhSlider from '../../packages/components/slider'
+import LhSlider from '~/components/slider'
 
 describe('LhSlider Component', () => {
   it('should render', () => {

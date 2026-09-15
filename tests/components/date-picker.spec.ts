@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
-import LhDatePicker from '../../packages/components/date-picker'
+import LhDatePicker from '~/components/date-picker'
 
 describe('LhDatePicker Component', () => {
   let wrapper: VueWrapper

@@ -6,7 +6,7 @@ import {
   shouldDisableIncrement,
   shouldDisableDecrement,
   getDisplayValue,
-} from '../../../packages/core/input-number'
+} from '~/core/input-number'
 
 describe('InputNumber Core Logic', () => {
   describe('clampValue', () => {

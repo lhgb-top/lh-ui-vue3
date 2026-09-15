@@ -11,9 +11,9 @@ import {
   generateMonths,
   generateYears,
   isDateDisabled,
-  getDefaultPlaceholder,
+  getDefaultDatePickerPlaceholder,
   getDatePickerClassNames,
-} from '../../../packages/core/date-picker'
+} from '~/core/date-picker'
 
 describe('DatePicker Core Logic', () => {
   describe('getDaysInMonth', () => {
@@ -216,11 +216,11 @@ describe('DatePicker Core Logic', () => {
     })
   })
 
-  describe('getDefaultPlaceholder', () => {
+  describe('getDefaultDatePickerPlaceholder', () => {
     it('should return formatted placeholder', () => {
-      expect(getDefaultPlaceholder('yyyy-MM-dd')).toContain('年')
-      expect(getDefaultPlaceholder('yyyy-MM-dd')).toContain('月')
-      expect(getDefaultPlaceholder('yyyy-MM-dd')).toContain('日')
+      expect(getDefaultDatePickerPlaceholder('yyyy-MM-dd')).toContain('年')
+      expect(getDefaultDatePickerPlaceholder('yyyy-MM-dd')).toContain('月')
+      expect(getDefaultDatePickerPlaceholder('yyyy-MM-dd')).toContain('日')
     })
   })
 

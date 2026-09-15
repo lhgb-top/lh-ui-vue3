@@ -148,7 +148,7 @@ describe('useLhZIndex', () => {
   })
 
   it('nextZIndex returns incrementing value', () => {
-    const { zIndex, nextZIndex } = useLhZIndex()
+    const { nextZIndex } = useLhZIndex()
     const first = nextZIndex()
     const second = nextZIndex()
     expect(second).toBe(first + 1)

@@ -19,27 +19,43 @@ import {
   LhInputNumber,
   LhSlider,
   LhDatePicker, 
-} from '../../../packages/components';
-import '../../../packages/components/button/style/index.scss';
-import '../../../packages/components/input/style/index.scss';
-import '../../../packages/components/icon/style/index.scss';
-import '../../../packages/components/tooltip/style/index.scss';
-import '../../../packages/components/dialog/style/index.scss';
-import '../../../packages/components/form/style/index.scss';
-import '../../../packages/components/select/style/index.scss';
-import '../../../packages/components/checkbox/style/index.scss';
-import '../../../packages/components/radio/style/index.scss';
-import '../../../packages/components/switch/style/index.scss';
-import '../../../packages/components/input-number/style/index.scss';
-import '../../../packages/components/slider/style/index.scss';
-import '../../../packages/components/date-picker/style/index.scss';
-import '../../../packages/components/config-provider/style/index.scss';
-import '../../../packages/theme/src/common/var.scss';
-import '../../../packages/theme/src/common/var-dark.scss';
+  LhTimePicker,
+  LhCascader,
+  LhTag,
+  LhBadge,
+  LhAvatar,
+  LhProgress,
+  LhStatistic,
+  LhDescriptions,
+} from '~/components';
+import '~/components/button/style/index.scss';
+import '~/components/input/style/index.scss';
+import '~/components/icon/style/index.scss';
+import '~/components/tooltip/style/index.scss';
+import '~/components/dialog/style/index.scss';
+import '~/components/form/style/index.scss';
+import '~/components/select/style/index.scss';
+import '~/components/checkbox/style/index.scss';
+import '~/components/radio/style/index.scss';
+import '~/components/switch/style/index.scss';
+import '~/components/input-number/style/index.scss';
+import '~/components/slider/style/index.scss';
+import '~/components/date-picker/style/index.scss';
+import '~/components/time-picker/style/index.scss';
+import '~/components/cascader/style/index.scss';
+import '~/components/tag/style/index.scss';
+import '~/components/badge/style/index.scss';
+import '~/components/avatar/style/index.scss';
+import '~/components/progress/style/index.scss';
+import '~/components/statistic/style/index.scss';
+import '~/components/descriptions/style/index.scss';
+import '~/components/config-provider/style/index.scss';
+import '~/theme/src/common/var.scss';
+import '~/theme/src/common/var-dark.scss';
 import './style.css';
 export default { 
     extends: DefaultTheme, 
-    enhanceApp({ app }) { 
+    enhanceApp({ app }: { app: App }) { 
       app.component('DemoBlock', DemoBlock);
       app.component('LhButton', LhButton);
       app.component('LhInput', LhInput); 
@@ -57,6 +73,14 @@ export default {
       app.component('LhSwitch', LhSwitch); 
       app.component('LhInputNumber', LhInputNumber); 
       app.component('LhSlider', LhSlider); 
-      app.component('LhDatePicker', LhDatePicker); 
-    } 
+      app.component('LhDatePicker', LhDatePicker);
+      app.component('LhTimePicker', LhTimePicker);
+      app.component('LhCascader', LhCascader);
+      app.component('LhTag', LhTag);
+      app.component('LhBadge', LhBadge);
+      app.component('LhAvatar', LhAvatar);
+      app.component('LhProgress', LhProgress);
+      app.component('LhStatistic', LhStatistic);
+      app.component('LhDescriptions', LhDescriptions);
+    }
 };

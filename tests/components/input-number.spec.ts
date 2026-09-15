@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import LhInputNumber from '../../packages/components/input-number'
+import LhInputNumber from '~/components/input-number'
 
 describe('LhInputNumber Component', () => {
   it('should render', () => {

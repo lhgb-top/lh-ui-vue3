@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getWordCount, shouldShowWordLimit, clampValue, getInputStyle } from '~/core/input/logic'
+import { getWordCount, shouldShowWordLimit, clampString, getInputStyle } from '~/core/input/logic'
 
 describe('input/core/logic', () => {
 	describe('getWordCount', () => {
@@ -30,17 +30,17 @@ describe('input/core/logic', () => {
 		})
 	})
 
-	describe('clampValue', () => {
+	describe('clampString', () => {
 		it('clamps value to maxlength', () => {
-			expect(clampValue('hello world', 5)).toBe('hello')
+			expect(clampString('hello world', 5)).toBe('hello')
 		})
 
 		it('does not clamp when within limit', () => {
-			expect(clampValue('hi', 10)).toBe('hi')
+			expect(clampString('hi', 10)).toBe('hi')
 		})
 
 		it('returns value when no maxlength', () => {
-			expect(clampValue('very long string')).toBe('very long string')
+			expect(clampString('very long string')).toBe('very long string')
 		})
 	})
 

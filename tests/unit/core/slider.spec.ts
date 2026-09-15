@@ -8,7 +8,7 @@ import {
   getSliderClassNames,
   getInitialValue,
   buildMarksList,
-} from '../../../packages/core/slider'
+} from '~/core/slider'
 
 describe('Slider Core Logic', () => {
   describe('clampValue', () => {

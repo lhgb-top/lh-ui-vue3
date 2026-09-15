@@ -21,7 +21,7 @@ describe('LhConfigProvider', () => {
     const Consumer = defineComponent({
       setup() {
         const ctx = useLhConfigContext()
-        return () => h('div', { 'data-size': ctx?.size || 'none' })
+        return () => h('div', { 'data-size': ctx?.value.size || 'none' })
       },
     })
 
@@ -37,7 +37,7 @@ describe('LhConfigProvider', () => {
     const Consumer = defineComponent({
       setup() {
         const ctx = useLhConfigContext()
-        return () => h('div', { 'data-locale': ctx?.locale || 'none' })
+        return () => h('div', { 'data-locale': ctx?.value.locale || 'none' })
       },
     })
 
@@ -78,7 +78,7 @@ describe('LhConfigProvider', () => {
     const Consumer = defineComponent({
       setup() {
         const ctx = useLhConfigContext()
-        return () => h('div', { 'data-size': ctx?.size || 'none' })
+        return () => h('div', { 'data-size': ctx?.value.size || 'none' })
       },
     })
 
@@ -87,5 +87,25 @@ describe('LhConfigProvider', () => {
       slots: { default: '<Consumer/>' },
     })
     expect(wrapper.find('[data-size]').attributes('data-size')).toBe('none')
+  })
+
+  // 回归：provider props 变化必须传导给 inject 方（旧实现只拍一次快照）
+  it('propagates prop changes to injected consumers', async () => {
+    const Consumer = defineComponent({
+      setup() {
+        const ctx = useLhConfigContext()
+        return () => h('div', { 'data-size': ctx?.value.size || 'none' })
+      },
+    })
+
+    const wrapper = mount(LhConfigProvider, {
+      props: { size: 'small' },
+      global: { components: { Consumer } },
+      slots: { default: '<Consumer/>' },
+    })
+    expect(wrapper.find('[data-size]').attributes('data-size')).toBe('small')
+
+    await wrapper.setProps({ size: 'large' })
+    expect(wrapper.find('[data-size]').attributes('data-size')).toBe('large')
   })
 })
