@@ -1,0 +1,14 @@
+import type { LhDescriptionsItem } from '@lh-ui/core/descriptions'
+
+export interface LhDescriptionsProps {
+  /** 描述列表标题 */
+  title?: string
+  /** 每行展示的条目列数 */
+  column?: number
+  /** 是否展示边框 */
+  border?: boolean
+  /** 条目列表；label/value/span 三元组 */
+  items: LhDescriptionsItem[]
+}
+
+export type { LhDescriptionsItem }

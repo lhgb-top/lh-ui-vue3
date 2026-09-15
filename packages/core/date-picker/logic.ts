@@ -119,7 +119,7 @@ export function generateCalendarDays(
     const isSelected = selected ? isSameDay(date, selected) : false
     const isStart = rangeStart ? isSameDay(date, rangeStart) : false
     const isEnd = rangeEnd ? isSameDay(date, rangeEnd) : false
-    const isInRange = rangeStart && rangeEnd && date > rangeStart && date < rangeEnd
+    const isInRange = !!(rangeStart && rangeEnd && date > rangeStart && date < rangeEnd)
 
     days.push({
       date,
@@ -207,7 +207,7 @@ export function isDateDisabled(
 /**
  * 获取默认占位符
  */
-export function getDefaultPlaceholder(format: string): string {
+export function getDefaultDatePickerPlaceholder(format: string): string {
   return format.replace('yyyy', '年').replace('MM', '月').replace('dd', '日').replace(' ', ' ')
 }
 

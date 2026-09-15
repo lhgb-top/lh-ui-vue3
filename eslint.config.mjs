@@ -37,4 +37,11 @@ export default tseslint.config(
       'vue/multi-word-component-names': 'off',
     },
   },
+  {
+    // 测试文件里定义本地 Consumer 辅助组件是合法模式，不属于「一文件多组件」坏味道
+    files: ['tests/**/*.spec.ts'],
+    rules: {
+      'vue/one-component-per-file': 'off',
+    },
+  },
 )

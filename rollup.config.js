@@ -29,6 +29,21 @@ function getComponentPackages() {
 
 const components = getComponentPackages();
 
+// 内部路径别名 — 所有入口共用，避免个别入口漏接导致产物出现裸导入
+function getAliasEntries() {
+  return [
+    { find: '~', replacement: resolvePath('packages') },
+    { find: 'lh-constants', replacement: resolvePath('packages/constants') },
+    { find: 'lh-types', replacement: resolvePath('types') },
+    { find: '@lh-ui/core', replacement: resolvePath('packages/core') },
+  ];
+}
+
+// node-resolve 默认不含 .ts/.vue，必须显式声明，否则别名指向的目录无法解析到 index.ts
+const resolveOptions = {
+  extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json', '.vue'],
+};
+
 // 公共插件配置
 function createBasePlugins() {
   return [
@@ -37,12 +52,7 @@ function createBasePlugins() {
       'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development'),
     }),
     alias({
-      entries: [
-        { find: '~', replacement: resolvePath('packages') },
-        { find: 'constants', replacement: resolvePath('packages/constants') },
-        { find: 'types', replacement: resolvePath('types') },
-        { find: '@lh-ui/core', replacement: resolvePath('packages/core') },
-      ],
+      entries: getAliasEntries(),
     }),
     vue({
       template: {
@@ -56,15 +66,18 @@ function createBasePlugins() {
       target: 'es2020',
       sourceMap: true,
     }),
-    resolve({
-      extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json', '.vue'],
-    }),
+    resolve(resolveOptions),
     commonjs(),
     string({
       include: ['**/*.html', '**/*.md'],
     }),
     scss({
-      include: ['packages/**/*.scss'],
+      // 同时处理组件样式入口与 SFC 样式虚拟模块：
+      // @vitejs/plugin-vue 会把 <style> 拆成 `?vue&type=style...` 模块，纯 CSS 的以 `&lang.css` 结尾
+      include: [
+        /packages\/.*\.scss$/,
+        /\.vue\?vue&type=style.*&lang\.(css|scss|sass)$/,
+      ],
       output: false,
       inject: true,
       prefixId: false,
@@ -119,53 +132,9 @@ function createComponentEntry(name) {
   };
 }
 
-// 样式独立打包
-function createStyleEntry(name) {
-  const stylePath = resolvePath(`packages/components/${name}/style/index.scss`);
-  if (!fs.existsSync(stylePath)) return null;
-
-  return {
-    input: stylePath,
-    output: [
-      {
-        file: resolvePath(`es/${name}/style/index.css`),
-        format: 'es',
-      },
-    ],
-    plugins: [
-      scss({
-        output: true,
-        inject: false,
-        prefixId: false,
-        outputDir: resolvePath(`es/${name}/style`),
-        autoprefixer: {
-          autoprefixer,
-        },
-      }),
-    ],
-  };
-}
-
-// 主题样式
-const themeEntry = {
-  input: resolvePath('packages/theme/src/index.scss'),
-  output: [
-    {
-      file: resolvePath('theme/index.css'),
-      format: 'es',
-    },
-  ],
-  plugins: [
-    scss({
-      output: true,
-      inject: false,
-      outputDir: resolvePath('theme'),
-      autoprefixer: {
-        autoprefixer,
-      },
-    }),
-  ],
-};
+// 样式产物（theme/、dist/*/style.css、es|lib/<name>/style/index.css）
+// 由 scripts/build-styles.mjs 用 sass API 生成：rollup-plugin-scss 不支持 outputDir，
+// 放在这里只会产出空文件并把真实样式丢进 assets/。
 
 // 常量包
 const constantsEntry = {
@@ -181,7 +150,7 @@ const constantsEntry = {
       exports: 'named',
     },
   ],
-  plugins: [esbuild({ target: 'es2020', sourceMap: true })],
+  plugins: [alias({ entries: getAliasEntries() }), esbuild({ target: 'es2020', sourceMap: true })],
 };
 
 // 语言包
@@ -199,8 +168,9 @@ const localeEntry = {
     },
   ],
   plugins: [
+    alias({ entries: getAliasEntries() }),
     esbuild({ target: 'es2020', sourceMap: true }),
-    resolve(),
+    resolve(resolveOptions),
     commonjs(),
   ],
 };
@@ -240,16 +210,13 @@ if (formatEnv === 'esm') {
     plugins: [...createBasePlugins()],
   });
 } else {
-  // 默认全量构建: ESM + CJS + 样式
+  // 默认全量构建: ESM + CJS（样式产物由 scripts/build-styles.mjs 生成）
   configs.push(mainEntry);
   configs.push(constantsEntry);
   configs.push(localeEntry);
-  configs.push(themeEntry);
   components.forEach((name) => {
     const compEntry = createComponentEntry(name);
     if (compEntry) configs.push(compEntry);
-    const styleEntry = createStyleEntry(name);
-    if (styleEntry) configs.push(styleEntry);
   });
 }
 

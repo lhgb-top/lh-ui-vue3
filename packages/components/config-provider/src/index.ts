@@ -1,8 +1,8 @@
-import { computed, provide, reactive, inject } from 'vue'
+import { computed, provide, watch, inject } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { LhConfigProviderProps, LhConfigContext } from './types'
 import { CONFIG_PROVIDER_KEY } from './types'
-import { lhlocale } from '~/locales/index'
-import { mergeConfig } from '@lh-ui/core/config/logic'
+import { lhlocale } from '~/locales'
 
 /**
  * ConfigProvider 核心逻辑
@@ -19,22 +19,32 @@ export function useLhConfigProvider(props: LhConfigProviderProps) {
     return result
   })
 
-  /** 构建 provide 的上下文对象 */
-  const configContext: LhConfigContext = reactive({
+  /**
+   * provide 的上下文。
+   * 必须用 computed 包装：直接 reactive({ ...props }) 只会在 setup 时拍一次快照，
+   * 之后父组件改 prop 不会传导给 inject 方（已实测复现）。
+   */
+  const configContext = computed<LhConfigContext>(() => ({
     size: props.size,
     locale: props.locale,
     themeVars: props.themeVars,
     patternComponents: props.patternComponents,
     componentTheme: props.componentTheme,
-  })
+  }))
 
-  // 注入 provide
+  // 注入 provide（键类型为 ComputedRef<LhConfigContext>，见 types.ts）
   provide(CONFIG_PROVIDER_KEY, configContext)
 
-  // 如果设置了 locale，同步更新全局 locale
-  if (props.locale) {
-    lhlocale.setLocale(props.locale)
-  }
+  // locale 变化时同步更新全局 locale（含首次）
+  watch(
+    () => props.locale,
+    (locale) => {
+      if (locale) {
+        lhlocale.setLocale(locale)
+      }
+    },
+    { immediate: true },
+  )
 
   return {
     configContext,
@@ -44,8 +54,11 @@ export function useLhConfigProvider(props: LhConfigProviderProps) {
 
 /**
  * 子组件中注入 ConfigProvider 配置
- * @returns 配置上下文，如果未找到 provider 则返回 undefined
+ * @returns 配置上下文的 ComputedRef，如果未找到 provider 则返回 null。
+ *   消费方读取 .value 时建立响应式依赖，provider props 变化会自动传导。
  */
-export function useLhConfigContext(): LhConfigContext | null {
+export type LhConfigContextRef = ComputedRef<LhConfigContext> | null
+
+export function useLhConfigContext(): LhConfigContextRef | null {
   return inject(CONFIG_PROVIDER_KEY, null)
 }

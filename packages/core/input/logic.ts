@@ -12,7 +12,7 @@ export function shouldShowWordLimit(state: Pick<LhInputState, 'maxlength' | 'min
   return state.maxlength !== undefined || state.minlength !== undefined
 }
 
-export function clampValue(value: string, maxlength: number | undefined): string {
+export function clampString(value: string, maxlength?: number): string {
   if (maxlength !== undefined && value.length > maxlength) {
     return value.slice(0, maxlength)
   }

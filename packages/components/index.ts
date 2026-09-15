@@ -14,6 +14,14 @@ import LhSwitch from './switch'
 import LhInputNumber from './input-number'
 import LhSlider from './slider'
 import LhDatePicker from './date-picker'
+import LhTimePicker from './time-picker'
+import LhCascader from './cascader'
+import LhTag from './tag'
+import LhBadge from './badge'
+import LhAvatar from './avatar'
+import LhProgress from './progress'
+import LhStatistic from './statistic'
+import LhDescriptions from './descriptions'
 
 export const lhComponents: (Component & { name?: string })[] = [
   LhButton,
@@ -33,6 +41,14 @@ export const lhComponents: (Component & { name?: string })[] = [
   LhConfigProvider,
   LhSlider,
   LhDatePicker,
+  LhTimePicker,
+  LhCascader,
+  LhTag,
+  LhBadge,
+  LhAvatar,
+  LhProgress,
+  LhStatistic,
+  LhDescriptions,
 ]
 
 export {
@@ -53,4 +69,12 @@ export {
   LhInputNumber,
   LhSlider,
   LhDatePicker,
+  LhTimePicker,
+  LhCascader,
+  LhTag,
+  LhBadge,
+  LhAvatar,
+  LhProgress,
+  LhStatistic,
+  LhDescriptions,
 }

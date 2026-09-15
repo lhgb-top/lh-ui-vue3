@@ -1,6 +1,6 @@
-import type { InjectionKey } from 'vue'
-import type { LhSizes } from 'types/components'
-import type { LhLocaleType as LocaleType } from 'types/locale'
+import type { InjectionKey, ComputedRef } from 'vue'
+import type { LhSizes } from 'lh-types/components'
+import type { LhLocaleType as LocaleType } from 'lh-types/locale'
 
 /**
  * 可配置主题的组件名称集合
@@ -51,5 +51,7 @@ export interface LhConfigContext {
 
 /**
  * ConfigProvider 注入 key
+ * 注入的是 computed 引用而非快照对象，保证 provider props 变化能传导给 inject 方
  */
-export const CONFIG_PROVIDER_KEY: InjectionKey<LhConfigContext> = Symbol('LhConfigProviderKey')
+export const CONFIG_PROVIDER_KEY: InjectionKey<ComputedRef<LhConfigContext>> =
+  Symbol('LhConfigProviderKey')

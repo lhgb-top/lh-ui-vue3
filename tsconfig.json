@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es2020",
+        "target": "esnext",
         "module": "esnext",
         "lib": [
             "esnext",
@@ -15,8 +15,6 @@
         "declaration": true,
         "declarationMap": true,
         "skipLibCheck": true,
-        "ignoreDeprecations": "6.0",
-        "baseUrl": ".",
         "paths": {
             "@/*": [
                 "./src/*"
@@ -24,7 +22,7 @@
             "lh-ui": [
                 "./src/index.ts"
             ],
-            "constants": [
+            "lh-constants": [
                 "./packages/constants/index.ts"
             ],
             "~/*": [
@@ -35,12 +33,15 @@
             ],
             "@lh-ui/core/*": [
                 "./packages/core/*"
+            ],
+            "lh-types/*":[
+                "./types/*"
             ]
         },
         "types": [
             "vite/client"
         ],
-        "outDir": "dist/types",
+        "outDir": "dist/types"
     },
     "include": [
         "env.d.ts",
@@ -48,10 +49,11 @@
         "packages/**/*",
         "types/**/*",
         "dev/**/*",
+        "docs/.vitepress/**/*"
     ],
     "exclude": [
         "node_modules",
         "dist",
-        "coverage"
+        "coverage/**/**"
     ]
 }

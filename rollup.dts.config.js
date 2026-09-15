@@ -20,15 +20,17 @@ function createDeclarationEntries(input, outputPath) {
     alias({
       entries: [
         { find: '~', replacement: resolvePath('packages') },
-        { find: 'constants', replacement: resolvePath('packages/constants') },
+        { find: 'lh-constants', replacement: resolvePath('packages/constants') },
         { find: /^types\//, replacement: `${resolvePath('types')}/` },
+        { find: 'types', replacement: resolvePath('types') },
         { find: '@lh-ui/core', replacement: resolvePath('packages/core') },
       ],
     }),
     {
-      name: 'external-vue-sfc',
+      name: 'external-non-script-assets',
       resolveId(source) {
-        if (source.endsWith('.vue')) {
+        // 声明文件不承载样式，直接外置，避免 dts 解析 CSS/SCSS 失败
+        if (source.endsWith('.vue') || /\.(s?css|sass|less)$/.test(source)) {
           return { id: source, external: true }
         }
         return null
@@ -44,7 +46,7 @@ function createDeclarationEntries(input, outputPath) {
         file: resolvePath(`es/${outputPath}.d.ts`),
         format: 'es',
       },
-      external: [/\.vue$/, /^vue(?:\/|$)/],
+      external: [/\.vue$/, /\.(s?css|sass|less)$/, /^vue(?:\/|$)/],
       plugins,
     },
     {
@@ -53,7 +55,7 @@ function createDeclarationEntries(input, outputPath) {
         file: resolvePath(`lib/${outputPath}.d.ts`),
         format: 'es',
       },
-      external: [/\.vue$/, /^vue(?:\/|$)/],
+      external: [/\.vue$/, /\.(s?css|sass|less)$/, /^vue(?:\/|$)/],
       plugins,
     },
   ]

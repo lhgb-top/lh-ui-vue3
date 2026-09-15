@@ -1,7 +1,7 @@
 .lh-input-number {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--lh-border-color, #dcdfe6);
+  border: 1px solid var(--lh-border-color-base);
   border-radius: 4px;
   background-color: var(--lh-bg-color, #fff);
   transition: border-color 0.2s;
@@ -19,11 +19,11 @@
     outline: none;
     font-size: 14px;
     background-color: transparent;
-    color: var(--lh-text-color-primary, #303133);
+    color: var(--lh-text-primary);
     line-height: 32px;
 
     &::placeholder {
-      color: var(--lh-text-color-placeholder, #a8abb2);
+      color: var(--lh-text-placeholder);
     }
 
     &:disabled {
@@ -42,10 +42,10 @@
     border: none;
     background: transparent;
     cursor: pointer;
-    color: var(--lh-text-color-regular, #606266);
+    color: var(--lh-text-regular);
     font-size: 12px;
-    user-select: none;
     -webkit-user-select: none;
+    user-select: none;
 
     &:hover {
       color: var(--lh-primary-color, #409eff);

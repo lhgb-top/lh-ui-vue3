@@ -1,1 +1,1 @@
-export * from 'types/locale'
+export * from 'lh-types/locale'

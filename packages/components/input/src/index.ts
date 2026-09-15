@@ -2,7 +2,7 @@ import { computed, ref, type Ref } from 'vue'
 import type { LhInputProps } from './types'
 import { useLhConfigContext } from '~/components/config-provider/src/index'
 import { useLhComponentTheme } from '~/utils/composables'
-import { getInputStyle, shouldShowWordLimit, getWordCount, clampValue } from '@lh-ui/core/input/logic'
+import { getInputStyle, shouldShowWordLimit, getWordCount, clampString } from '@lh-ui/core/input/logic'
 
 export const useLhInput = (props: LhInputProps) => {
   const configContext = useLhConfigContext()
@@ -18,7 +18,7 @@ export const useLhInput = (props: LhInputProps) => {
   const handleInput = (e: Event) => {
     const target = e.target as HTMLInputElement | HTMLTextAreaElement
     let val = target.value
-    val = clampValue(val, props.maxlength)
+    val = clampString(val, props.maxlength)
     inputValue.value = val
   }
 

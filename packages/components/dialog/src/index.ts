@@ -9,7 +9,7 @@ import { canClose, getDialogStyle } from '@lh-ui/core/dialog/logic'
  */
 export function useLhDialog(
   props: LhDialogProps,
-  emit: (event: 'update:modelValue' | 'open' | 'close' | 'opened' | 'closed', ...args: any[]) => void
+  emit: (event: string, ...args: any[]) => void
 ) {
   const dialogRef = ref<HTMLElement | null>(null)
   const isVisible = ref(props.modelValue ?? false)

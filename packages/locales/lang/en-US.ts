@@ -42,4 +42,15 @@ export default {
     },
     months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   },
+  // TimePicker
+  timepicker: {
+    now: 'Now',
+    confirm: 'OK',
+    cancel: 'Cancel',
+  },
+  // Cascader
+  cascader: {
+    noMatch: 'No matching data',
+    placeholder: 'Please select',
+  },
 } as const;

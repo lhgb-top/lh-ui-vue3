@@ -1,94 +1,15 @@
-@use './common/index.scss' as *;
-@use './common/variables.scss' as *;
+// ==============================
+// 主题聚合入口
+//
+// CSS 变量的唯一定义处：
+//   - common/var.scss      明色 :root
+//   - common/var-dark.scss 暗色 [data-theme='dark'] / .dark
+//   - common/patterns.scss 花纹变量 :root
+//
+// 本文件只负责聚合，不再重复声明 :root，
+// 否则同一批变量会被输出多次（覆盖行为相同但产物冗余）。
+// ==============================
+
 @use './common/patterns.scss' as *;
 @use './common/var.scss' as *;
 @use './common/var-dark.scss' as *;
-
-// ==============================
-// CSS Variables — 国风明色主题
-// 宣纸为底，墨韵含香
-// ==============================
-:root {
-  // Primary (靛蓝 — 青花瓷之蓝)
-  --lh-primary-color: #{$lh-primary};
-  --lh-primary-color-hover: #{$lh-primary-hover};
-  --lh-primary-color-active: #{$lh-primary-active};
-  --lh-primary-color-bg: #{$lh-primary-light};
-  --lh-primary-color-border: #{$lh-primary-lighter};
-
-  // Success (松花绿 — 竹影青翠)
-  --lh-success-color: #{$lh-success};
-  --lh-success-color-hover: #{$lh-success-hover};
-  --lh-success-color-active: #{$lh-success-active};
-  --lh-success-color-bg: #{$lh-success-light};
-
-  // Warning (藤黄 — 秋叶金黄)
-  --lh-warning-color: #{$lh-warning};
-  --lh-warning-color-hover: #{$lh-warning-hover};
-  --lh-warning-color-active: #{$lh-warning-active};
-  --lh-warning-color-bg: #{$lh-warning-light};
-
-  // Danger (朱砂 — 印泥朱红)
-  --lh-danger-color: #{$lh-danger};
-  --lh-danger-color-hover: #{$lh-danger-hover};
-  --lh-danger-color-active: #{$lh-danger-active};
-  --lh-danger-color-bg: #{$lh-danger-light};
-
-  // Info (黛色 — 水墨淡彩)
-  --lh-info-color: #{$lh-info};
-  --lh-info-color-hover: #{$lh-info-hover};
-  --lh-info-color-active: #{$lh-info-active};
-  --lh-info-color-bg: #{$lh-info-light};
-
-  // Text (墨色体系)
-  --lh-text-primary: #{$lh-text-primary};
-  --lh-text-regular: #{$lh-text-regular};
-  --lh-text-secondary: #{$lh-text-secondary};
-  --lh-text-placeholder: #{$lh-text-placeholder};
-  --lh-text-disabled: #{$lh-text-disabled};
-
-  // Border (素雅边框)
-  --lh-border-color-base: #{$lh-border-color-base};
-  --lh-border-color-light: #{$lh-border-color-light};
-  --lh-border-color-lighter: #{$lh-border-color-lighter};
-  --lh-border-color-extra-light: #{$lh-border-color-extra-light};
-  --lh-border-radius-base: #{$lh-border-radius-base};
-  --lh-border-radius-small: #{$lh-border-radius-small};
-  --lh-border-radius-round: #{$lh-border-radius-round};
-  --lh-border-radius-circle: #{$lh-border-radius-circle};
-
-  // Background (宣纸色系)
-  --lh-bg-color: #{$lh-bg-color};
-  --lh-bg-color-page: #{$lh-bg-color-page};
-  --lh-bg-color-disabled: #{$lh-bg-color-disabled};
-  --lh-bg-color-overlay: #{$lh-bg-color-overlay};
-
-  // Shadow (柔和墨影)
-  --lh-box-shadow-base: #{$lh-box-shadow-base};
-  --lh-box-shadow-light: #{$lh-box-shadow-light};
-  --lh-box-shadow-lighter: #{$lh-box-shadow-lighter};
-
-  // Font (国风字体)
-  --lh-font-family: #{$lh-font-family};
-  --lh-font-size-extra-large: #{$lh-font-size-extra-large};
-  --lh-font-size-large: #{$lh-font-size-large};
-  --lh-font-size-medium: #{$lh-font-size-medium};
-  --lh-font-size-base: #{$lh-font-size-base};
-  --lh-font-size-small: #{$lh-font-size-small};
-  --lh-font-size-extra-small: #{$lh-font-size-extra-small};
-
-  // Disabled
-  --lh-disabled-bg-color: #{$lh-disabled-bg-color};
-  --lh-disabled-text-color: #{$lh-disabled-text-color};
-  --lh-disabled-border-color: #{$lh-disabled-border-color};
-  --lh-disabled-opacity: #{$lh-disabled-opacity};
-
-  // Spacing
-  --lh-spacing-xs: #{$lh-spacing-xs};
-  --lh-spacing-sm: #{$lh-spacing-sm};
-  --lh-spacing-md: #{$lh-spacing-md};
-  --lh-spacing-base: #{$lh-spacing-base};
-  --lh-spacing-lg: #{$lh-spacing-lg};
-  --lh-spacing-xl: #{$lh-spacing-xl};
-  --lh-spacing-xxl: #{$lh-spacing-xxl};
-}

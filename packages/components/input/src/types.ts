@@ -1,4 +1,4 @@
-import type { LH_SIZE_CONST } from 'constants'
+import type { LH_SIZE_CONST } from 'lh-constants'
 
 /**
  * Input 类型

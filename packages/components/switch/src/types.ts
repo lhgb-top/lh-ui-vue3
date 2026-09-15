@@ -1,4 +1,4 @@
-import type { LhComponentSize } from '@lh-ui/core'
+import type { LhComponentSize } from '@lh-ui/core/shared'
 
 export interface LhSwitchProps {
   modelValue?: boolean

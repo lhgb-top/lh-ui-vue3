@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, watch } from 'vue'
+import { provide } from 'vue'
 import type { LhRadioGroupProps } from './types'
 import { LH_RADIO_GROUP_KEY } from './types'
 

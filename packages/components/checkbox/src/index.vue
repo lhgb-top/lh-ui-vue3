@@ -20,8 +20,14 @@
       :disabled="isDisabled"
       @change="handleChange"
     />
-    <span class="lh-checkbox__box" aria-hidden="true"></span>
-    <span v-if="props.label || $slots.default" class="lh-checkbox__label">
+    <span
+      class="lh-checkbox__box"
+      aria-hidden="true"
+    ></span>
+    <span
+      v-if="props.label || $slots.default"
+      class="lh-checkbox__label"
+    >
       <slot>{{ props.label }}</slot>
     </span>
   </label>

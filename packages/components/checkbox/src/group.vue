@@ -30,9 +30,12 @@ const emit = defineEmits<{
 
 const values = ref([...props.modelValue])
 
-watch(() => props.modelValue, (nextValue) => {
-  values.value = [...nextValue]
-})
+watch(
+  () => props.modelValue,
+  (nextValue) => {
+    values.value = [...nextValue]
+  },
+)
 
 function toggle(value: unknown, checked: boolean) {
   const nextValues = toggleCheckboxValue(values.value, value, checked)

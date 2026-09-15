@@ -10,7 +10,7 @@
     position: relative;
     width: 40px;
     height: 22px;
-    background-color: var(--lh-border-color, #dcdfe6);
+    background-color: var(--lh-border-color-base);
     border-radius: 11px;
     transition: background-color 0.3s;
 
@@ -42,7 +42,7 @@
 
   &__label {
     font-size: 14px;
-    color: var(--lh-text-color-primary, #303133);
+    color: var(--lh-text-primary);
   }
 
   &--checked &__core {

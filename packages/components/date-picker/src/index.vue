@@ -1,13 +1,27 @@
 <template>
-  <div ref="pickerRef" class="lh-date-picker" :class="pickerClasses">
-    <div class="lh-date-picker__input" :class="inputClasses" @click="handleClick">
+  <div
+    ref="pickerRef"
+    class="lh-date-picker"
+    :class="pickerClasses"
+  >
+    <div
+      class="lh-date-picker__input"
+      :class="inputClasses"
+      @click="handleClick"
+    >
       <template v-if="modelValue">
-        <span v-if="Array.isArray(modelValue)" class="lh-date-picker__value">
+        <span
+          v-if="Array.isArray(modelValue)"
+          class="lh-date-picker__value"
+        >
           {{ formatDisplay(modelValue[0]) }}
           <span class="lh-date-picker__separator">{{ rangeSeparator }}</span>
           {{ formatDisplay(modelValue[1]) }}
         </span>
-        <span v-else class="lh-date-picker__value">
+        <span
+          v-else
+          class="lh-date-picker__value"
+        >
           {{ formatDisplay(modelValue as Date) }}
         </span>
       </template>
@@ -25,11 +39,21 @@
         class="lh-date-picker__clear"
         @click.stop="handleClear"
       />
-      <LhIcon name="date" size="small" class="lh-date-picker__icon" />
+      <LhIcon
+        name="date"
+        size="small"
+        class="lh-date-picker__icon"
+      />
     </div>
 
-    <Teleport :to="teleportTarget" :disabled="false">
-      <Transition name="lh-fade-in" @after-leave="onPanelClosed">
+    <Teleport
+      :to="teleportTarget"
+      :disabled="false"
+    >
+      <Transition
+        name="lh-fade-in"
+        @after-leave="onPanelClosed"
+      >
         <div
           v-if="internalVisible"
           :id="panelId"
@@ -42,21 +66,42 @@
             <!-- 工具栏 -->
             <div class="lh-date-picker-panel__header">
               <div class="lh-date-picker-panel__title">
-                <button :disabled="disabled" class="lh-date-picker-panel__btn" @click="prevUnit">
-                  <LhIcon name="arrow-left" size="small" />
+                <button
+                  :disabled="disabled"
+                  class="lh-date-picker-panel__btn"
+                  @click="prevUnit"
+                >
+                  <LhIcon
+                    name="arrow-left"
+                    size="small"
+                  />
                 </button>
-                <button class="lh-date-picker-panel__title-text" @click="toggleView">
+                <button
+                  class="lh-date-picker-panel__title-text"
+                  @click="toggleView"
+                >
                   {{ currentYear }}-{{ String(currentMonth + 1).padStart(2, '0') }}
                 </button>
-                <button :disabled="disabled" class="lh-date-picker-panel__btn" @click="nextUnit">
-                  <LhIcon name="arrow-right" size="small" />
+                <button
+                  :disabled="disabled"
+                  class="lh-date-picker-panel__btn"
+                  @click="nextUnit"
+                >
+                  <LhIcon
+                    name="arrow-right"
+                    size="small"
+                  />
                 </button>
               </div>
             </div>
 
             <!-- 日历表头 -->
             <div class="lh-date-picker-panel__weekdays">
-              <span v-for="day in weekDays" :key="day" class="lh-date-picker-panel__weekday">
+              <span
+                v-for="day in weekDays"
+                :key="day"
+                class="lh-date-picker-panel__weekday"
+              >
                 {{ day }}
               </span>
             </div>
@@ -83,8 +128,19 @@
 
             <!-- 底部快捷操作 -->
             <div class="lh-date-picker-panel__footer">
-              <LhButton size="small" @click="selectToday">今天</LhButton>
-              <LhButton size="small" type="primary" @click="confirmSelection">确定</LhButton>
+              <LhButton
+                size="small"
+                @click="selectToday"
+              >
+                {{ t('datepicker.today') }}
+              </LhButton>
+              <LhButton
+                size="small"
+                type="primary"
+                @click="confirmSelection"
+              >
+                {{ t('datepicker.confirm') }}
+              </LhButton>
             </div>
           </div>
         </div>
@@ -97,12 +153,13 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick, StyleValue } from 'vue'
 import LhIcon from '../../icon'
 import LhButton from '../../button'
+import { lhlocale } from '~/locales'
 import {
   generateCalendarDays,
   isSameDay,
   formatDate,
   isDateDisabled,
-  getDefaultPlaceholder,
+  getDefaultDatePickerPlaceholder,
 } from '@lh-ui/core/date-picker'
 import type { LhDatePickerProps } from './types'
 
@@ -112,6 +169,12 @@ defineOptions({ name: 'LhDatePicker' })
 let nextUid: number = 0
 nextUid++
 const uid = nextUid
+
+// 依赖响应式版本号：切换语言时触发重渲染
+const t = (path: string, fallback?: string) => {
+  void lhlocale.version.value
+  return lhlocale.t(path, fallback)
+}
 
 const props = withDefaults(defineProps<LhDatePickerProps>(), {
   modelValue: null,
@@ -151,7 +214,7 @@ const teleportTarget = 'body'
 
 const displayPlaceholder = computed(() => {
   if (props.placeholder) return props.placeholder
-  return getDefaultPlaceholder(props.format)
+  return getDefaultDatePickerPlaceholder(props.format)
 })
 
 const pickerClasses = computed(() => [
@@ -314,194 +377,3 @@ onUnmounted(() => {
   window.removeEventListener('scroll', updatePanelPosition, true)
 })
 </script>
-
-<style scoped>
-.lh-date-picker {
-  position: relative;
-  display: inline-block;
-}
-
-.lh-date-picker__input {
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  border: 1px solid var(--lh-border-color, #dcdfe6);
-  border-radius: 4px;
-  background: var(--lh-bg-color, #fff);
-  cursor: pointer;
-  min-width: 220px;
-  transition: border-color 0.2s;
-}
-
-.lh-date-picker__input:hover {
-  border-color: var(--lh-primary-color-hover, #409eff);
-}
-
-.lh-date-picker__input--disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.lh-date-picker__input-inner {
-  border: none;
-  outline: none;
-  background: none;
-  width: 100%;
-  font-size: 14px;
-  color: var(--lh-text-color, #333);
-}
-
-.lh-date-picker__value {
-  flex: 1;
-  font-size: 14px;
-  color: var(--lh-text-color, #333);
-}
-
-.lh-date-picker__separator {
-  margin: 0 4px;
-  color: var(--lh-text-color-secondary, #999);
-}
-
-.lh-date-picker__clear {
-  margin-right: 4px;
-  cursor: pointer;
-  color: var(--lh-text-color-secondary, #999);
-}
-
-.lh-date-picker__icon {
-  color: var(--lh-text-color-secondary, #999);
-}
-
-/* 面板 - 使用 position: fixed (inline via panelStyle) */
-.lh-date-picker__panel {
-  background: var(--lh-bg-color, #fff);
-  border: 1px solid var(--lh-border-color, #e4e7ed);
-  border-radius: 4px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-}
-
-.lh-date-picker-panel {
-  padding: 12px;
-  width: 300px;
-  user-select: none;
-}
-
-.lh-date-picker-panel__header {
-  margin-bottom: 8px;
-}
-
-.lh-date-picker-panel__title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-
-.lh-date-picker-panel__btn {
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 4px;
-  color: var(--lh-text-color, #333);
-  border-radius: 4px;
-}
-
-.lh-date-picker-panel__btn:hover:not(:disabled) {
-  background: var(--lh-bg-color-hover, #f5f7fa);
-}
-
-.lh-date-picker-panel__btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.lh-date-picker-panel__title-text {
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--lh-text-color, #333);
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-.lh-date-picker-panel__title-text:hover {
-  background: var(--lh-bg-color-hover, #f5f7fa);
-}
-
-.lh-date-picker-panel__weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  margin-bottom: 4px;
-}
-
-.lh-date-picker-panel__weekday {
-  font-size: 12px;
-  color: var(--lh-text-color-secondary, #909399);
-  padding: 4px 0;
-}
-
-.lh-date-picker-panel__days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-}
-
-.lh-date-picker-panel__day {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px;
-  font-size: 14px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.15s;
-  color: var(--lh-text-color, #333);
-}
-
-.lh-date-picker-panel__day:hover {
-  background: var(--lh-bg-color-hover, #f5f7fa);
-}
-
-.lh-date-picker-panel--other {
-  color: var(--lh-text-color-disabled, #c0c4cc);
-}
-
-.lh-date-picker-panel--today {
-  color: var(--lh-primary-color, #409eff);
-  font-weight: 600;
-}
-
-.lh-date-picker-panel--selected {
-  background: var(--lh-primary-color, #409eff);
-  color: #fff !important;
-}
-
-.lh-date-picker-panel--disabled {
-  cursor: not-allowed;
-  color: var(--lh-text-color-disabled, #c0c4cc);
-  opacity: 0.5;
-}
-
-.lh-date-picker-panel__footer {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--lh-border-color-light, #ebeef5);
-}
-
-/* 过渡动画 */
-.lh-fade-in-enter-active,
-.lh-fade-in-leave-active {
-  transition: opacity 0.2s;
-}
-
-.lh-fade-in-enter-from,
-.lh-fade-in-leave-to {
-  opacity: 0;
-}
-</style>

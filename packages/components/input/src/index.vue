@@ -1,13 +1,14 @@
 <template>
-  <div :class="[
-    'lh-input__wrapper',
-    {
-      'lh-input__wrapper--disabled': props.disabled,
-      'lh-input__wrapper--focused': isFocused,
-      'lh-input__wrapper--has-label': props.label,
-      'lh-input__wrapper--has-value': inputValue,
-    },
-  ]"
+  <div
+    :class="[
+      'lh-input__wrapper',
+      {
+        'lh-input__wrapper--disabled': props.disabled,
+        'lh-input__wrapper--focused': isFocused,
+        'lh-input__wrapper--has-label': props.label,
+        'lh-input__wrapper--has-value': inputValue,
+      },
+    ]"
   :style="componentStyle">
     <!-- Label -->
     <label
@@ -46,15 +47,17 @@
 
     <!-- Input -->
     <template v-else>
-      <div :class="[
-        'lh-input',
-        `lh-input--${props.size}`,
-        {
-          'lh-input--prefix': props.prefixIcon,
-          'lh-input--suffix': props.suffixIcon || props.clearable,
-          'lh-input--disabled': props.disabled,
-        },
-      ]">
+      <div
+        :class="[
+          'lh-input',
+          `lh-input--${props.size}`,
+          {
+            'lh-input--prefix': props.prefixIcon,
+            'lh-input--suffix': props.suffixIcon || props.clearable,
+            'lh-input--disabled': props.disabled,
+          },
+        ]"
+      >
         <span v-if="props.prefixIcon" class="lh-input__prefix">
           <slot name="prefix">
             <i :class="props.prefixIcon"></i>
@@ -102,7 +105,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import { useLhInput } from './index'
 import type { LhInputProps } from './types'
 
@@ -134,7 +137,7 @@ const emits = defineEmits<{
   keydown: [e: KeyboardEvent]
 }>()
 
-const { inputValue, componentStyle, isDisabled, isTextarea, isFocused, showsWordLimit, wordCount, handleInput, handleClear } = useLhInput(props)
+const { inputValue, componentStyle, isTextarea, isFocused, showsWordLimit, wordCount, handleInput, handleClear } = useLhInput(props)
 
 // Sync external modelValue changes
 watch(() => props.modelValue, (val) => {

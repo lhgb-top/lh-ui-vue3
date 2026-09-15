@@ -1,8 +1,8 @@
 import { ref } from 'vue'
 import zh_CN from './lang/zh-CN'
 import en_US from './lang/en-US'
-import type { LhLocaleMessages, LhLocaleType } from 'types/locale'
-import { LH_LANGUAGE_DEFAULT } from 'constants'
+import type { LhLocaleMessages, LhLocaleType } from 'lh-types/locale'
+import { LH_LANGUAGE_DEFAULT } from 'lh-constants'
 
 /**
  * 内置语言包注册表
@@ -45,8 +45,10 @@ class LhLocale {
    * 根据路径获取翻译文案
    * @param path 点号分隔的路径，如 'input.placeholder'
    * @param fallback 未找到翻译时的兜底值
+   *
+   * 箭头函数属性：允许 `const t = lhlocale.t` 解构使用而不丢失 this。
    */
-  t(path: string, fallback?: string): string {
+  t = (path: string, fallback?: string): string => {
     const keys = path.split('.')
     let result: unknown = this.messages
 

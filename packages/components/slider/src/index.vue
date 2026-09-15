@@ -1,5 +1,5 @@
 <template>
-  <div :class="wrapperClasses" ref="sliderRef">
+  <div ref="sliderRef" :class="wrapperClasses">
     <div v-if="marksList.length" class="lh-slider__marks">
       <span
         v-for="mark in marksList"
@@ -117,12 +117,6 @@ function getCurrentValue(): number | [number, number] {
     return localValue.value as [number, number]
   }
   return localValue.value[0] as number
-}
-
-function getTrackWidth(): number {
-  if (!sliderRef.value) return 0
-  const track = sliderRef.value.querySelector('.lh-slider__track') as HTMLElement
-  return track ? track.offsetWidth : 0
 }
 
 const trackStyle = computed(() => {

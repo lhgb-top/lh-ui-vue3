@@ -63,7 +63,7 @@
 
     .lh-radio__box {
       background: var(--lh-bg-color-disabled, #f0f0f0);
-      border-color: var(--lh-border-color-disabled, #e5e5e5);
+      border-color: var(--lh-disabled-border-color);
 
       &::after {
         background: var(--lh-text-disabled, #c8c8c8);

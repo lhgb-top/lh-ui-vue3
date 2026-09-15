@@ -19,7 +19,7 @@
     position: absolute;
     transform: translateX(-50%);
     font-size: 12px;
-    color: var(--lh-text-color-placeholder, #a8abb2);
+    color: var(--lh-text-placeholder);
     margin-top: 8px;
     transition: color 0.2s;
   }
@@ -81,7 +81,7 @@
 
   &__input-text {
     font-size: 13px;
-    color: var(--lh-text-color-regular, #606266);
+    color: var(--lh-text-regular);
   }
 
   &--disabled {

@@ -1,5 +1,5 @@
 import type { InjectionKey, Ref } from 'vue'
-import { LH_SIZE_CONST } from 'constants'
+import { LH_SIZE_CONST } from 'lh-constants'
 
 export type LhRadioSize = typeof LH_SIZE_CONST[keyof typeof LH_SIZE_CONST]
 

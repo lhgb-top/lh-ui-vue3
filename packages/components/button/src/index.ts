@@ -14,7 +14,7 @@ export function useLhButton(props: LhButtonProps, emit: (event: 'click', e: Mous
 
   // 有效的尺寸（props > ConfigProvider > 默认值）
   const effectiveSize = computed(() => {
-    return getSize(props.size, configContext?.size)
+    return getSize(props.size, configContext?.value.size)
   })
 
   /**

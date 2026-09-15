@@ -11,8 +11,8 @@
       <Transition name="lh-tooltip-fade">
         <div
           v-if="isVisible"
-          ref="tooltipRef"
           :id="tooltipId"
+          ref="tooltipRef"
           :class="popperClass"
           :style="mergedPopperStyle"
           role="tooltip"
@@ -62,7 +62,6 @@ const {
   popperClass,
   popperStyle,
   componentStyle,
-  trigger,
 } = useLhTooltip(props)
 
 const mergedPopperStyle = computed(() => ({

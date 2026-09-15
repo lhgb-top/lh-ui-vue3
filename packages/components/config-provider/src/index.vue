@@ -1,5 +1,8 @@
 <template>
-  <div class="lh-config-provider" :style="cssVars">
+  <div
+    class="lh-config-provider"
+    :style="cssVars"
+  >
     <slot></slot>
   </div>
 </template>
@@ -20,9 +23,3 @@ const props = withDefaults(defineProps<LhConfigProviderProps>(), {
 
 const { cssVars } = useLhConfigProvider(props)
 </script>
-
-<style lang="scss">
-.lh-config-provider {
-  min-height: 0;
-}
-</style>

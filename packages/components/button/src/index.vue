@@ -19,8 +19,14 @@
     :style="buttonStyle"
     @click="handleClick"
   >
-    <span v-if="props.loading" class="lh-button__loading">
-      <svg class="lh-button__spinner" viewBox="0 0 100 100">
+    <span
+      v-if="props.loading"
+      class="lh-button__loading"
+    >
+      <svg
+        class="lh-button__spinner"
+        viewBox="0 0 100 100"
+      >
         <circle
           class="lh-button__path"
           cx="50"
@@ -31,12 +37,18 @@
         />
       </svg>
     </span>
-    <span v-if="props.icon" class="lh-button__icon">
+    <span
+      v-if="props.icon"
+      class="lh-button__icon"
+    >
       <slot name="icon">
         <i :class="props.icon"></i>
       </slot>
     </span>
-    <span v-if="$slots.default" class="lh-button__text">
+    <span
+      v-if="$slots.default"
+      class="lh-button__text"
+    >
       <slot></slot>
     </span>
   </button>
@@ -59,25 +71,31 @@
     ]"
     :style="buttonStyle"
   >
-    <span v-if="props.icon" class="lh-button__icon">
+    <span
+      v-if="props.icon"
+      class="lh-button__icon"
+    >
       <slot name="icon">
         <i :class="props.icon"></i>
       </slot>
     </span>
-    <span v-if="$slots.default" class="lh-button__text">
+    <span
+      v-if="$slots.default"
+      class="lh-button__text"
+    >
       <slot></slot>
     </span>
   </a>
 </template>
 
 <script lang="ts" setup>
-import { useLhButton } from "./index";
-import type { LhButtonProps } from "./types";
-import { LH_BUTTON_TYPE_CONST } from "./types";
+import { useLhButton } from './index'
+import type { LhButtonProps } from './types'
+import { LH_BUTTON_TYPE_CONST } from './types'
 
 defineOptions({
-  name: "LhButton",
-});
+  name: 'LhButton',
+})
 
 const props = withDefaults(defineProps<LhButtonProps>(), {
   type: LH_BUTTON_TYPE_CONST.default,
@@ -88,17 +106,17 @@ const props = withDefaults(defineProps<LhButtonProps>(), {
   block: false,
   round: false,
   circle: false,
-  icon: "",
-  nativeType: "button",
-  href: "",
-  target: "_self",
+  icon: '',
+  nativeType: 'button',
+  href: '',
+  target: '_self',
   themeVars: undefined,
   bgPattern: undefined,
-});
+})
 
 const emit = defineEmits<{
-  click: [e: MouseEvent];
-}>();
+  click: [e: MouseEvent]
+}>()
 
-const { handleClick, buttonStyle, effectiveSize } = useLhButton(props, emit);
+const { handleClick, buttonStyle, effectiveSize } = useLhButton(props, emit)
 </script>

@@ -1,4 +1,5 @@
-import type { LhComponentSize, LhDatePickerMode } from '@lh-ui/core'
+import type { LhDatePickerMode } from '@lh-ui/core/date-picker'
+import type { LhComponentSize } from '@lh-ui/core/shared'
 
 export interface LhDatePickerProps {
   modelValue?: Date | [Date, Date] | null

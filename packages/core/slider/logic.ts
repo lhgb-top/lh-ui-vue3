@@ -1,8 +1,11 @@
 import type { LhSliderState } from './types'
 
-export function clampValue(value: number, min: number, max: number): number {
+function clampNumber(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max)
 }
+
+// Export as clampValue for component compatibility
+export { clampNumber as clampValue }
 
 export function snapToStep(value: number, min: number, step: number): number {
   const remainder = (value - min) % step
@@ -11,7 +14,7 @@ export function snapToStep(value: number, min: number, step: number): number {
 }
 
 export function clampAndSnap(value: number, min: number, max: number, step: number): number {
-  return clampValue(snapToStep(value, min, step), min, max)
+  return clampNumber(snapToStep(value, min, step), min, max)
 }
 
 export function getValueFromPosition(pct: number, min: number, max: number, step: number): number {
@@ -21,7 +24,7 @@ export function getValueFromPosition(pct: number, min: number, max: number, step
 
 export function getPositionFromValue(value: number, min: number, max: number): number {
   if (max === min) return 0
-  return clampValue((value - min) / (max - min), 0, 1)
+  return clampNumber((value - min) / (max - min), 0, 1)
 }
 
 export function getSliderClassNames(state: LhSliderState): string[] {
@@ -34,11 +37,11 @@ export function getSliderClassNames(state: LhSliderState): string[] {
 
 export function getInitialValue(state: LhSliderState): number | [number, number] {
   if (state.range) {
-    const minVal = clampValue((state.value as [number, number])?.[0] ?? state.min, state.min, state.max)
-    const maxVal = clampValue((state.value as [number, number])?.[1] ?? (state.min + state.max) / 2, state.min, state.max)
+    const minVal = clampNumber((state.value as [number, number])?.[0] ?? state.min, state.min, state.max)
+    const maxVal = clampNumber((state.value as [number, number])?.[1] ?? (state.min + state.max) / 2, state.min, state.max)
     return [minVal, maxVal]
   }
-  return clampValue((state.value as number) ?? state.min, state.min, state.max)
+  return clampNumber((state.value as number) ?? state.min, state.min, state.max)
 }
 
 export function buildMarksList(marks: Record<number, string> | undefined): { label: string; value: number }[] {
