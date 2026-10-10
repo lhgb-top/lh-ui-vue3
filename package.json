@@ -74,6 +74,7 @@
     "build:umd": "rollup -c --environment FORMAT:umd",
     "build:styles": "node scripts/build-styles.mjs",
     "verify:dts": "node scripts/verify-dts.mjs",
+    "theme:check": "node scripts/verify-theme-contrast.mjs",
     "lint": "eslint src packages tests dev scripts rollup.config.js rollup.dts.config.js vite.config.ts vitest.config.ts",
     "lint:fix": "eslint src packages tests dev scripts rollup.config.js rollup.dts.config.js vite.config.ts vitest.config.ts --fix",
     "format": "prettier --write eslint.config.mjs rollup.dts.config.js .prettierrc.json .changeset/**/*.md",
