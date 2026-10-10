@@ -132,10 +132,9 @@ describe('LhForm', () => {
       props: {
         model,
         rules: {
-          agree: [
-            // 必填判定对空数组不生效，用 validator 兜住分组场景
-            { validator: (value: unknown) => (Array.isArray(value) && value.length ? '' : '请至少勾选一项') },
-          ],
+          // share 的空值语义对齐 Element / Ant：非必填空值跳过全部规则，
+          // required 则对空数组直接生效（旧 core 抓不到空数组，才需要 validator 兜底）
+          agree: [{ required: true, message: '请至少勾选一项' }],
         },
       },
       slots: {

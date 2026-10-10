@@ -206,7 +206,21 @@ if (formatEnv === 'esm') {
       globals: { vue: 'Vue' },
     },
     external: ['vue'],
-    plugins: [...createBasePlugins()],
+    plugins: [
+      // share 的目录式样式入口（@lh-ui/share/styles/button）在 ESM/CJS 侧是 external，
+      // 由下游走 share 的 exports 解析；UMD 必须自足，这里补上 /index.scss 让 scss 插件编译内联。
+      // 显式带扩展名的（theme/common/var.scss）交给原别名，返回 null 放行。
+      {
+        name: 'resolve-share-style-entry',
+        resolveId(source) {
+          if (!source.startsWith('@lh-ui/share/styles/')) return null;
+          const sub = source.slice('@lh-ui/share/styles/'.length);
+          if (/\.(?:s?css|sass)$/.test(sub)) return null;
+          return path.join(resolvePath('node_modules/@lh-ui/share/styles'), sub, 'index.scss');
+        },
+      },
+      ...createBasePlugins(),
+    ],
   });
 } else {
   // 默认全量构建: ESM + CJS（样式产物由 scripts/build-styles.mjs 生成）

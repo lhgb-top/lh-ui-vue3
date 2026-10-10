@@ -59,38 +59,48 @@ function createDeclarationEntries(input, outputPath) {
     dts(),
   ]
 
-  return [
-    {
-      input: resolvePath(input),
-      output: {
-        file: resolvePath(`es/${outputPath}.d.ts`),
-        format: 'es',
-      },
-      external: isExternal,
-      plugins,
+  // 声明文件与模块格式无关，es 与 lib 的 .d.ts 逐字节相同：
+  // 只生成 es 一份，closeBundle 时镜像复制到 lib，把 dts program 数量砍半
+  // （迁移后每个入口都要解析 @lh-ui/share 的类型图，120 个 program 会在默认堆下 OOM）
+  return {
+    input: resolvePath(input),
+    output: {
+      file: resolvePath(`es/${outputPath}.d.ts`),
+      format: 'es',
     },
-    {
-      input: resolvePath(input),
-      output: {
-        file: resolvePath(`lib/${outputPath}.d.ts`),
-        format: 'es',
-      },
-      external: isExternal,
-      plugins,
-    },
-  ]
+    external: isExternal,
+    plugins,
+  }
+}
+
+// 全部 bundle 落盘后把 es 的声明镜像到 lib（内容一致，无需再跑一遍 rollup-plugin-dts）
+const mirrorDeclarationsToLib = {
+  name: 'mirror-dts-to-lib',
+  closeBundle() {
+    const esDir = resolvePath('es')
+    for (const file of fs.readdirSync(esDir, { recursive: true })) {
+      if (!String(file).endsWith('.d.ts')) continue
+      const src = path.join(esDir, String(file))
+      const dest = path.join(resolvePath('lib'), String(file))
+      fs.mkdirSync(path.dirname(dest), { recursive: true })
+      fs.copyFileSync(src, dest)
+    }
+  },
 }
 
 const entries = [
-  ...createDeclarationEntries('src/index.ts', 'index'),
-  ...createDeclarationEntries('src/theme.ts', 'theme/index'),
+  createDeclarationEntries('src/index.ts', 'index'),
+  createDeclarationEntries('src/theme.ts', 'theme/index'),
 ]
 
 for (const name of getComponentNames()) {
   const input = `packages/components/${name}/index.ts`
   if (fs.existsSync(resolvePath(input))) {
-    entries.push(...createDeclarationEntries(input, `${name}/index`))
+    entries.push(createDeclarationEntries(input, `${name}/index`))
   }
 }
+
+// closeBundle 在所有 bundle 之后触发一次，挂到最后一个入口上即可
+entries[entries.length - 1].plugins.push(mirrorDeclarationsToLib)
 
 export default entries
