@@ -167,6 +167,9 @@ const themeEntry = {
       exports: 'named',
     },
   ],
+  // 与主入口一致：share 是运行时依赖，保持 bare 引用再导出，
+  // 否则会把整份 theme 源内联进产物，与 dts 构建的 export * 声明不一致
+  external: ['vue', /^@lh-ui\/share/],
   plugins: [
     alias({ entries: getAliasEntries() }),
     esbuild({ target: 'es2020', sourceMap: true }),

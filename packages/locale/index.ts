@@ -13,8 +13,6 @@
 import { ref } from 'vue'
 import {
   lhlocale as sharedLocale,
-  zhCN,
-  enUS,
   type LhLocaleType,
   type LhLocaleMessages,
   type LocalePath,
@@ -44,5 +42,7 @@ sharedLocale.subscribe((v) => {
   lhlocale.version.value = v
 })
 
-export { zhCN, enUS }
+// 语言包直接源再导出（两段式 import+export 会让按需构建图判定为本模块未使用，
+// 在 30 个组件入口各刷一遍 unused external import 告警）
+export { zhCN, enUS } from '@lh-ui/share/locales'
 export type { LocalePath, LhTranslate, LhTranslateArray }
