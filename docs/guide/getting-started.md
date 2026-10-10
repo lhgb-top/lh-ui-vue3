@@ -8,10 +8,10 @@ pnpm create vite my-app --template vue-ts
 cd my-app
 ```
 
-## 安装 lh-ui-plus
+## 安装 @lh-ui/vue3
 
 ```bash
-pnpm add lh-ui-plus
+pnpm add @lh-ui/vue3
 ```
 
 ## 完整引入（main.ts）
@@ -19,8 +19,8 @@ pnpm add lh-ui-plus
 ```ts
 import { createApp } from 'vue'
 import App from './App.vue'
-import LhUiPlus from 'lh-ui-plus'
-import 'lh-ui-plus/dist/index.css'
+import LhUiPlus from '@lh-ui/vue3'
+import '@lh-ui/vue3/dist/index.css'
 
 const app = createApp(App)
 app.use(LhUiPlus)
@@ -44,28 +44,29 @@ app.mount('#app')
 </template>
 ```
 
-## 配置主题
+## 全局配置与主题
 
-如果你需要自定义主题，可以使用 ConfigProvider：
+`LhConfigProvider` 提供全局配置（语言、尺寸）与主题变量（`themeVars`），各自以独立 prop 传入：
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
-import { zhCn } from 'lh-ui-plus/locales'
-
-const config = ref({
-  locale: zhCn,
-  size: 'default',
-  zIndex: 2000,
-})
+import { zhCN } from '@lh-ui/vue3'
 </script>
 
 <template>
-  <LhConfigProvider :config="config">
+  <LhConfigProvider
+    :locale="zhCN"
+    size="medium"
+    :theme-vars="{ 'primary-color': '#5B8C5A' }"
+  >
     <LhButton type="primary">国风按钮</LhButton>
   </LhConfigProvider>
 </template>
 ```
+
+- `locale`：语言包，从包根路径具名导入（`zhCN` / `enUS`）。
+- `size`：全局尺寸，可选 `small` / `medium` / `large` / `mini`。
+- `themeVars`：主题变量，键名可省略 `--lh-` 前缀。预设主题可用 `usePresetTheme` 一键切换，详见[预设主题](/guide/themes)。
 
 ## 在线示例
 

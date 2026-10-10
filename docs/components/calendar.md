@@ -1,0 +1,343 @@
+# Calendar 日历面板
+
+月视图日历。复用 DatePicker core 的月网格算法，支持范围约束与方向键网格导航。
+
+## 基础用法
+
+<DemoBlock title="基础用法">
+  <LhCalendar v-model="date" />
+</DemoBlock>
+
+```vue composition
+<script setup>
+import { ref } from 'vue'
+const date = ref(new Date())
+</script>
+
+<template>
+  <LhCalendar v-model="date" />
+</template>
+```
+
+```vue options
+<script>
+export default {
+  data() {
+    return { date: new Date() }
+  },
+}
+</script>
+
+<template>
+  <LhCalendar v-model="date" />
+</template>
+```
+
+## 一段时间与多选
+
+`selection` 支持三种模式：`'single'`（默认）/ `'range'`（两次点击确定起止）/ `'multiple'`（点击切换多日期）。
+
+<DemoBlock title="一段时间">
+  <LhCalendar v-model="span" selection="range" :panels="2" />
+</DemoBlock>
+
+```vue composition
+<script setup>
+import { ref } from 'vue'
+const span = ref([new Date(2026, 8, 5), new Date(2026, 8, 20)])
+</script>
+
+<template>
+  <LhCalendar v-model="span" selection="range" :panels="2" />
+</template>
+```
+
+```vue options
+<script>
+export default {
+  data() {
+    return { span: [new Date(2026, 8, 5), new Date(2026, 8, 20)] }
+  },
+}
+</script>
+
+<template>
+  <LhCalendar v-model="span" selection="range" :panels="2" />
+</template>
+```
+
+<DemoBlock title="多选">
+  <LhCalendar v-model="dates" selection="multiple" />
+</DemoBlock>
+
+```vue composition
+<script setup>
+import { ref } from 'vue'
+const dates = ref([new Date(2026, 8, 10)])
+</script>
+
+<template>
+  <LhCalendar v-model="dates" selection="multiple" />
+</template>
+```
+
+```vue options
+<script>
+export default {
+  data() {
+    return { dates: [new Date(2026, 8, 10)] }
+  },
+}
+</script>
+
+<template>
+  <LhCalendar v-model="dates" selection="multiple" />
+</template>
+```
+
+## 可选范围约束
+
+<DemoBlock title="范围约束">
+  <LhCalendar v-model="rangeDate" :range="range" />
+</DemoBlock>
+
+```vue composition
+<script setup>
+import { ref } from 'vue'
+
+// 注意：JS 的月份从 0 起算，new Date(2026, 8, 1) 是 9 月 1 日
+const range = [new Date(2026, 8, 1), new Date(2026, 8, 28)]
+const rangeDate = ref(new Date())
+</script>
+
+<template>
+  <LhCalendar v-model="rangeDate" :range="range" />
+</template>
+```
+
+```vue options
+<script>
+export default {
+  data() {
+    return {
+      // 注意：JS 的月份从 0 起算，new Date(2026, 8, 1) 是 9 月 1 日
+      range: [new Date(2026, 8, 1), new Date(2026, 8, 28)],
+      rangeDate: new Date(),
+    }
+  },
+}
+</script>
+
+<template>
+  <LhCalendar v-model="rangeDate" :range="range" />
+</template>
+```
+
+## input 折叠形态
+
+`mode="input"` 把常驻面板收进输入框，点击展开，节省纵向空间。`panels` 控制展开后的月面板数，`placeholder` 定制占位文本，`close-on-select` 决定选中后是否自动收起。
+
+<DemoBlock title="input 形态 + 双面板">
+  <LhCalendar
+    v-model="inputDate"
+    mode="input"
+    :panels="2"
+    placeholder="请选择日期"
+  />
+</DemoBlock>
+
+```vue composition
+<script setup>
+import { ref } from 'vue'
+const inputDate = ref(new Date())
+</script>
+
+<template>
+  <LhCalendar
+    v-model="inputDate"
+    mode="input"
+    :panels="2"
+    placeholder="请选择日期"
+  />
+</template>
+```
+
+```vue options
+<script>
+export default {
+  data() {
+    return { inputDate: new Date() }
+  },
+}
+</script>
+
+<template>
+  <LhCalendar
+    v-model="inputDate"
+    mode="input"
+    :panels="2"
+    placeholder="请选择日期"
+  />
+</template>
+```
+
+<DemoBlock title="选中后不自动收起">
+  <LhCalendar
+    v-model="inputDate2"
+    mode="input"
+    :close-on-select="false"
+    placeholder="选中后保持面板展开"
+  />
+</DemoBlock>
+
+```vue composition
+<script setup>
+import { ref } from 'vue'
+const inputDate2 = ref(new Date())
+</script>
+
+<template>
+  <LhCalendar
+    v-model="inputDate2"
+    mode="input"
+    :close-on-select="false"
+    placeholder="选中后保持面板展开"
+  />
+</template>
+```
+
+```vue options
+<script>
+export default {
+  data() {
+    return { inputDate2: new Date() }
+  },
+}
+</script>
+
+<template>
+  <LhCalendar
+    v-model="inputDate2"
+    mode="input"
+    :close-on-select="false"
+    placeholder="选中后保持面板展开"
+  />
+</template>
+```
+
+## API
+
+### LhCalendar Props
+
+| 属性名 | 说明 | 类型 | 默认值 |
+|--------|------|------|--------|
+| modelValue | 当前选中日期（受控 v-model） | `Date \| Date[]` | — |
+| selection | 选择模式：单选（默认）/ 一段时间（起止日期）/ 多选 | `"single" \| "range" \| "multiple"` | `'single'` |
+| range | 可选日期范围约束 | `[Date, Date]` | — |
+| mode | 展示形态 | `"panel" \| "input"` | `'panel'` |
+| panels | 同时展示的月面板数（flex 换行排列） | `number` | `1` |
+| placeholder | input 模式的占位文本 | `string` | — |
+| closeOnSelect | input 模式选中后是否自动收起面板 | `boolean` | `true` |
+| sx | sx 快速布局属性 | `SxProps` | — |
+
+### Events
+
+| 事件名 | 说明 | 回调参数 |
+|--------|------|----------|
+| update:modelValue | 选中值变化时触发（v-model） | `(value: Date \| Date[])` |
+| change | 选中值变化时触发 | `(value: Date \| Date[])` |
+| select | 选中日期时触发（点击或键盘导航） | `(value: Date)` |
+
+插槽：`cell`（自定义单元格）、`header`（头部）。
+
+## 无障碍
+
+- 网格语义 `role="grid"`（行 `row`、格 `gridcell`），当日 `aria-current="date"`
+- 方向键移动日期焦点（±1 天 / ±7 天）、Home/End 行首尾、PageUp/Down 翻月——对齐 APG grid pattern
+- 范围外的日期原生 `disabled` 移出交互
+
+<!-- lh-types:begin (auto-generated by scripts/gen-type-docs.mjs, do not edit) -->
+
+## 类型定义
+
+本组件对外导出的 TypeScript 类型结构如下（自动提取自 `packages/components/calendar/src/types.ts` 与 `@lh-ui/share/core/*` 源码，点击各条目展开查看完整定义；属性说明见上方 Props 表）：
+
+<details id="type-LhCalendarMode">
+<summary><code>LhCalendarMode</code></summary>
+
+```ts
+/** 展示形态：panel 常驻面板（默认）/ input 点击输入框展开的折叠面板 */
+export type LhCalendarMode = 'panel' | 'input'
+```
+
+</details>
+
+<details id="type-LhCalendarValue">
+<summary><code>LhCalendarValue</code></summary>
+
+```ts
+/** 受控值的形态随 selection 变化：单选 Date / 一段时间 Date[]（长度 2 的起止）/ 多选 Date[]。
+ *  不用 [Date, Date] 元组：SFC 编译器无法从元组推断运行时类型，会导致 prop 校验告警 */
+export type LhCalendarValue = Date | Date[]
+```
+
+</details>
+
+<details id="type-LhCalendarProps">
+<summary><code>LhCalendarProps</code></summary>
+
+```ts
+export interface LhCalendarProps {
+  /** 当前选中（受控 v-model；未传时组件内部维护选中态） */
+  modelValue?: LhCalendarValue
+  /** 选择模式：单选（默认）/ 一段时间（起止日期）/ 多选 */
+  selection?: LhCalendarSelection
+  /** 可选日期范围约束 */
+  range?: LhCalendarRange
+  /** 展示形态：panel 常驻面板（默认）/ input 点击输入框展开的折叠面板 */
+  mode?: LhCalendarMode
+  /** 同时展示的月面板数（flex 换行排列） */
+  panels?: number
+  /** input 模式的占位文本 */
+  placeholder?: string
+  /** input 模式选中后是否自动收起面板 */
+  closeOnSelect?: boolean
+  /** sx 快速布局属性 */
+  sx?: SxProps
+}
+```
+
+</details>
+
+<details id="type-LhCalendarSelection">
+<summary><code>LhCalendarSelection</code> <sub>（来自 @lh-ui/share/core/calendar）</sub></summary>
+
+```ts
+/** 选择模式：单选 / 一段时间（起止）/ 多选 */
+export type LhCalendarSelection = 'single' | 'range' | 'multiple'
+```
+
+</details>
+
+<details id="type-LhCalendarRange">
+<summary><code>LhCalendarRange</code> <sub>（来自 @lh-ui/share/core/calendar）</sub></summary>
+
+```ts
+/** 可选日期范围约束 */
+export type LhCalendarRange = [Date, Date]
+```
+
+</details>
+
+<!-- lh-types:end -->
+<script setup>
+import { ref } from 'vue'
+const date = ref(new Date())
+// 月份 0 起算：8 即 9 月
+const range = [new Date(2026, 8, 1), new Date(2026, 8, 28)]
+const rangeDate = ref(new Date())
+const span = ref([new Date(2026, 8, 5), new Date(2026, 8, 20)])
+const dates = ref([new Date(2026, 8, 10)])
+const inputDate = ref(new Date())
+const inputDate2 = ref(new Date())
+</script>

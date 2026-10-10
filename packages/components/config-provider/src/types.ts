@@ -5,7 +5,36 @@ import type { LhLocaleType as LocaleType } from 'lh-types/locale'
 /**
  * 可配置主题的组件名称集合
  */
-export type LhThemeableComponent = 'button' | 'input' | 'dialog' | 'tooltip' | 'icon'
+export type LhThemeableComponent =
+  | 'button'
+  | 'input'
+  | 'dialog'
+  | 'tooltip'
+  | 'icon'
+  | 'card'
+  | 'alert'
+  | 'popover'
+  | 'popconfirm'
+  | 'drawer'
+  | 'dropdown'
+  | 'message'
+  | 'notification'
+  | 'loading'
+  | 'timeline'
+  | 'collapse'
+  | 'rate'
+  | 'segmented'
+  | 'calendar'
+  | 'affix'
+  | 'backtop'
+  | 'image'
+  | 'menu'
+  | 'table'
+  | 'layout'
+  | 'tree'
+  | 'transfer'
+  | 'upload'
+  | 'anchor'
 
 /**
  * ConfigProvider 配置项

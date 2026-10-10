@@ -1,3 +1,5 @@
+import type { SxProps } from '@lh-ui/share/core/shared'
+
 /**
  * Tooltip 类型
  */
@@ -26,7 +28,7 @@ export interface LhTooltipProps {
   showAfter?: number
   /** 延迟隐藏时间(ms) */
   hideAfter?: number
-  /** 是否默认插槽 */
+  /** 延迟显示时间(ms)，showAfter 的别名 */
   openDelay?: number
   /** 关闭延迟 */
   closeDelay?: number
@@ -38,8 +40,12 @@ export interface LhTooltipProps {
   bgColor?: string
   /** 最大宽度 */
   maxWidth?: string | number
+  /** Teleport 目标（选择器或元素，默认 body） */
+  teleportTarget?: string | HTMLElement
   /** 组件级主题变量，覆盖 ConfigProvider 配置 */
   themeVars?: Record<string, string>
   /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
   bgPattern?: string
+  /** sx 快速布局属性（作用于触发器根元素） */
+  sx?: SxProps
 }

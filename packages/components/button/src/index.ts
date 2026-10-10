@@ -1,8 +1,9 @@
 import { computed } from 'vue'
 import type { LhButtonProps } from './types'
 import { useLhConfigContext } from '~/components/config-provider/src/index'
-import { isClickable, getSize } from '@lh-ui/core/button/logic'
-import { useLhComponentTheme } from '~/utils/composables'
+import { isClickable, getSize } from '@lh-ui/share/core/button/logic'
+import { sxToStyle } from '@lh-ui/share/core/shared'
+import { useLhComponentTheme } from '~/composables'
 
 /**
  * Button 组件 Composable
@@ -29,8 +30,13 @@ export function useLhButton(props: LhButtonProps, emit: (event: 'click', e: Mous
   /**
    * 计算组件主题样式
    * 优先级: 组件自身 props > ConfigProvider componentTheme[组件名] > ConfigProvider 全局 themeVars
+   * sx 样式合并到最后（最高优先级）
    */
-  const { componentStyle: buttonStyle } = useLhComponentTheme('button', props, configContext)
+  const { componentStyle } = useLhComponentTheme('button', props, configContext)
+  const buttonStyle = computed(() => ({
+    ...componentStyle.value,
+    ...sxToStyle(props.sx ?? {}),
+  }))
 
   return {
     handleClick,

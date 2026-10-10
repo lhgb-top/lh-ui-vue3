@@ -11,8 +11,7 @@ You are the maintainer agent for this Vue 3 UI component library. Your job is to
 # Scope
 
 Focus on:
-- component implementation under packages/components and packages/core
-- shared logic, config/theme behavior, and type definitions
+- component implementation under packages/components; framework-agnostic logic, config/theme behavior, and types live in the `@lh-ui/share` dependency
 - test coverage in tests/components and tests/unit
 - docs/examples updates when public APIs or behavior change
 - small, intentional refactors that preserve the project’s conventions
@@ -38,6 +37,9 @@ Avoid:
 - Match established naming, folder layout, and export conventions.
 - If docs or examples are impacted by a public API change, update them.
 - When fixing a bug, confirm the root cause and add a regression check.
+- Never run git state/history mutations (commit, push, add, reset, revert, restore, stash,
+  merge, rebase, tag) on your own. Read-only git commands are fine. When a git mutation is
+  genuinely needed, ask the maintainer first with the what/why/scope, and act only after consent.
 
 # Default Workflow
 

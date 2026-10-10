@@ -277,6 +277,345 @@
       </section>
 
       <section class="dev-section">
+        <h2>Popover 弹出框</h2>
+
+        <h3>click 触发（默认）</h3>
+        <div class="demo-box">
+          <lh-popover
+            title="标题"
+            content="这是一段弹出内容，点击外部或 Esc 关闭。"
+          >
+            <lh-button>点击弹出</lh-button>
+          </lh-popover>
+          <lh-popover
+            placement="right"
+            title="右侧弹出"
+            content="placement 支持十二个方位。"
+          >
+            <lh-button type="primary">右侧</lh-button>
+          </lh-popover>
+        </div>
+
+        <h3>hover / focus 触发</h3>
+        <div class="demo-box">
+          <lh-popover
+            trigger="hover"
+            title="悬停弹出"
+            content="指针移到触发器上即展示。"
+          >
+            <lh-button type="success">hover</lh-button>
+          </lh-popover>
+          <lh-popover
+            trigger="focus"
+            title="聚焦弹出"
+            content="键盘或点击聚焦触发器即展示。"
+          >
+            <lh-button type="warning">focus</lh-button>
+          </lh-popover>
+        </div>
+
+        <h3>富内容插槽</h3>
+        <div class="demo-box">
+          <lh-popover
+            placement="bottom"
+            :width="280"
+          >
+            <template #content>
+              <p style="margin: 0 0 8px">内容区可以放任意元素：</p>
+              <lh-input
+                v-model="popoverInput"
+                placeholder="输入点东西"
+              />
+            </template>
+            <lh-button type="primary">富内容</lh-button>
+          </lh-popover>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Popconfirm 气泡确认</h2>
+
+        <h3>基础（点击触发）</h3>
+        <div class="demo-box">
+          <lh-popconfirm
+            title="确定删除这条记录吗？"
+            @confirm="popconfirmCount++"
+          >
+            <lh-button type="danger">删除</lh-button>
+          </lh-popconfirm>
+          <span class="demo-desc">已确认 {{ popconfirmCount }} 次</span>
+        </div>
+
+        <h3>三种语气</h3>
+        <div class="demo-box">
+          <lh-popconfirm
+            type="info"
+            title="查看该记录的详情？"
+            @confirm="popconfirmCount++"
+          >
+            <lh-button type="info">info</lh-button>
+          </lh-popconfirm>
+          <lh-popconfirm
+            type="warning"
+            title="该操作不可撤销，继续吗？"
+            @confirm="popconfirmCount++"
+          >
+            <lh-button type="warning">warning</lh-button>
+          </lh-popconfirm>
+          <lh-popconfirm
+            type="danger"
+            title="确认清空全部数据？"
+            confirm-text="清空"
+            @confirm="popconfirmCount++"
+          >
+            <lh-button type="danger">danger</lh-button>
+          </lh-popconfirm>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Drawer 抽屉</h2>
+
+        <h3>四个方向</h3>
+        <div class="demo-box">
+          <lh-button @click="openDrawer('right')">right</lh-button>
+          <lh-button @click="openDrawer('left')">left</lh-button>
+          <lh-button @click="openDrawer('top')">top</lh-button>
+          <lh-button @click="openDrawer('bottom')">bottom</lh-button>
+        </div>
+
+        <h3>自定义尺寸与底部</h3>
+        <div class="demo-box">
+          <lh-button
+            type="primary"
+            @click="drawerSized = true"
+          >
+            480px 宽 + footer
+          </lh-button>
+        </div>
+
+        <lh-drawer
+          v-model="drawerVisible"
+          :title="`${drawerDirection} 抽屉`"
+          :direction="drawerDirection"
+        >
+          <p class="demo-desc">当前方向：{{ drawerDirection }}</p>
+          <p class="demo-desc">面板尺寸由 size 控制，默认 30% 视口宽/高。</p>
+        </lh-drawer>
+        <lh-drawer
+          v-model="drawerSized"
+          title="筛选条件"
+          :size="480"
+        >
+          <div class="demo-box-col">
+            <lh-input
+              v-model="drawerFilter"
+              placeholder="按名称筛选"
+            />
+          </div>
+          <template #footer>
+            <lh-button @click="drawerSized = false">取消</lh-button>
+            <lh-button
+              type="primary"
+              @click="drawerSized = false"
+            >
+              应用
+            </lh-button>
+          </template>
+        </lh-drawer>
+      </section>
+
+      <section class="dev-section">
+        <h2>Dropdown 下拉菜单</h2>
+
+        <h3>click 触发（默认）+ command</h3>
+        <div class="demo-box">
+          <lh-dropdown @command="onDropdownCommand">
+            <lh-button>{{ dropdownLabel || '更多操作' }} ▾</lh-button>
+            <template #dropdown>
+              <lh-dropdown-item command="new">新建</lh-dropdown-item>
+              <lh-dropdown-item command="edit">编辑</lh-dropdown-item>
+              <lh-dropdown-item
+                divided
+                command="audit"
+              >
+                审计日志
+              </lh-dropdown-item>
+              <lh-dropdown-item
+                disabled
+                command="purge"
+              >
+                清空数据
+              </lh-dropdown-item>
+            </template>
+          </lh-dropdown>
+          <span class="demo-desc">最近指令：{{ dropdownCommand || '—' }}</span>
+        </div>
+
+        <h3>hover / contextmenu</h3>
+        <div class="demo-box">
+          <lh-dropdown trigger="hover">
+            <lh-button type="success">悬停展开 ▾</lh-button>
+            <template #dropdown>
+              <lh-dropdown-item command="h-1">选项一</lh-dropdown-item>
+              <lh-dropdown-item command="h-2">选项二</lh-dropdown-item>
+            </template>
+          </lh-dropdown>
+          <lh-dropdown trigger="contextmenu">
+            <lh-button type="warning">右键展开 ▾</lh-button>
+            <template #dropdown>
+              <lh-dropdown-item command="c-1">刷新</lh-dropdown-item>
+              <lh-dropdown-item command="c-2">复制</lh-dropdown-item>
+            </template>
+          </lh-dropdown>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Wave F 数据组件</h2>
+        <div class="demo-box demo-box-col">
+          <lh-table :data="tableRows" :columns="tableCols" :height="200" stripe border />
+          <div class="demo-row">
+            <lh-tree :data="treeNodes" show-checkbox :default-expanded-keys="['a']" style="flex: 1" />
+            <lh-tree-select v-model="treePick" :data="treeNodes" style="flex: 1" />
+          </div>
+          <lh-transfer v-model="transferSource" :data="transferItems" />
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Wave F 概览</h2>
+        <div class="demo-box demo-box-col">
+          <lh-menu v-model="menuActive" style="max-width: 240px">
+            <lh-menu-item index="home">首页</lh-menu-item>
+            <lh-sub-menu index="settings" title="设置">
+              <lh-menu-item index="settings-basic">基本设置</lh-menu-item>
+              <lh-menu-item index="settings-security">安全设置</lh-menu-item>
+            </lh-sub-menu>
+            <lh-menu-item index="docs" disabled>禁用项</lh-menu-item>
+          </lh-menu>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>阶段化增强概览（DEV-F3/F4/F5/F8）</h2>
+        <div class="demo-box demo-box-col">
+          <div class="demo-desc">Table：多级表头 + 筛选 + 列宽拖拽</div>
+          <lh-table :data="enhanceRows" :columns="enhanceCols" resizable border @column-resize="onEnhanceResize" />
+          <div class="demo-desc">最近列宽调整：{{ enhanceResizeLog }}</div>
+          <div class="demo-desc">Tree：懒加载（点开节点触发 load）</div>
+          <lh-tree :data="lazyTreeData" lazy :load="loadLazyNodes" style="max-width: 240px" />
+          <div class="demo-desc">Grid：响应式断点（缩放窗口观察）</div>
+          <lh-row :gutter="12">
+            <lh-col :span="24" :md="12" :xl="8"><div class="demo-box">24 / 12 / 8</div></lh-col>
+            <lh-col :span="24" :md="12" :xl="8"><div class="demo-box">24 / 12 / 8</div></lh-col>
+          </lh-row>
+          <div class="demo-desc">BackTop：scrollend 事件（滚动停止后记录）</div>
+          <div class="demo-desc">最近停止位置：{{ scrollEndLog }}</div>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Wave E 概览</h2>
+        <div class="demo-box demo-box-col">
+          <div class="demo-row">
+            <lh-segmented v-model="segView" :options="['列表', '卡片', '表格']" />
+            <lh-rate v-model="rateVal" allow-half />
+          </div>
+          <lh-collapse>
+            <lh-collapse-item name="t" title="时间线与折叠">
+              <lh-timeline>
+                <lh-timeline-item timestamp="2026-09-01">规划</lh-timeline-item>
+                <lh-timeline-item timestamp="2026-09-25" type="success">交付</lh-timeline-item>
+              </lh-timeline>
+            </lh-collapse-item>
+            <lh-collapse-item name="c" title="日历">见 Calendar 文档页</lh-collapse-item>
+          </lh-collapse>
+          <div class="demo-row">
+            <lh-back-top :right="24" :bottom="24" @scrollend="onBackTopScrollEnd" />
+            <lh-affix :offset-top="8">
+              <span class="demo-desc">固钉演示（随页面滚动吸顶）</span>
+            </lh-affix>
+          </div>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Message 全局轻提示</h2>
+        <div class="demo-box demo-box-col">
+          <div class="demo-row">
+            <lh-button @click="LhMessage('这是一条消息提示')">默认</lh-button>
+            <lh-button
+              type="success"
+              @click="LhMessage.success('保存成功')"
+            >
+              成功
+            </lh-button>
+            <lh-button
+              type="warning"
+              @click="LhMessage.warning('请注意风险')"
+            >
+              警告
+            </lh-button>
+            <lh-button
+              type="danger"
+              @click="LhMessage.danger('操作失败')"
+            >
+              危险
+            </lh-button>
+          </div>
+          <div class="demo-row">
+            <lh-button @click="showMessageLoading">loading（2 秒后手动关闭）</lh-button>
+            <lh-button @click="LhMessage.success('可关闭', { showClose: true })">可关闭</lh-button>
+          </div>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Notification 通知</h2>
+        <div class="demo-box demo-box-col">
+          <div class="demo-row">
+            <lh-button @click="LhNotification.info({ title: '提示', content: '右上角通知' })">右上</lh-button>
+            <lh-button @click="LhNotification.success({ title: '成功', content: '左上角通知', position: 'top-left' })">
+              左上
+            </lh-button>
+            <lh-button
+              type="danger"
+              @click="LhNotification.danger({ title: '失败', content: '右下角通知', position: 'bottom-right' })"
+            >
+              右下
+            </lh-button>
+            <lh-button @click="LhNotification.closeAll()">全部关闭</lh-button>
+          </div>
+          <lh-button @click="LhNotification.info({ title: '可点击通知', content: '点我', duration: 0, onClick: () => LhMessage.success('已点击') })">
+            可点击通知
+          </lh-button>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Loading 加载</h2>
+        <div class="demo-box demo-box-col">
+          <div class="demo-row">
+            <lh-button @click="showFullscreenLoading">全屏加载（2 秒）</lh-button>
+            <lh-button @click="showBoxLoading">容器内加载</lh-button>
+          </div>
+          <div
+            ref="loadingBoxRef"
+            class="demo-loading-zone"
+          >
+            <LhSpinner size="medium" />
+            <span class="demo-desc">局部加载目标容器</span>
+          </div>
+          <div class="demo-row">
+            <LhSpinner size="small" />
+            <LhSpinner size="medium" />
+            <LhSpinner size="large" color="#8f9779" />
+          </div>
+        </div>
+      </section>
+
+      <section class="dev-section">
         <h2>Dialog 对话框</h2>
         <div class="demo-box">
           <lh-button
@@ -1148,6 +1487,555 @@
       </section>
 
       <section class="dev-section">
+        <h2>Divider 分割线</h2>
+
+        <h3>水平与虚线</h3>
+        <div class="demo-box-col">
+          <span class="demo-desc">上文</span>
+          <lh-divider />
+          <span class="demo-desc">下文</span>
+          <lh-divider dashed />
+          <span class="demo-desc">虚线分割</span>
+        </div>
+
+        <h3>带文案</h3>
+        <div class="demo-box-col">
+          <lh-divider>居中文案</lh-divider>
+          <lh-divider label-position="left">左对齐文案</lh-divider>
+          <lh-divider label-position="right">右对齐文案</lh-divider>
+        </div>
+
+        <h3>垂直方向</h3>
+        <div class="demo-box">
+          <span class="demo-desc">文本 A</span>
+          <lh-divider direction="vertical" />
+          <span class="demo-desc">文本 B</span>
+          <lh-divider direction="vertical" />
+          <span class="demo-desc">文本 C</span>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Space 间距</h2>
+
+        <h3>基础与尺寸</h3>
+        <div class="demo-box-col">
+          <lh-space size="small">
+            <lh-button size="small">小间距</lh-button>
+            <lh-button size="small">小间距</lh-button>
+            <lh-button size="small">小间距</lh-button>
+          </lh-space>
+          <lh-space size="large">
+            <lh-button>大间距</lh-button>
+            <lh-button>大间距</lh-button>
+            <lh-button>大间距</lh-button>
+          </lh-space>
+        </div>
+
+        <h3>垂直方向</h3>
+        <div class="demo-box">
+          <lh-space direction="vertical">
+            <span class="demo-desc">第一行</span>
+            <span class="demo-desc">第二行</span>
+            <span class="demo-desc">第三行</span>
+          </lh-space>
+        </div>
+
+        <h3>换行</h3>
+        <div class="demo-box" style="display: block; max-width: 340px">
+          <lh-space wrap>
+            <lh-button
+              v-for="i in 10"
+              :key="i"
+              size="small"
+            >
+              按钮 {{ i }}
+            </lh-button>
+          </lh-space>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Card 卡片</h2>
+
+        <h3>基础</h3>
+        <div class="demo-box">
+          <lh-card
+            title="雨打芭蕉"
+            style="width: 100%; max-width: 280px"
+          >
+            隔窗知夜雨，芭蕉先有声。
+          </lh-card>
+        </div>
+
+        <h3>封面 / 头部 / 底部</h3>
+        <div class="demo-box">
+          <lh-card style="width: 100%; max-width: 280px">
+            <template #cover>
+              <div class="demo-cover">封面区域</div>
+            </template>
+            <template #header>
+              <span class="demo-strong">自定义头部</span>
+            </template>
+            <template #extra>
+              <lh-button size="small">更多</lh-button>
+            </template>
+            正文内容……
+            <template #footer>
+              <lh-button
+                size="small"
+                type="primary"
+              >
+                收藏
+              </lh-button>
+            </template>
+          </lh-card>
+        </div>
+
+        <h3>加载态与可点击</h3>
+        <div class="demo-box">
+          <lh-card
+            title="加载中"
+            loading
+            style="width: 100%; max-width: 280px"
+          />
+          <lh-card
+            clickable
+            title="点击我"
+            style="width: 100%; max-width: 280px"
+            @click="cardClickCount++"
+          >
+            整卡可点击，已点击 {{ cardClickCount }} 次。
+          </lh-card>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Empty 空状态</h2>
+
+        <h3>基础</h3>
+        <div class="demo-box" style="display: block">
+          <lh-empty />
+        </div>
+
+        <h3>自定义描述与操作</h3>
+        <div class="demo-box" style="display: block">
+          <lh-empty description="藏品库暂无内容">
+            <template #actions>
+              <lh-button
+                type="primary"
+                size="small"
+              >
+                去添加
+              </lh-button>
+            </template>
+          </lh-empty>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Skeleton 骨架屏</h2>
+
+        <h3>加载切换</h3>
+        <div class="demo-box-col">
+          <lh-skeleton
+            :rows="3"
+            :loading="skeletonLoading"
+            style="max-width: 420px"
+          >
+            <p class="demo-desc">内容加载完成：众鸟高飞尽，孤云独去闲。</p>
+          </lh-skeleton>
+          <lh-button
+            size="small"
+            @click="skeletonLoading = !skeletonLoading"
+          >
+            {{ skeletonLoading ? '显示内容' : '显示骨架' }}
+          </lh-button>
+        </div>
+
+        <h3>头像组合 / 关闭动画</h3>
+        <div class="demo-box">
+          <lh-skeleton
+            avatar
+            :rows="2"
+            style="max-width: 300px"
+          />
+          <lh-skeleton
+            :rows="3"
+            :animated="false"
+            style="max-width: 300px"
+          />
+        </div>
+
+        <h3>独立占位块</h3>
+        <div class="demo-box">
+          <lh-skeleton-item variant="circle" />
+          <lh-skeleton-item
+            variant="rect"
+            style="width: 120px; height: 60px"
+          />
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Alert 警告提示</h2>
+
+        <h3>四种类型</h3>
+        <div class="demo-box-col">
+          <lh-alert
+            title="信息提示"
+            type="info"
+            show-icon
+          />
+          <lh-alert
+            title="成功提示"
+            type="success"
+            show-icon
+          />
+          <lh-alert
+            title="警告提示"
+            type="warning"
+            show-icon
+          />
+          <lh-alert
+            title="错误提示"
+            type="danger"
+            show-icon
+          />
+        </div>
+
+        <h3>带描述与关闭</h3>
+        <div class="demo-box-col">
+          <lh-alert
+            title="可关闭的提示"
+            type="info"
+            closable
+            @close="alertClosed = true"
+          >
+            这是详细描述文案，关闭后会触发 close 事件。
+          </lh-alert>
+          <lh-alert
+            v-if="alertClosed"
+            title="已触发 close 事件"
+            type="success"
+            show-icon
+          />
+        </div>
+
+        <h3>朴素样式</h3>
+        <div class="demo-box-col">
+          <lh-alert
+            title="浅色朴素样式"
+            type="warning"
+            plain
+            show-icon
+          />
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Breadcrumb 面包屑</h2>
+
+        <h3>基础</h3>
+        <div class="demo-box">
+          <lh-breadcrumb>
+            <lh-breadcrumb-item>首页</lh-breadcrumb-item>
+            <lh-breadcrumb-item>组件</lh-breadcrumb-item>
+            <lh-breadcrumb-item>Breadcrumb</lh-breadcrumb-item>
+          </lh-breadcrumb>
+        </div>
+
+        <h3>链接与自定义分隔符</h3>
+        <div class="demo-box-col">
+          <lh-breadcrumb separator="·">
+            <lh-breadcrumb-item to="/">首页</lh-breadcrumb-item>
+            <lh-breadcrumb-item to="/components">组件</lh-breadcrumb-item>
+            <lh-breadcrumb-item>当前页</lh-breadcrumb-item>
+          </lh-breadcrumb>
+          <lh-breadcrumb separator="➜">
+            <lh-breadcrumb-item>首页</lh-breadcrumb-item>
+            <lh-breadcrumb-item>组件</lh-breadcrumb-item>
+            <lh-breadcrumb-item>当前页</lh-breadcrumb-item>
+          </lh-breadcrumb>
+        </div>
+
+        <h3>超出折叠</h3>
+        <div class="demo-box">
+          <lh-breadcrumb :max-items="3">
+            <lh-breadcrumb-item to="/">首页</lh-breadcrumb-item>
+            <lh-breadcrumb-item to="/a">一级目录 A</lh-breadcrumb-item>
+            <lh-breadcrumb-item to="/a/b">二级目录 B</lh-breadcrumb-item>
+            <lh-breadcrumb-item to="/a/b/c">三级目录 C</lh-breadcrumb-item>
+            <lh-breadcrumb-item>当前页</lh-breadcrumb-item>
+          </lh-breadcrumb>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Pagination 分页</h2>
+
+        <h3>基础</h3>
+        <div class="demo-box">
+          <lh-pagination
+            v-model:current="pageCurrent"
+            :total="50"
+          />
+          <span class="demo-desc">当前页：{{ pageCurrent }}</span>
+        </div>
+
+        <h3>总数 / 条数 / 跳转</h3>
+        <div class="demo-box-col">
+          <lh-pagination
+            :total="120"
+            show-total
+            show-size-changer
+            show-jumper
+          />
+          <lh-pagination
+            :total="120"
+            disabled
+          />
+        </div>
+
+        <h3>简约模式</h3>
+        <div class="demo-box">
+          <lh-pagination
+            :total="50"
+            simple
+          />
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Tabs 标签页</h2>
+
+        <h3>基础</h3>
+        <div class="demo-box" style="display: block">
+          <lh-tabs v-model="tabActive">
+            <lh-tab-pane
+              name="ink"
+              label="水墨"
+            >
+              <span class="demo-desc">水墨内容</span>
+            </lh-tab-pane>
+            <lh-tab-pane
+              name="blue"
+              label="青花"
+            >
+              <span class="demo-desc">青花内容</span>
+            </lh-tab-pane>
+            <lh-tab-pane
+              name="red"
+              label="朱砂"
+              disabled
+            >
+              <span class="demo-desc">朱砂内容（禁用）</span>
+            </lh-tab-pane>
+          </lh-tabs>
+        </div>
+
+        <h3>卡片样式</h3>
+        <div class="demo-box" style="display: block">
+          <lh-tabs
+            v-model="tabActive"
+            type="card"
+          >
+            <lh-tab-pane
+              name="ink"
+              label="水墨"
+            >
+              <span class="demo-desc">卡片样式的水墨内容</span>
+            </lh-tab-pane>
+            <lh-tab-pane
+              name="blue"
+              label="青花"
+            >
+              <span class="demo-desc">卡片样式的青花内容</span>
+            </lh-tab-pane>
+          </lh-tabs>
+        </div>
+
+        <h3>动态增删</h3>
+        <div class="demo-box" style="display: block">
+          <lh-tabs
+            v-model="dynamicTab"
+            type="card"
+            closable
+            addable
+            @tab-add="addDynamicTab"
+            @tab-remove="removeDynamicTab"
+          >
+            <lh-tab-pane
+              v-for="tab in dynamicTabs"
+              :key="tab.name"
+              :name="tab.name"
+              :label="tab.label"
+            >
+              <span class="demo-desc">{{ tab.label }} 的内容</span>
+            </lh-tab-pane>
+          </lh-tabs>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Steps 步骤条</h2>
+
+        <h3>基础</h3>
+        <div class="demo-box" style="display: block">
+          <lh-steps :current="stepCurrent">
+            <lh-step
+              title="研墨"
+              description="研磨墨锭"
+            />
+            <lh-step
+              title="落笔"
+              description="中锋行笔"
+            />
+            <lh-step
+              title="钤印"
+              description="盖印章"
+            />
+          </lh-steps>
+        </div>
+
+        <h3>可点击导航</h3>
+        <div class="demo-box-col">
+          <lh-steps
+            v-model:current="stepClick"
+            clickable
+          >
+            <lh-step
+              title="选稿"
+              description="挑选底本"
+            />
+            <lh-step
+              title="临摹"
+              description="对临或背临"
+            />
+            <lh-step
+              title="装裱"
+              description="上墙装裱"
+            />
+          </lh-steps>
+          <span class="demo-desc">当前步骤：{{ stepClick }}</span>
+        </div>
+
+        <h3>错误状态 / 垂直方向</h3>
+        <div class="demo-box-col">
+          <lh-steps
+            :current="1"
+            status="error"
+          >
+            <lh-step title="上传" />
+            <lh-step title="校验" />
+            <lh-step title="完成" />
+          </lh-steps>
+          <lh-steps
+            :current="1"
+            direction="vertical"
+          >
+            <lh-step
+              title="起"
+              description="起势藏锋"
+            />
+            <lh-step
+              title="行"
+              description="行笔中锋"
+            />
+            <lh-step
+              title="收"
+              description="收笔回锋"
+            />
+          </lh-steps>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Calendar 日历面板</h2>
+
+        <h3>基础面板形态</h3>
+        <div class="demo-box-col">
+          <lh-calendar v-model="calendarDate" />
+          <span class="demo-desc">当前选择：{{ calendarDateText }}</span>
+        </div>
+
+        <h3>input 形态 + 多面板</h3>
+        <div class="demo-box-col">
+          <lh-calendar
+            v-model="calendarInputDate"
+            mode="input"
+            :panels="2"
+            placeholder="请选择日期"
+          />
+          <lh-calendar
+            v-model="calendarInputDate2"
+            mode="input"
+            :close-on-select="false"
+            placeholder="选中后不自动收起"
+          />
+        </div>
+
+        <h3>选择模式 selection</h3>
+        <div class="demo-box-col">
+          <lh-calendar
+            v-model="calendarRange"
+            selection="range"
+            :range="calendarBoundary"
+          />
+          <span class="demo-desc">区间选择（受 range 约束）：{{ calendarRangeText }}</span>
+          <lh-calendar
+            v-model="calendarMultiple"
+            selection="multiple"
+          />
+          <span class="demo-desc">多选：{{ calendarMultipleText }}</span>
+        </div>
+      </section>
+
+      <section class="dev-section">
+        <h2>Image 图片</h2>
+
+        <h3>基础用法</h3>
+        <div class="demo-box">
+          <lh-image
+            src="https://api.dicebear.com/9.x/notionists/svg?seed=ink"
+            alt="水墨示例图"
+          />
+          <lh-image
+            src="/broken-image.png"
+            alt="加载失败的图片"
+          />
+        </div>
+
+        <h3>fit 裁剪与 preview 预览</h3>
+        <div class="demo-box">
+          <lh-image
+            v-for="fit in imageFits"
+            :key="fit"
+            :src="`https://api.dicebear.com/9.x/notionists/svg?seed=fit`"
+            :alt="`fit=${fit}`"
+            :fit="fit"
+            preview
+            :preview-src-list="imagePreviewList"
+          />
+        </div>
+        <span class="demo-desc">点击开启 preview 的图片可打开预览。</span>
+
+        <h3>lazy 懒加载</h3>
+        <div
+          class="demo-box-col"
+          style="max-height: 160px; overflow-y: auto"
+        >
+          <lh-image
+            v-for="i in 6"
+            :key="i"
+            :src="`https://api.dicebear.com/9.x/notionists/svg?seed=lazy-${i}`"
+            :alt="`懒加载图片 ${i}`"
+            lazy
+          />
+        </div>
+      </section>
+
+      <section class="dev-section">
         <h2>国际化 (i18n)</h2>
         <div class="demo-box">
           <lh-button
@@ -1166,7 +2054,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { lhlocale, zhCN, enUS } from 'lh-ui'
+import { lhlocale, zhCN, enUS } from '@lh-ui/vue3'
 
 // 按需导入组件
 import LhButton from '~/components/button'
@@ -1191,35 +2079,110 @@ import LhAvatar from '~/components/avatar'
 import LhProgress from '~/components/progress'
 import LhStatistic from '~/components/statistic'
 import LhDescriptions from '~/components/descriptions'
+import LhDivider from '~/components/divider'
+import LhSpace from '~/components/space'
+import LhCard from '~/components/card'
+import LhEmpty from '~/components/empty'
+import LhSkeleton, { LhSkeletonItem } from '~/components/skeleton'
+import LhAlert from '~/components/alert'
+import LhBreadcrumb, { LhBreadcrumbItem } from '~/components/breadcrumb'
+import LhPagination from '~/components/pagination'
+import LhTabs, { LhTabPane } from '~/components/tabs'
+import LhSteps, { LhStep } from '~/components/steps'
+import LhPopover from '~/components/popover'
+import LhPopconfirm from '~/components/popconfirm'
+import LhDrawer from '~/components/drawer'
+import LhDropdown, { LhDropdownItem } from '~/components/dropdown'
+import LhSpinner from '~/components/spinner'
+import LhTimeline, { LhTimelineItem } from '~/components/timeline'
+import LhCollapse, { LhCollapseItem } from '~/components/collapse'
+import LhRate from '~/components/rate'
+import LhSegmented from '~/components/segmented'
+import LhCalendar from '~/components/calendar'
+import LhImage from '~/components/image'
+import LhAffix from '~/components/affix'
+import LhBackTop from '~/components/backtop'
+import LhMenu, { LhMenuItem, LhSubMenu } from '~/components/menu'
+import LhTable from '~/components/table'
+import LhTree from '~/components/tree'
+import { LhRow, LhCol } from '~/components/grid'
+import LhTreeSelect from '~/components/tree-select'
+import LhTransfer from '~/components/transfer'
+import '@lh-ui/share/styles/table'
+import '@lh-ui/share/styles/grid'
+import '@lh-ui/share/styles/tree'
+import '@lh-ui/share/styles/tree-select'
+import '@lh-ui/share/styles/transfer'
+import '@lh-ui/share/styles/menu'
+import '@lh-ui/share/styles/timeline'
+import '@lh-ui/share/styles/collapse'
+import '@lh-ui/share/styles/rate'
+import '@lh-ui/share/styles/segmented'
+import '@lh-ui/share/styles/calendar'
+import '@lh-ui/share/styles/affix'
+import '@lh-ui/share/styles/backtop'
+import '@lh-ui/share/styles/image'
+import { LhMessage } from '~/components/message'
+import { LhNotification } from '~/components/notification'
+import { LhLoading, showLoading } from '~/components/loading'
+import '@lh-ui/share/styles/spinner'
+import '@lh-ui/share/styles/message'
+import '@lh-ui/share/styles/notification'
+import '@lh-ui/share/styles/loading'
+
+function showMessageLoading() {
+  const handle = LhMessage.loading('正在同步…')
+  setTimeout(() => handle.close(), 2000)
+}
+
+function showFullscreenLoading() {
+  const handle = LhLoading.show({ lock: true })
+  setTimeout(() => handle.close(), 2000)
+}
+
 
 // 独立图标组件（分包导入）
 import { LhIconStar, LhIconSearch, LhIconCheck, LhIconLoading } from '~/components/icon'
 
 // 组件样式
-import '~/components/button/style/index.scss'
-import '~/components/input/style/index.scss'
-import '~/components/icon/style/index.scss'
-import '~/components/tooltip/style/index.scss'
-import '~/components/dialog/style/index.scss'
-import '~/components/form/style/index.scss'
-import '~/components/select/style/index.scss'
-import '~/components/checkbox/style/index.scss'
-import '~/components/radio/style/index.scss'
-import '~/components/switch/style/index.scss'
-import '~/components/input-number/style/index.scss'
-import '~/components/slider/style/index.scss'
-import '~/components/date-picker/style/index.scss'
-import '~/components/time-picker/style/index.scss'
-import '~/components/cascader/style/index.scss'
-import '~/components/tag/style/index.scss'
-import '~/components/badge/style/index.scss'
-import '~/components/avatar/style/index.scss'
-import '~/components/progress/style/index.scss'
-import '~/components/statistic/style/index.scss'
-import '~/components/descriptions/style/index.scss'
-import '~/theme/src/common/var.scss'
-import '~/theme/src/common/var-dark.scss'
-import '~/theme/src/common/patterns.scss'
+import '@lh-ui/share/styles/button'
+import '@lh-ui/share/styles/input'
+import '@lh-ui/share/styles/icon'
+import '@lh-ui/share/styles/tooltip'
+import '@lh-ui/share/styles/dialog'
+import '@lh-ui/share/styles/form'
+import '@lh-ui/share/styles/select'
+import '@lh-ui/share/styles/checkbox'
+import '@lh-ui/share/styles/radio'
+import '@lh-ui/share/styles/switch'
+import '@lh-ui/share/styles/input-number'
+import '@lh-ui/share/styles/slider'
+import '@lh-ui/share/styles/date-picker'
+import '@lh-ui/share/styles/time-picker'
+import '@lh-ui/share/styles/cascader'
+import '@lh-ui/share/styles/tag'
+import '@lh-ui/share/styles/badge'
+import '@lh-ui/share/styles/avatar'
+import '@lh-ui/share/styles/progress'
+import '@lh-ui/share/styles/statistic'
+import '@lh-ui/share/styles/descriptions'
+import '@lh-ui/share/styles/divider'
+import '@lh-ui/share/styles/space'
+import '@lh-ui/share/styles/card'
+import '@lh-ui/share/styles/empty'
+import '@lh-ui/share/styles/skeleton'
+import '@lh-ui/share/styles/alert'
+import '@lh-ui/share/styles/breadcrumb'
+import '@lh-ui/share/styles/pagination'
+import '@lh-ui/share/styles/tabs'
+import '@lh-ui/share/styles/steps'
+import '@lh-ui/share/styles/popover'
+import '@lh-ui/share/styles/popconfirm'
+import '@lh-ui/share/styles/drawer'
+import '@lh-ui/share/styles/dropdown'
+import '@lh-ui/share/styles/theme/common/var.scss'
+import '@lh-ui/share/styles/theme/common/var-dark.scss'
+import '@lh-ui/share/styles/theme/common/patterns.scss'
 
 const clickCount = ref(0)
 const dialogVisible = ref(false)
@@ -1281,6 +2244,164 @@ const timeClearable = ref(new Date())
 // Tag refs
 const tagShow1 = ref(true)
 const tagShow2 = ref(true)
+
+// Wave A/B refs
+const cardClickCount = ref(0)
+const skeletonLoading = ref(true)
+const alertClosed = ref(false)
+const pageCurrent = ref(1)
+const tabActive = ref('ink')
+const dynamicTab = ref('ink')
+const dynamicTabs = ref([
+  { name: 'ink', label: '水墨' },
+  { name: 'blue', label: '青花' },
+  { name: 'red', label: '朱砂' },
+])
+const stepCurrent = ref(1)
+const stepClick = ref(1)
+
+// Wave C refs
+const popoverInput = ref('')
+const popconfirmCount = ref(0)
+const drawerVisible = ref(false)
+const drawerDirection = ref<'right' | 'left' | 'top' | 'bottom'>('right')
+const drawerSized = ref(false)
+const drawerFilter = ref('')
+const dropdownCommand = ref('')
+const dropdownLabel = ref('')
+const dropdownLabelMap: Record<string, string> = {
+  new: '新建',
+  edit: '编辑',
+  audit: '审计日志',
+  purge: '清空数据',
+}
+
+function openDrawer(d: 'right' | 'left' | 'top' | 'bottom') {
+  drawerDirection.value = d
+  drawerVisible.value = true
+}
+
+function onDropdownCommand(command: string | number | undefined) {
+  dropdownCommand.value = String(command)
+  dropdownLabel.value = dropdownLabelMap[String(command)] ?? String(command)
+}
+
+const loadingBoxRef = ref<HTMLElement>()
+const segView = ref('列表')
+const menuActive = ref('home')
+
+// —— 阶段化增强概览 ——
+const enhanceCols = [
+  { prop: 'name', label: '名称', width: 120, resizable: true, fixed: 'left' },
+  { label: '归属', children: [
+    { prop: 'team', label: '小组' },
+    { prop: 'city', label: '城市', width: 100, filters: [
+      { text: '杭州', value: '杭州' },
+      { text: '苏州', value: '苏州' },
+    ] },
+  ] },
+  { prop: 'age', label: '年龄', sortable: true, width: 90 },
+]
+const enhanceRows = [
+  { id: 1, name: '沈砚', team: '架构', city: '杭州', age: 34 },
+  { id: 2, name: '苏晚', team: '前端', city: '苏州', age: 28 },
+  { id: 3, name: '陆离', team: '设计', city: '北京', age: 31 },
+]
+const enhanceResizeLog = ref('（未调整）')
+function onEnhanceResize({ prop, width }) {
+  enhanceResizeLog.value = `${prop} → ${width}px`
+}
+
+const lazyTreeData = ref([{ key: 'lazy', label: '点我加载', isLeaf: false }])
+function loadLazyNodes(node, resolve) {
+  setTimeout(() => {
+    resolve([
+      { key: 'lazy-1', label: '子节点一', isLeaf: true },
+      { key: 'lazy-2', label: '子节点二', isLeaf: true },
+    ])
+  }, 600)
+}
+
+const scrollEndLog = ref('（未滚动）')
+function onBackTopScrollEnd(scrollTop) {
+  scrollEndLog.value = `${scrollTop}px`
+}
+const tableCols = [
+  { prop: 'name', label: '名称', width: 120, fixed: 'left' as const },
+  { prop: 'role', label: '职责', sortable: true },
+  { prop: 'city', label: '城市', width: 100 },
+]
+const tableRows = Array.from({ length: 200 }, (_, i) => ({
+  id: i + 1,
+  name: `成员 ${i + 1}`,
+  role: i % 2 === 0 ? '前端' : '后端',
+  city: '杭州',
+}))
+const treeNodes = [
+  { key: 'a', label: '前端', children: [{ key: 'a-1', label: 'Vue' }, { key: 'a-2', label: 'React' }] },
+  { key: 'b', label: '后端', children: [{ key: 'b-1', label: 'Node' }] },
+]
+const treePick = ref('a-1')
+const transferItems = [
+  { key: 'x', label: '甲' },
+  { key: 'y', label: '乙' },
+  { key: 'z', label: '丙' },
+]
+const transferSource = ref(['x'])
+const rateVal = ref(3.5)
+
+// Calendar 演示
+const calendarDate = ref(new Date())
+const calendarInputDate = ref(new Date())
+const calendarInputDate2 = ref(new Date())
+const calendarRange = ref<[Date, Date] | []>([])
+// 月份 0 起算：8 即 9 月
+const calendarBoundary: [Date, Date] = [new Date(2026, 8, 1), new Date(2026, 8, 28)]
+const calendarMultiple = ref<Date[]>([])
+
+const fmtDate = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+
+const calendarDateText = computed(() =>
+  calendarDate.value instanceof Date ? fmtDate(calendarDate.value) : String(calendarDate.value ?? '—'),
+)
+const calendarRangeText = computed(() => {
+  const r = calendarRange.value
+  if (!r || r.length !== 2) return '未选择'
+  return `${fmtDate(r[0])} ~ ${fmtDate(r[1])}`
+})
+const calendarMultipleText = computed(() =>
+  (calendarMultiple.value ?? []).map(fmtDate).join('、') || '未选择',
+)
+
+// Image 演示
+const imageFits = ['fill', 'contain', 'cover', 'none', 'scale-down'] as const
+const imagePreviewList = [
+  'https://api.dicebear.com/9.x/notionists/svg?seed=ink',
+  'https://api.dicebear.com/9.x/notionists/svg?seed=fit',
+  'https://api.dicebear.com/9.x/notionists/svg?seed=lazy-1',
+]
+
+function showBoxLoading() {
+  const handle = showLoading({ target: loadingBoxRef.value, text: '拼命加载中' })
+  setTimeout(() => handle.close(), 2000)
+}
+
+function addDynamicTab() {
+  const i = dynamicTabs.value.length + 1
+  const name = `tab-${i}`
+  dynamicTabs.value.push({ name, label: `页签 ${i}` })
+  dynamicTab.value = name
+}
+
+function removeDynamicTab(name: string) {
+  const idx = dynamicTabs.value.findIndex((tab) => tab.name === name)
+  if (idx < 0) return
+  dynamicTabs.value.splice(idx, 1)
+  if (dynamicTab.value === name) {
+    dynamicTab.value = dynamicTabs.value[0]?.name ?? ''
+  }
+}
 
 // Cascader refs
 const cascaderValue = ref<(string | number)[]>([])
@@ -1510,6 +2631,19 @@ function handleClick() {
   margin-bottom: 12px;
 }
 
+.demo-loading-zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 120px;
+  padding: 16px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+}
+
 .demo-box-col {
   display: flex;
   flex-direction: column;
@@ -1521,6 +2655,21 @@ function handleClick() {
 .demo-desc {
   color: #666;
   font-size: 14px;
+}
+
+.demo-strong {
+  font-weight: 600;
+}
+
+.demo-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  background: linear-gradient(135deg, rgba(44, 82, 130, 0.14), rgba(56, 161, 105, 0.14));
+  color: #8a8a8a;
+  font-size: 13px;
+  letter-spacing: 0.1em;
 }
 
 .click-count {

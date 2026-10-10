@@ -2,7 +2,7 @@ import type {
   LhComponentLanguage,
   LhComponentSize,
   LhComponentType,
-} from '../../packages/core/shared/types'
+} from '@lh-ui/share/core/shared/types'
 
 export type LhTypes<T extends string | undefined = undefined> = T extends string
   ? LhComponentType | T

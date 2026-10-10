@@ -69,6 +69,28 @@ describe('LhRadio', () => {
 
     expect(wrapper.classes()).toContain('lh-radio--small')
   })
+
+  it('applies sx props as inline styles on the root element', () => {
+    const wrapper = mount(LhRadio, { props: { label: '选项', sx: { mt: 2, w: '50%' } } })
+    const style = wrapper.attributes('style')
+    expect(style).toContain('margin-top: 16px')
+    expect(style).toContain('width: 50%')
+  })
+
+  it('propagates dynamic group disabled/size changes to items', async () => {
+    const wrapper = mount(LhRadioGroup, {
+      props: { modelValue: 'a', disabled: false, size: 'medium' },
+      slots: {
+        default: () => [hRadio({ value: 'a', label: 'A' })],
+      },
+    })
+    expect(wrapper.find('input').attributes('disabled')).toBeUndefined()
+
+    await wrapper.setProps({ disabled: true, size: 'large' })
+    expect(wrapper.find('input').attributes('disabled')).toBeDefined()
+    expect(wrapper.find('.lh-radio--large').exists()).toBe(true)
+  })
+
 })
 
 function hRadio(props: Record<string, unknown>) {

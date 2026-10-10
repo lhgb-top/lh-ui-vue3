@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /en/
+
+Sitemap: https://www.lhgb.top/lhui/plus/sitemap.xml

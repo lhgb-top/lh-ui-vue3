@@ -2,6 +2,7 @@
   <div
     class="lh-badge"
     :class="badgeClasses"
+    :style="sxStyle"
   >
     <slot></slot>
     <transition name="lh-badge-zoom">
@@ -9,6 +10,7 @@
         v-if="shouldShow"
         class="lh-badge__content"
         :style="badgeStyle"
+        :aria-hidden="props.isDot"
       >
         <span v-if="!props.isDot">{{ displayValue }}</span>
       </sup>
@@ -20,7 +22,8 @@
 defineOptions({ name: 'LhBadge' })
 
 import { computed } from 'vue'
-import { getBadgeClassNames } from '@lh-ui/core/badge'
+import { sxToStyle } from '@lh-ui/share/core/shared'
+import { getBadgeClassNames } from '@lh-ui/share/core/badge'
 import type { LhBadgeProps } from './types'
 
 const props = withDefaults(defineProps<LhBadgeProps>(), {
@@ -33,7 +36,11 @@ const props = withDefaults(defineProps<LhBadgeProps>(), {
   offset: undefined,
   showZero: false,
   content: undefined,
+  sx: undefined,
 })
+
+// sx 快速布局属性：转内联样式作用于根元素
+const sxStyle = computed(() => sxToStyle(props.sx ?? {}))
 
 const shouldShow = computed(() => {
   if (props.hidden) return false

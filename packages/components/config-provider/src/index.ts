@@ -2,7 +2,8 @@ import { computed, provide, watch, inject } from 'vue'
 import type { ComputedRef } from 'vue'
 import type { LhConfigProviderProps, LhConfigContext } from './types'
 import { CONFIG_PROVIDER_KEY } from './types'
-import { lhlocale } from '~/locales'
+import { lhlocale } from '~/locale'
+import { cssVars as buildCssVars } from '@lh-ui/share/utils/css-var'
 
 /**
  * ConfigProvider 核心逻辑
@@ -10,14 +11,7 @@ import { lhlocale } from '~/locales'
  */
 export function useLhConfigProvider(props: LhConfigProviderProps) {
   /** 将 themeVars 转为 CSS 变量对象（仅传递变量，不消费花纹背景） */
-  const cssVars = computed(() => {
-    if (!props.themeVars) return {}
-    const result: Record<string, string> = {}
-    for (const [key, value] of Object.entries(props.themeVars)) {
-      result[`--lh-${key}`] = value
-    }
-    return result
-  })
+  const cssVars = computed(() => buildCssVars(props.themeVars ?? {}))
 
   /**
    * provide 的上下文。

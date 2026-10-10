@@ -1,0 +1,35 @@
+# Development files
+.gitignore
+.npmrc
+.prettierrc.json
+.prettierignore
+eslint.config.mjs
+tsconfig.json
+vite.config.ts
+vitest.config.ts
+rollup.config.js
+rollup.dts.config.js
+
+# Source code (we publish built artifacts; 框架无关源码在 @lh-ui/share)
+src/
+packages/components/*/src/
+dev/
+
+# Documentation
+docs/
+ai/
+
+# Tests
+tests/
+
+# Scripts
+scripts/
+
+# Changeset config
+.changeset/config.json
+
+# AI agent files
+AGENTS.md
+MEMORY.md
+.git/
+.github/

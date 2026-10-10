@@ -9,6 +9,7 @@
         'lh-select--disabled': props.disabled,
       },
     ]"
+    :style="sxStyle"
   >
     <div
       class="lh-select__trigger"
@@ -18,12 +19,13 @@
       :aria-label="props.ariaLabel"
       :aria-disabled="props.disabled"
       :aria-expanded="isOpen"
+      :aria-invalid="!!formItem?.errorMessage || undefined"
       aria-haspopup="listbox"
       @click="toggle"
       @keydown="handleKeydown"
     >
       <span class="lh-select__value" :class="{ 'lh-select__value--placeholder': !selectedOption }">
-        {{ selectedOption?.label || props.placeholder }}
+        {{ selectedOption?.label || props.placeholder || t('select.placeholder', '请选择') }}
       </span>
       <span class="lh-select__actions">
         <button
@@ -39,47 +41,72 @@
       </span>
     </div>
 
-    <div v-if="isOpen" class="lh-select__dropdown" role="listbox">
-      <button
-        v-for="(option, index) in props.options"
-        :key="index"
-        class="lh-select__option"
-        :class="{
-          'lh-select__option--selected': isSelected(option),
-          'lh-select__option--highlighted': highlightedIndex === index,
-          'lh-select__option--disabled': option.disabled,
-        }"
-        type="button"
-        role="option"
-        :aria-selected="isSelected(option)"
-        :disabled="option.disabled"
-        @mouseenter="highlightedIndex = index"
-        @click="selectOption(option)"
+    <Teleport :to="teleportTarget" :disabled="!shouldTeleport">
+      <div
+        v-if="isOpen"
+        ref="dropdownRef"
+        class="lh-select__dropdown"
+        :class="{ 'lh-select__dropdown--teleported': shouldTeleport }"
+        :style="dropdownStyle"
+        role="listbox"
       >
-        {{ option.label }}
-      </button>
-      <span v-if="!props.options?.length" class="lh-select__empty">No options</span>
-    </div>
+        <button
+          v-for="(option, index) in props.options"
+          :key="index"
+          class="lh-select__option"
+          :class="{
+            'lh-select__option--selected': isSelected(option),
+            'lh-select__option--highlighted': highlightedIndex === index,
+            'lh-select__option--disabled': option.disabled,
+          }"
+          type="button"
+          role="option"
+          :aria-selected="isSelected(option)"
+          :disabled="option.disabled"
+          @mouseenter="highlightedIndex = index"
+          @click="selectOption(option)"
+        >
+          {{ option.label }}
+        </button>
+        <span v-if="!props.options?.length" class="lh-select__empty">
+          <slot name="empty">{{ t('select.noData', '暂无数据') }}</slot>
+        </span>
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { findSelectOption, getNextEnabledIndex } from '@lh-ui/core/select'
+import { computed, inject, onMounted, onUnmounted, ref, type StyleValue } from 'vue'
+import { isEscapeKey, LH_KEYS, sxToStyle } from '@lh-ui/share/core/shared'
+import { findSelectOption, getNextEnabledIndex } from '@lh-ui/share/core/select'
 import type { LhSelectOption, LhSelectProps } from './types'
+import { lhlocale } from '~/locale'
+import { LH_FORM_ITEM_CONTEXT_KEY } from '~/components/form/src/types'
 
 defineOptions({ name: 'LhSelect' })
+
+// 依赖响应式版本号：切换语言时触发重渲染
+const t = (path: string, fallback?: string) => {
+  void lhlocale.version.value
+  return lhlocale.t(path, fallback)
+}
 
 const props = withDefaults(defineProps<LhSelectProps>(), {
   modelValue: undefined,
   options: () => [],
-  placeholder: 'Please select',
+  placeholder: '',
   disabled: false,
   clearable: false,
   size: 'medium',
   name: undefined,
   ariaLabel: undefined,
+  popperContainer: 'body',
+  sx: undefined,
 })
+
+// sx 快速布局属性：转内联样式作用于根元素
+const sxStyle = computed(() => sxToStyle(props.sx ?? {}))
 
 const emit = defineEmits<{
   'update:modelValue': [value: unknown]
@@ -88,9 +115,41 @@ const emit = defineEmits<{
 }>()
 
 const rootRef = ref<HTMLElement | null>(null)
+const dropdownRef = ref<HTMLElement | null>(null)
+const formItem = inject(LH_FORM_ITEM_CONTEXT_KEY, null)
 const isOpen = ref(false)
 const highlightedIndex = ref(-1)
 const selectedOption = computed(() => findSelectOption(props.options, props.modelValue))
+
+const shouldTeleport = computed(() => !!props.popperContainer)
+
+const teleportTarget = computed(() => {
+  if (typeof document === 'undefined' || !props.popperContainer) return 'body'
+  if (props.popperContainer === 'body') return document.body
+  if (typeof props.popperContainer === 'string') return document.querySelector(props.popperContainer) || document.body
+  return props.popperContainer
+})
+
+const dropdownStyle = computed<StyleValue>(() => {
+  if (!shouldTeleport.value || !rootRef.value) return {}
+  const rect = rootRef.value.getBoundingClientRect()
+  return {
+    position: 'fixed',
+    top: `${rect.bottom + 4}px`,
+    left: `${rect.left}px`,
+    width: `${rect.width}px`,
+    zIndex: 2000,
+  }
+})
+
+function updatePosition() {
+  const forceRect = rootRef.value?.getBoundingClientRect()
+  if (forceRect && dropdownRef.value && shouldTeleport.value) {
+    dropdownRef.value.style.top = `${forceRect.bottom + 4}px`
+    dropdownRef.value.style.left = `${forceRect.left}px`
+    dropdownRef.value.style.width = `${forceRect.width}px`
+  }
+}
 
 function isSelected(option: LhSelectOption) {
   return Object.is(option.value, props.modelValue)
@@ -127,32 +186,45 @@ function clear() {
 }
 
 function handleKeydown(event: KeyboardEvent) {
-  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+  if (event.key === LH_KEYS.ArrowDown || event.key === LH_KEYS.ArrowUp) {
     event.preventDefault()
     if (!isOpen.value) open()
     else highlightedIndex.value = getNextEnabledIndex(
       props.options,
       highlightedIndex.value,
-      event.key === 'ArrowDown' ? 1 : -1,
+      event.key === LH_KEYS.ArrowDown ? 1 : -1,
     )
     return
   }
 
-  if (event.key === 'Enter' && isOpen.value && highlightedIndex.value >= 0) {
+  if (event.key === LH_KEYS.Enter && isOpen.value && highlightedIndex.value >= 0) {
     event.preventDefault()
     const option = props.options[highlightedIndex.value]
     if (option) selectOption(option)
   }
 
-  if (event.key === 'Escape') close()
+  if (isEscapeKey(event)) close()
 }
 
 function handleDocumentClick(event: MouseEvent) {
-  if (rootRef.value && !rootRef.value.contains(event.target as Node)) close()
+  const dropdown = dropdownRef.value
+  if (rootRef.value && !rootRef.value.contains(event.target as Node)) {
+    if (!dropdown || !dropdown.contains(event.target as Node)) close()
+  }
 }
 
-onMounted(() => document.addEventListener('click', handleDocumentClick))
-onUnmounted(() => document.removeEventListener('click', handleDocumentClick))
+onMounted(() => {
+  document.addEventListener('click', handleDocumentClick)
+  if (shouldTeleport.value) {
+    window.addEventListener('scroll', updatePosition, true)
+    window.addEventListener('resize', updatePosition)
+  }
+})
+onUnmounted(() => {
+  document.removeEventListener('click', handleDocumentClick)
+  window.removeEventListener('scroll', updatePosition, true)
+  window.removeEventListener('resize', updatePosition)
+})
 
 defineExpose({ open, close, toggle, clear, isOpen })
 </script>

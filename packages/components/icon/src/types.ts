@@ -1,4 +1,4 @@
-import type { LhIconName } from '@lh-ui/core/icon'
+import type { LhIconName } from '@lh-ui/share/core/icon'
 
 /**
  * Icon 组件 Props

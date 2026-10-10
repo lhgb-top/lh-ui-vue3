@@ -40,8 +40,14 @@ jobs:
       - name: Component tests
         run: pnpm test:components
 
+      - name: Coverage
+        run: pnpm test:coverage
+
       - name: Build docs
         run: pnpm docs:build
 
       - name: Build library
         run: pnpm build
+
+      - name: Verify declaration files
+        run: node scripts/verify-dts.mjs

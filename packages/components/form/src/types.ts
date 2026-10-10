@@ -1,5 +1,6 @@
 import type { InjectionKey } from 'vue'
-import type { LhFormRule } from '@lh-ui/core/form'
+import type { LhFormRule } from '@lh-ui/share/core/form'
+import type { SxProps } from '@lh-ui/share/core/shared'
 
 export type LhFormLabelPosition = 'left' | 'right' | 'top'
 
@@ -9,6 +10,8 @@ export interface LhFormProps {
   labelPosition?: LhFormLabelPosition
   labelWidth?: string | number
   inline?: boolean
+  /** sx 快速布局属性 */
+  sx?: SxProps
 }
 
 export interface LhFormItemProps {
@@ -28,6 +31,12 @@ export interface LhFormContext {
   resetField: (prop: string) => void
 }
 
+export interface LhFormItemContext {
+  /** 校验错误文案，非空即该校验失败（reactive 代理已解包 ref，直接读字符串） */
+  errorMessage: string
+}
+
 export const LH_FORM_CONTEXT_KEY: InjectionKey<LhFormContext> = Symbol('LhFormContext')
+export const LH_FORM_ITEM_CONTEXT_KEY: InjectionKey<LhFormItemContext> = Symbol('LhFormItemContext')
 
 export type { LhFormRule }

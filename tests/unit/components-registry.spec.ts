@@ -35,6 +35,57 @@ describe('components registry', () => {
       'LhProgress',
       'LhStatistic',
       'LhDescriptions',
+      'LhDivider',
+      'LhSpace',
+      'LhCard',
+      'LhEmpty',
+      'LhSkeleton',
+      'LhSkeletonItem',
+      'LhAlert',
+      'LhBreadcrumb',
+      'LhBreadcrumbItem',
+      'LhPagination',
+      'LhTabs',
+      'LhTabPane',
+      'LhSteps',
+      'LhStep',
+      'LhPopover',
+      'LhPopconfirm',
+      'LhDrawer',
+      'LhDropdown',
+      'LhDropdownItem',
+      'LhSpinner',
+      'LhMessage',
+      'LhNotification',
+      'LhLoading',
+      'LhTimeline',
+      'LhTimelineItem',
+      'LhCollapse',
+      'LhCollapseItem',
+      'LhRate',
+      'LhSegmented',
+      'LhCalendar',
+      'LhAffix',
+      'LhBackTop',
+      'LhImage',
+      'LhMenu',
+      'LhMenuItem',
+      'LhSubMenu',
+      'LhMenuItemGroup',
+      'LhTable',
+      'LhLayout',
+      'LhLayoutHeader',
+      'LhLayoutAside',
+      'LhLayoutMain',
+      'LhLayoutFooter',
+      'LhRow',
+      'LhCol',
+      'LhTree',
+      'LhTreeSelect',
+      'LhTransfer',
+      'LhUpload',
+      'LhAnchor',
+      'LhVirtualList',
     ])
   })
 
@@ -46,11 +97,14 @@ describe('components registry', () => {
       (component) => (component.name ?? '').replace(/^Lh/, '').toLowerCase(),
     )
 
+    // 目录名与注册块名不一致的特例（grid 由 LhRow/LhCol 提供）
+    const dirAliases: Record<string, string> = { grid: 'row' }
+
     const missing = fs
       .readdirSync(componentsDir)
       .filter((name) => fs.statSync(path.join(componentsDir, name)).isDirectory())
       // cascader -> cascader、input-number -> inputnumber、config-provider -> config-provider
-      .filter((dir) => !registeredBlocks.includes(dir.replace(/-/g, '')))
+      .filter((dir) => !registeredBlocks.includes(dirAliases[dir] ?? dir.replace(/-/g, '')))
 
     expect(missing).toEqual([])
   })

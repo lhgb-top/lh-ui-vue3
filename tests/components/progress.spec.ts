@@ -67,4 +67,26 @@ describe('LhProgress', () => {
     })
     expect(wrapper.find('.lh-progress__text').text()).toBe('42 分')
   })
+
+  it('exposes progressbar semantics with aria value attributes', () => {
+    const wrapper = mount(LhProgress, { props: { percentage: 42 } })
+    expect(wrapper.attributes('role')).toBe('progressbar')
+    expect(wrapper.attributes('aria-valuemin')).toBe('0')
+    expect(wrapper.attributes('aria-valuemax')).toBe('100')
+    expect(wrapper.attributes('aria-valuenow')).toBe('42')
+    // 自定义 format 之外，默认文案也进入 aria-valuetext 供屏读播报
+    expect(wrapper.attributes('aria-valuetext')).toBe('42%')
+  })
+
+  it('clamps aria-valuenow to the valid range', () => {
+    const wrapper = mount(LhProgress, { props: { percentage: 150 } })
+    expect(wrapper.attributes('aria-valuenow')).toBe('100')
+  })
+
+  it('applies sx props as inline styles on the root element', () => {
+    const wrapper = mount(LhProgress, { props: { percentage: 50, sx: { mt: 2, w: '50%' } } })
+    const style = wrapper.attributes('style')
+    expect(style).toContain('margin-top: 16px')
+    expect(style).toContain('width: 50%')
+  })
 })

@@ -1,8 +1,9 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import type { LhDialogProps } from './types'
 import { useLhConfigContext } from '~/components/config-provider/src/index'
-import { useLhComponentTheme } from '~/utils/composables'
-import { canClose, getDialogStyle } from '@lh-ui/core/dialog/logic'
+import { useLhComponentTheme, useLhFocusTrap } from '~/composables'
+import { isEscapeKey, sxToStyle } from '@lh-ui/share/core/shared'
+import { canClose, getDialogStyle } from '@lh-ui/share/core/dialog/logic'
 
 /**
  * Dialog Composable
@@ -24,7 +25,13 @@ export function useLhDialog(
 
   // 组件主题
   const configContext = useLhConfigContext()
-  const { componentStyle } = useLhComponentTheme('dialog', props, configContext)
+  const theme = useLhComponentTheme('dialog', props, configContext)
+  // 焦点圈：打开时圈住对话框，关闭时归还焦点（与 Drawer / Popover 一致）
+  const { trap, release } = useLhFocusTrap()
+  const componentStyle = computed(() => ({
+    ...theme.componentStyle.value,
+    ...sxToStyle(props.sx ?? {}),
+  }))
 
   // 同步外部 modelValue
   watch(() => props.modelValue, (val) => {
@@ -45,6 +52,9 @@ export function useLhDialog(
     emit('open')
     lockScroll()
     nextTick(() => {
+      // v-if 渲染后才能拿到对话框节点；不传 focusTarget，由焦点圈内部
+      // 聚焦容器内首个可聚焦元素（默认是头部关闭按钮），与 Drawer 一致
+      trap(dialogRef.value)
       emit('opened')
     })
   }
@@ -67,6 +77,8 @@ export function useLhDialog(
     emit('update:modelValue', false)
     emit('close')
     unlockScroll()
+    // 解除焦点圈并归还焦点给打开前的触发元素（与 Drawer / Popover 一致）
+    release()
     nextTick(() => {
       emit('closed')
     })
@@ -85,7 +97,7 @@ export function useLhDialog(
    * 键盘 ESC 关闭
    */
   function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === 'Escape' && canClose({ closeOnPressEscape: props.closeOnPressEscape }, 'escape')) {
+    if (isEscapeKey(e) && canClose({ closeOnPressEscape: props.closeOnPressEscape }, 'escape')) {
       close()
     }
   }

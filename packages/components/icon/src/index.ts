@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import type { LhIconProps } from './types'
 import { useLhConfigContext } from '~/components/config-provider/src/index'
-import { useLhComponentTheme } from '~/utils/composables'
-import { getIconSvg, getIconStyle, getIconSize } from '@lh-ui/core/icon'
+import { useLhComponentTheme } from '~/composables'
+import { getIconSvg, getIconStyle, getIconSize } from '@lh-ui/share/core/icon'
 
 /**
  * Icon 组件 Composable

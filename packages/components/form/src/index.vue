@@ -2,6 +2,7 @@
   <form
     class="lh-form"
     :class="{ 'lh-form--inline': props.inline }"
+    :style="sxStyle"
     @submit.prevent
   >
     <slot></slot>
@@ -9,8 +10,10 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, reactive } from 'vue'
-import { getFormFieldValue, validateFormField } from '@lh-ui/core/form'
+import { computed, provide, reactive } from 'vue'
+import { sxToStyle } from '@lh-ui/share/core/shared'
+import { getFormFieldValue, validateFormField } from '@lh-ui/share/core/form'
+import { lhlocale } from '~/locale'
 import type { LhFormProps } from './types'
 import { LH_FORM_CONTEXT_KEY } from './types'
 
@@ -19,7 +22,11 @@ const props = withDefaults(defineProps<LhFormProps>(), {
   labelPosition: 'right',
   labelWidth: undefined,
   inline: false,
+  sx: undefined,
 })
+
+// sx 快速布局属性：转内联样式作用于根元素
+const sxStyle = computed(() => sxToStyle(props.sx ?? {}))
 
 defineOptions({ name: 'LhForm' })
 
@@ -27,12 +34,23 @@ const initialValues = new Map<string, unknown>()
 const fieldValidators = new Map<string, () => Promise<boolean>>()
 const model = props.model
 
+// 依赖响应式版本号：切换语言时触发重渲染
+const t = (path: string, fallback?: string) => {
+  void lhlocale.version.value
+  return lhlocale.t(path, fallback)
+}
+
 function getRules(prop: string) {
   return props.rules?.[prop] || []
 }
 
 function validateField(prop: string): Promise<boolean> {
-  const message = validateFormField(getFormFieldValue(model, prop), getRules(prop), model)
+  const message = validateFormField(
+    getFormFieldValue(model, prop),
+    getRules(prop),
+    model,
+    t('form.required'),
+  )
   return Promise.resolve(!message)
 }
 

@@ -23,16 +23,19 @@
       <div :class="['lh-input', 'lh-input--textarea', `lh-input--${props.size}`, { 'lh-input--disabled': props.disabled }]">
         <textarea
           :class="'lh-input__inner'"
+          :style="nativeElStyle"
           :value="inputValue"
           :disabled="props.disabled"
           :readonly="props.readonly"
-          :placeholder="props.label ? '' : props.placeholder"
+          :aria-invalid="ariaInvalid"
+          :placeholder="placeholderText"
           :maxlength="props.maxlength"
           :minlength="props.minlength"
           :data-autosize="props.autosize"
           :rows="props.rows"
           :name="props.name"
           :tabindex="props.tabindex"
+          :form="props.form"
           @input="onInput"
           @change="onChange"
           @focus="onFocus"
@@ -60,22 +63,25 @@
       >
         <span v-if="props.prefixIcon" class="lh-input__prefix">
           <slot name="prefix">
-            <i :class="props.prefixIcon"></i>
+            <LhIcon :name="props.prefixIcon" />
           </slot>
         </span>
         <input
           :class="'lh-input__inner'"
-          :type="props.type"
+          :type="props.nativeType ?? props.type"
+          :style="nativeElStyle"
           :value="inputValue"
           :disabled="props.disabled"
           :readonly="props.readonly"
-          :placeholder="props.label ? '' : props.placeholder"
+          :aria-invalid="ariaInvalid"
+          :placeholder="placeholderText"
           :maxlength="props.maxlength"
           :minlength="props.minlength"
           :autofocus="props.autofocus"
           :autocomplete="props.autocomplete"
           :name="props.name"
           :tabindex="props.tabindex"
+          :form="props.form"
           @input="onInput"
           @change="onChange"
           @focus="onFocus"
@@ -84,7 +90,10 @@
         />
         <span v-if="props.suffixIcon || props.clearable" class="lh-input__suffix">
           <slot name="suffix">
-            <i v-if="props.suffixIcon" :class="props.suffixIcon"></i>
+            <LhIcon
+              v-if="props.suffixIcon"
+              :name="props.suffixIcon"
+            />
             <svg
               v-if="props.clearable && inputValue"
               class="lh-input__suffix-icon lh-input__clear"
@@ -105,9 +114,11 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useLhInput } from './index'
 import type { LhInputProps } from './types'
+import LhIcon from '../../icon'
+import { lhlocale } from '~/locale'
 
 defineOptions({
   name: 'LhInput',
@@ -125,6 +136,7 @@ const props = withDefaults(defineProps<LhInputProps>(), {
   resize: 'vertical',
   themeVars: undefined,
   bgPattern: undefined,
+  sx: undefined,
 })
 
 const emits = defineEmits<{
@@ -137,7 +149,24 @@ const emits = defineEmits<{
   keydown: [e: KeyboardEvent]
 }>()
 
-const { inputValue, componentStyle, isTextarea, isFocused, showsWordLimit, wordCount, handleInput, handleClear } = useLhInput(props)
+const { inputValue, componentStyle, isTextarea, isFocused, ariaInvalid, showsWordLimit, wordCount, handleInput, handleClear } = useLhInput(props)
+
+// 依赖响应式版本号：切换语言时触发重渲染
+const t = (path: string, fallback?: string) => {
+  void lhlocale.version.value
+  return lhlocale.t(path, fallback)
+}
+
+// placeholder 未传时用语言包兜底；有 label 时占位与浮动标签冲突，保持空
+const placeholderText = computed(() =>
+  props.label ? '' : props.placeholder || t('input.placeholder', '请输入'),
+)
+
+// 原生元素样式：resize 控制拉伸方向（默认 vertical 与样式表现则一致），inputStyle 透传且可覆盖
+const nativeElStyle = computed(() => ({
+  resize: props.resize,
+  ...(props.inputStyle ?? {}),
+}))
 
 // Sync external modelValue changes
 watch(() => props.modelValue, (val) => {

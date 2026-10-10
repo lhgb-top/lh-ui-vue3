@@ -70,4 +70,20 @@ describe('LhDescriptions', () => {
     const wrapper = mount(LhDescriptions, { props: { items: [] } })
     expect(wrapper.find('.lh-descriptions__row').exists()).toBe(false)
   })
+
+  it('renders label/value pairs with dl/dt/dd semantics', () => {
+    const wrapper = mount(LhDescriptions, { props: { items, column: 3 } })
+    expect(wrapper.find('dl.lh-descriptions__row').exists()).toBe(true)
+    expect(wrapper.find('dt.lh-descriptions__label').exists()).toBe(true)
+    expect(wrapper.find('dd.lh-descriptions__content').exists()).toBe(true)
+    // 补位元素是纯装饰，移出无障碍树
+    expect(wrapper.find('.lh-descriptions__filler').attributes('aria-hidden')).toBe('true')
+  })
+
+  it('applies sx props as inline styles on the root element', () => {
+    const wrapper = mount(LhDescriptions, { props: { items, sx: { mt: 2, w: '50%' } } })
+    const style = wrapper.attributes('style')
+    expect(style).toContain('margin-top: 16px')
+    expect(style).toContain('width: 50%')
+  })
 })

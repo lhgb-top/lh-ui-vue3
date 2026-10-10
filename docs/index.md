@@ -4,7 +4,7 @@ layout: home
 hero:
   name: lh-ui-plus
   text: 企业级 Vue 3 国风组件库
-  tagline: 以国风之美，筑代码之基。融合传统水墨美学与现代工程实践。
+  tagline: 以国风之美，筑代码之基。融合传统水墨丹青美学与现代工程实践。
   actions:
     - theme: brand
       text: 快速开始
@@ -24,8 +24,8 @@ features:
     title: TypeScript 驱动
     details: 全链路 TypeScript 类型推导，提供完善的类型安全保障与 IDE 智能提示。
   - icon: 🛠️
-    title: 高度可定制
-    details: PT (PassThrough) 与 sx 属性，让组件样式与行为可深度定制，拒绝"黑盒"。
+    title: 深度定制
+    details: CSS 变量主题系统 + 花纹背景，支持 sx 快速布局，满足各种设计需求。
   - icon: 🌍
     title: 国际化
     details: 内置 ConfigProvider 配置体系，支持多语言及全局主题统一管理。
@@ -33,3 +33,5 @@ features:
     title: 按需加载
     details: 支持 Tree-shaking，只引入你需要的组件，最小化打包体积。
 ---
+
+<LhHome />

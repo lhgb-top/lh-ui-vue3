@@ -1,4 +1,5 @@
-import type { LhSelectOption } from '@lh-ui/core/select'
+import type { LhSelectOption } from '@lh-ui/share/core/select'
+import type { SxProps } from '@lh-ui/share/core/shared'
 
 export type LhSelectSize = 'small' | 'medium' | 'large'
 
@@ -11,6 +12,9 @@ export interface LhSelectProps {
   size?: LhSelectSize
   name?: string
   ariaLabel?: string
+  popperContainer?: 'body' | HTMLElement | string
+  /** sx 快速布局属性 */
+  sx?: SxProps
 }
 
 export type { LhSelectOption }

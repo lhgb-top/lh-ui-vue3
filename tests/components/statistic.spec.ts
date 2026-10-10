@@ -53,4 +53,16 @@ describe('LhStatistic', () => {
     const wrapper = mount(LhStatistic, { props: { value: 5 } })
     expect(wrapper.find('.lh-statistic__title').exists()).toBe(false)
   })
+
+  it('announces value changes via aria-live', () => {
+    const wrapper = mount(LhStatistic, { props: { value: 5 } })
+    expect(wrapper.find('.lh-statistic__value').attributes('aria-live')).toBe('polite')
+  })
+
+  it('applies sx props as inline styles on the root element', () => {
+    const wrapper = mount(LhStatistic, { props: { value: 100, sx: { mt: 2, w: '50%' } } })
+    const style = wrapper.attributes('style')
+    expect(style).toContain('margin-top: 16px')
+    expect(style).toContain('width: 50%')
+  })
 })

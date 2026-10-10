@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, ref, watch } from 'vue'
-import { toggleCheckboxValue } from '@lh-ui/core/checkbox'
+import { computed, provide, ref, watch } from 'vue'
+import { toggleCheckboxValue } from '@lh-ui/share/core/checkbox'
 import type { LhCheckboxGroupProps } from './types'
 import { LH_CHECKBOX_GROUP_KEY } from './types'
 
@@ -46,9 +46,9 @@ function toggle(value: unknown, checked: boolean) {
 
 provide(LH_CHECKBOX_GROUP_KEY, {
   values,
-  disabled: props.disabled,
-  name: props.name,
-  size: props.size,
+  disabled: computed(() => props.disabled),
+  name: computed(() => props.name),
+  size: computed(() => props.size),
   toggle,
 })
 </script>

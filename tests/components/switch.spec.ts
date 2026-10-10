@@ -49,4 +49,11 @@ describe('LhSwitch', () => {
     expect(wrapper.attributes('aria-checked')).toBe('true')
     expect(wrapper.attributes('aria-disabled')).toBe('false')
   })
+
+  it('applies sx props as inline styles on the root element', () => {
+    const wrapper = mount(LhSwitch, { props: { sx: { mt: 2, w: '50%' } } })
+    const style = wrapper.attributes('style')
+    expect(style).toContain('margin-top: 16px')
+    expect(style).toContain('width: 50%')
+  })
 })

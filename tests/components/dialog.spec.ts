@@ -124,4 +124,43 @@ describe('LhDialog', () => {
     })
     expect(document.querySelector('.lh-dialog')?.getAttribute('aria-label')).toBe('Important')
   })
+
+  it('applies center class when center is true', () => {
+    mount(LhDialog, {
+      props: { modelValue: true, center: true },
+    })
+    expect(document.querySelector('.lh-dialog')?.classList.contains('lh-dialog--center')).toBe(true)
+  })
+
+  it('does not apply center class by default', () => {
+    mount(LhDialog, { props: { modelValue: true } })
+    expect(document.querySelector('.lh-dialog')?.classList.contains('lh-dialog--center')).toBe(false)
+  })
+
+  it('moves focus into the dialog and returns it on close', async () => {
+    const trigger = document.createElement('button')
+    trigger.id = 'dialog-trigger'
+    document.body.appendChild(trigger)
+    trigger.focus()
+
+    const wrapper = mount(LhDialog, {
+      props: { modelValue: false, title: '详情' },
+      slots: { default: '<button id="dialog-action">动作</button>' },
+      attachTo: document.body,
+    })
+    await wrapper.vm.$nextTick()
+
+    await wrapper.setProps({ modelValue: true })
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+    // 焦点只要进入对话框即可：容器内 DOM 序的首个可聚焦元素是头部关闭按钮
+    expect(document.querySelector('.lh-dialog')?.contains(document.activeElement)).toBe(true)
+
+    await wrapper.setProps({ modelValue: false })
+    await wrapper.vm.$nextTick()
+    expect(document.activeElement?.id).toBe('dialog-trigger')
+
+    wrapper.unmount()
+    trigger.remove()
+  })
 })

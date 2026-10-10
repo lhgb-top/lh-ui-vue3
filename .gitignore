@@ -7,8 +7,14 @@ dist/
 dist-**/
 es/
 lib/
-./theme/
+# 根目录构建产物（build-styles 产出的 theme/index.css）
+/theme/
+# 私有 registry 打包产物（scripts/pack-private.mjs）
+/private-registry/
+/private-dist/
+# 文档站构建产物与缓存
 docs/.vitepress/dist/
+docs/.vitepress/cache/
 
 # Test, coverage, and tooling output
 coverage/
@@ -21,6 +27,12 @@ test-results/
 .env
 .env.*
 !.env.example
+# 文档站部署配置（base / 域名）需版本控制，是构建的单一数据源，见
+# docs/.vitepress/config.ts 的 loadEnv；其余 .env 仍保持忽略。
+# Docs deployment config is the build's single source of truth and must be
+# committed; all other .env files stay ignored.
+!.env.production
+!.env.development
 
 # Logs and temporary files
 *.log
@@ -32,6 +44,23 @@ test-results/
 .DS_Store
 Thumbs.db
 
-# Documentation and VitePress caches
-# docs/**/cache/
-docs/.vitepress/cache/
+# Editors and IDEs（需共享的编辑器配置请用 git add -f 强制纳入）
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 本地 AI 工具与临时工作区（纯本地产物，不入库）
+.zcode/
+.easyclaw/
+.agents/
+skills/
+
+# 自动生成的 git 暂存信息报告（临时产物）
+git_staging_info.md
+
+# 个人原始记录（curated 摘要见 MEMORY.md，已入库；如需共享日记请删除本行）
+memory/

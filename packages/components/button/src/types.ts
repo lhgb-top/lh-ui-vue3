@@ -1,4 +1,6 @@
-import { LH_SIZE_CONST, LH_TYPES_CONST } from "lh-constants"
+import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhIconName } from '@lh-ui/share/core/icon'
+import { LH_SIZE_CONST, LH_TYPES_CONST } from "@lh-ui/share/constants"
 
 
 export interface LhButtonProps {
@@ -11,7 +13,8 @@ export interface LhButtonProps {
   block?: boolean
   round?: boolean
   circle?: boolean
-  icon?: string
+  /** 图标名称（内置 LhIcon 图标，如 `search`；需自定义渲染时用 `icon` 插槽覆盖） */
+  icon?: LhIconName
   nativeType?: 'button' | 'submit' | 'reset'
   href?: string
   target?: string
@@ -19,6 +22,8 @@ export interface LhButtonProps {
   themeVars?: Record<string, string>
   /** 组件级背景花纹，覆盖 ConfigProvider 配置（不受 patternComponents 白名单限制） */
   bgPattern?: string
+  /** sx 快速布局属性 */
+  sx?: SxProps
 }
 
 export const LH_BUTTON_TYPE_CONST = {

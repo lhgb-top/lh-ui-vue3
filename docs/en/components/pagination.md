@@ -1,0 +1,256 @@
+# Pagination
+
+Page navigation: previous/next, page window with ellipses, size changer, jumper and total count. The window-shrinking algorithm lives in core as pure functions.
+
+## Basic Usage
+
+<DemoBlock title="Basic Usage">
+  <LhPagination :total="120" />
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <LhPagination :total="120" />
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <LhPagination :total="120" />
+</template>
+```
+
+## Total and Size Changer
+
+<DemoBlock title="Total and Size Changer">
+  <LhPagination :total="480" show-total show-size-changer />
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <LhPagination :total="480" show-total show-size-changer />
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <LhPagination :total="480" show-total show-size-changer />
+</template>
+```
+
+## Jumper
+
+<DemoBlock title="Jumper">
+  <LhPagination :total="480" show-total show-jumper />
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <LhPagination :total="480" show-total show-jumper />
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <LhPagination :total="480" show-total show-jumper />
+</template>
+```
+
+## Simple Mode
+
+<DemoBlock title="Simple Mode">
+  <LhPagination :total="480" simple show-jumper />
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <LhPagination :total="480" simple show-jumper />
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <LhPagination :total="480" simple show-jumper />
+</template>
+```
+
+## Controlled Usage
+
+<DemoBlock title="Controlled Usage">
+  <LhPagination v-model:current="page" :total="95" />
+  <p class="demo-pagination-current">Current page: {{ page }}</p>
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+import { ref } from 'vue'
+const page = ref(2)
+const pageSize = ref(20)
+</script>
+
+<template>
+  <LhPagination v-model:current="page" :total="95" />
+</template>
+```
+
+```vue options
+<script>
+export default {
+  data() {
+    return { page: 2, pageSize: 20 }
+  },
+}
+</script>
+
+<template>
+  <LhPagination v-model:current="page" :total="95" />
+</template>
+```
+
+## Page size and disabled
+
+`v-model:page-size` controls the page size and `page-sizes` customizes the options; `disabled` disables the whole pagination.
+
+<DemoBlock title="Page size & disabled">
+  <LhPagination
+    v-model:page-size="pageSize"
+    :total="480"
+    show-size-changer
+    :page-sizes="[10, 20, 50, 100]"
+  />
+  <p class="demo-pagination-current">Page size: {{ pageSize }}</p>
+  <LhPagination :total="480" disabled />
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+import { ref } from 'vue'
+const pageSize = ref(20)
+</script>
+
+<template>
+  <LhPagination
+    v-model:page-size="pageSize"
+    :total="480"
+    show-size-changer
+    :page-sizes="[10, 20, 50, 100]"
+  />
+  <LhPagination :total="480" disabled />
+</template>
+```
+
+```vue options
+<script>
+export default {
+  data() {
+    return { pageSize: 20 }
+  },
+}
+</script>
+
+<template>
+  <LhPagination
+    v-model:page-size="pageSize"
+    :total="480"
+    show-size-changer
+    :page-sizes="[10, 20, 50, 100]"
+  />
+  <LhPagination :total="480" disabled />
+</template>
+```
+
+## Pagination API
+
+### Props
+
+| Prop | Description | Type | Default |
+|------|-------------|------|---------|
+| total | Total items (required) | `number` | — |
+| pageSize | Items per page | `number` | `10` |
+| current | Current page (`v-model:current`) | `number` | — |
+| pageSizes | Size options | `number[]` | `() => [10, 20, 30, 40]` |
+| showTotal | Show the total count | `boolean` | `false` |
+| showSizeChanger | Show the size changer | `boolean` | `false` |
+| showJumper | Show the jumper input | `boolean` | `false` |
+| simple | Compact mode | `boolean` | `false` |
+| disabled | Disable everything | `boolean` | `false` |
+| sx | sx quick-layout props | `SxProps` | — |
+
+### Events
+
+| Event | Description | Callback |
+|-------|-------------|----------|
+| update:current | Current page changed (v-model) | `(page: number)` |
+| update:pageSize | Page size changed (v-model:pageSize) | `(size: number)` |
+| change | Page changed | `(page: number)` |
+| size-change | Page size changed | `(size: number)` |
+
+### Accessibility
+
+- The root is `<nav aria-label="pagination">`
+- The active page button gets `aria-current="page"`
+- Every page button and the prev/next buttons carry individual aria-labels (from the `pagination.page` / `prev` / `next` locale messages); the bare "‹" "›" glyphs are `aria-hidden`
+- The jumper input has a real `<label>` (from the `pagination.goto` locale message)
+- The size changer is a native `<select>` with an aria-label (from `pagination.sizeChangerLabel`)
+- Ellipses are non-interactive `aria-hidden` elements and stay out of the keyboard flow
+
+<!-- lh-types:begin (auto-generated by scripts/gen-type-docs.mjs, do not edit) -->
+
+## Type Definitions
+
+The TypeScript type structures exported by this component (auto-extracted from `packages/components/pagination/src/types.ts` and `@lh-ui/share/core/*` sources; click each entry to expand; see the Props table above for attribute descriptions):
+
+<details id="type-LhPaginationProps">
+<summary><code>LhPaginationProps</code></summary>
+
+```ts
+export interface LhPaginationProps {
+  total: number
+  pageSize?: number
+  current?: number
+  pageSizes?: number[]
+  showTotal?: boolean
+  showSizeChanger?: boolean
+  showJumper?: boolean
+  simple?: boolean
+  disabled?: boolean
+  sx?: SxProps
+}
+```
+
+</details>
+
+<!-- lh-types:end -->
+<script setup lang="ts">
+import { ref } from 'vue'
+const page = ref(2)
+const pageSize = ref(20)
+</script>

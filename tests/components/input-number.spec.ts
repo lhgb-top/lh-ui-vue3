@@ -72,4 +72,51 @@ describe('LhInputNumber Component', () => {
     expect(wrapper.find('.lh-input-number__increase').exists()).toBe(false)
     expect(wrapper.find('.lh-input-number__decrease').exists()).toBe(false)
   })
+
+  it('increments the value on ArrowUp', async () => {
+    const wrapper = mount(LhInputNumber, {
+      props: { modelValue: 5 },
+    })
+    const input = wrapper.find('input')
+    await input.trigger('keydown', { key: 'ArrowUp' })
+    const events = wrapper.emitted('update:modelValue')
+    expect(events).toBeTruthy()
+    expect(events![0]).toEqual([6])
+  })
+
+  it('decrements the value on ArrowDown', async () => {
+    const wrapper = mount(LhInputNumber, {
+      props: { modelValue: 5 },
+    })
+    const input = wrapper.find('input')
+    await input.trigger('keydown', { key: 'ArrowDown' })
+    const events = wrapper.emitted('update:modelValue')
+    expect(events).toBeTruthy()
+    expect(events![0]).toEqual([4])
+  })
+
+  it('does not increment on ArrowUp when at max', async () => {
+    const wrapper = mount(LhInputNumber, {
+      props: { modelValue: 10, max: 10 },
+    })
+    const input = wrapper.find('input')
+    await input.trigger('keydown', { key: 'ArrowUp' })
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+  })
+
+  it('does not decrement on ArrowDown when at min', async () => {
+    const wrapper = mount(LhInputNumber, {
+      props: { modelValue: 0, min: 0 },
+    })
+    const input = wrapper.find('input')
+    await input.trigger('keydown', { key: 'ArrowDown' })
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+  })
+
+  it('applies sx props as inline styles on the root element', () => {
+    const wrapper = mount(LhInputNumber, { props: { sx: { mt: 2, w: '50%' } } })
+    const style = wrapper.attributes('style')
+    expect(style).toContain('margin-top: 16px')
+    expect(style).toContain('width: 50%')
+  })
 })

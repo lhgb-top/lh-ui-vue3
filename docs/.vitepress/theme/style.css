@@ -1,18 +1,306 @@
+/* =================================== */
+/* lh-ui-plus 国风文档主题              */
+/* 融合传统水墨丹青美学现代工程实践     */
+/* =================================== */
+
+/* 全局国风配色 */
+:root {
+  /* 靛蓝主色调 - 跟随库主色 --lh-primary-color（预设切换时整体换色），回退为原靛蓝 */
+  --lh-docs-primary: var(--lh-primary-color, #2c5282);
+  --lh-docs-primary-hover: var(--lh-primary-color-hover, #3663a3);
+  --lh-docs-primary-light: color-mix(in srgb, var(--lh-primary-color, #2c5282) 15%, transparent);
+
+  /* 朱砂点缀 - 印泥朱红 */
+  --lh-docs-accent: #c53030;
+  --lh-docs-accent-hover: #d94848;
+
+  /* 宣纸底色 */
+  --lh-docs-bgpaper: #faf8f5;
+  --lh-docs-bgpaper-dark: #1a1a2e;
+
+  /* 墨色体系 */
+  --lh-docs-ink: #2d3748;
+  --lh-docs-ink-light: #4a5568;
+  --lh-docs-ink-faint: #718096;
+
+  /* 松花绿 - 竹影青翠 */
+  --lh-docs-bamboo: #38a169;
+
+  /* 藤黄 - 秋叶金黄 */
+  --lh-docs-golden: #d69e2e;
+}
+
+/* VitePress 主题覆盖 */
+/*
+  站点外壳（导航栏/侧边栏/正文链接/按钮等）跟随库预设主色：
+  --lh-primary-color 由 @lh-ui/share/styles/theme 的明色 var.scss 定义、
+  由 var-dark.scss 在暗色下重写，再由 usePresetTheme 按预设覆盖到 :root。
+  外壳只需引用同一批变量，切换预设时即可整体换色。
+*/
+:root {
+  --vp-c-brand: var(--lh-primary-color);
+  --vp-c-brand-light: var(--lh-primary-color-hover);
+  --vp-c-brand-lighter: var(--lh-primary-color-bg);
+  --vp-c-brand-dark: var(--lh-primary-color-active);
+
+  /* 首页品牌颜色 */
+  --vp-home-hero-name-color: var(--lh-primary-color);
+  --vp-button-brand-border: var(--lh-primary-color);
+  /* 主色底上的文字不写死 #fff：金色/松花等浅主色下 #fff 对比度不足 AA */
+  --vp-button-brand-text: var(--lh-color-on-primary, #fff);
+  --vp-button-brand-bg: var(--lh-primary-color);
+  --vp-button-brand-hover-border: var(--lh-primary-color-hover);
+  --vp-button-brand-hover-text: var(--lh-color-on-primary, #fff);
+  --vp-button-brand-hover-bg: var(--lh-primary-color-hover);
+  --vp-button-brand-active-border: var(--lh-primary-color-active);
+  --vp-button-brand-active-text: var(--lh-color-on-primary, #fff);
+  --vp-button-brand-active-bg: var(--lh-primary-color-active);
+
+  /* 宣纸背景 */
+  --vp-c-bg: var(--lh-docs-bgpaper);
+  --vp-c-bg-soft: #f5f2eb;
+  --vp-c-bg-soft-up: #f9f6f0;
+
+  /* 墨色文本 */
+  --vp-c-text-1: var(--lh-docs-ink);
+  --vp-c-text-2: var(--lh-docs-ink-light);
+  --vp-c-text-3: var(--lh-docs-ink-faint);
+
+  /* 边框 */
+  --vp-c-border: #d4c9b8;
+  --vp-c-divider: #e2d9cc;
+
+  /* 链接 */
+  --vp-c-brand-link: var(--lh-primary-color);
+
+  /* 代码块 - 亮色模式使用浅色背景 */
+  --vp-code-block-bg: #f6f8fa;
+  --vp-code-copy-code-text: #a0aec0;
+  --vp-code-copy-code-bg: #e2e8f0;
+
+  /* 字体 */
+  --vp-font-family-base: 'Noto Serif SC', 'Songti SC', 'Noto Serif CJK SC', serif;
+  --vp-font-family-mono: 'Fira Code', 'Fira Mono', monospace;
+}
+
+/* 暗色模式适配 */
+.dark {
+  --vp-c-bg: var(--lh-docs-bgpaper-dark);
+  --vp-c-bg-soft: #16162a;
+  --vp-c-bg-soft-up: #1a1a30;
+  --vp-c-text-1: #e2e8f0;
+  --vp-c-text-2: #a0aec0;
+  --vp-c-text-3: #718096;
+  --vp-c-border: #4a5568;
+  --vp-c-divider: #2d3748;
+  --lh-docs-bgpaper: var(--lh-docs-bgpaper-dark);
+
+  /* 代码块 - 暗色模式使用深色背景 */
+  --vp-code-block-bg: #1a1a2e;
+  --vp-code-copy-code-text: #a0aec0;
+  --vp-code-copy-code-bg: #2d3748;
+}
+
+/* 国风花纹背景 */
+body {
+  /* 网格线跟随主色派生（原写死 rgba(44,82,130,.03) 不随预设换色） */
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--lh-primary-color, #2c5282) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--lh-primary-color, #2c5282) 3%, transparent) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* 首页品牌文字渐变 */
+.VPHomeHero .name {
+  background: linear-gradient(135deg, var(--lh-primary-color) 0%, var(--lh-docs-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 特性卡片国风边框 */
+.VPFeature {
+  border: 1px solid var(--vp-c-border) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.VPFeature:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(44, 82, 130, 0.1);
+}
+
+/* 国风按钮 */
+.lh-docs-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 20px;
+  border: 1px solid var(--lh-primary-color);
+  border-radius: 4px;
+  background: var(--lh-primary-color);
+  /* 主色底上的文字不写死 #fff，与 --vp-button-brand-* 保持一致 */
+  color: var(--lh-color-on-primary, #fff);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.lh-docs-button:hover {
+  background: var(--lh-primary-color-hover);
+  box-shadow: 0 2px 8px rgba(44, 82, 130, 0.2);
+}
+
+.lh-docs-button--alt {
+  background: transparent;
+  color: var(--lh-primary-color);
+}
+
+.lh-docs-button--alt:hover {
+  background: var(--lh-primary-color-bg);
+  color: var(--lh-primary-color);
+}
+
+/* 特色标记 */
+.feature-icon {
+  position: relative;
+}
+
+.feature-icon::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 2px dashed var(--lh-primary-color);
+  border-radius: 8px;
+  opacity: 0.2;
+  transform: rotate(45deg);
+}
+
+/* 水墨装饰元素 */
+.ink-decoration {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ink-decoration--circle {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: 1px solid var(--lh-primary-color-bg);
+  opacity: 0.1;
+}
+
+/* 侧边栏国风样式 */
+.VPSidebar {
+  background-color: var(--lh-docs-bgpaper);
+}
+
+.dark .VPSidebar {
+  background-color: var(--lh-docs-bgpaper-dark);
+}
+
+.VPSidebarItem.is-active>.item>.pointer {
+  color: var(--lh-primary-color);
+}
+
+/* 顶部导航国风 */
+.VPNav {
+  background-color: rgba(250, 248, 245, 0.95);  /* 去掉 !important,VitePress 自带 !important 语义 */
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.dark .VPNav {
+  background-color: rgba(26, 26, 46, 0.95);
+}
+
+/* 安卓/移动端侧边菜单对 backdrop-filter 兼容性差,且 VitePress 移动端菜单 是 fixed 定位
+   放在 .VPNav 内会受到 backdrop rooted 的影响,故关闭 blur 以保证菜单可见 */
+@media (max-width: 768px) {
+  .VPNav {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+
+/* 搜索框 */
+.VPSearch {
+  border: 1px solid var(--vp-c-divider) !important;
+}
+
+/* 内容区域装饰线条 */
+.VPContent {
+  position: relative;
+}
+
+.VPContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+      var(--lh-primary-color) 0%,
+      var(--lh-docs-bamboo) 25%,
+      var(--lh-docs-golden) 50%,
+      var(--lh-docs-bamboo) 75%,
+      var(--lh-primary-color) 100%);
+}
+
+/* 页脚国风 */
+.VPFooter {
+  border-top: 1px solid var(--vp-c-divider);
+  background-color: var(--lh-docs-bgpaper);
+}
+
+.dark .VPFooter {
+  background-color: var(--lh-docs-bgpaper-dark);
+}
+
+/* 自定义组件样式 */
+
 /* DemoBlock 组件样式 */
 .demo-block {
-  border: 1px solid var(--vp-c-divider);
+  position: relative;
+  border: 2px solid var(--lh-primary-color-bg);
   border-radius: 8px;
-  margin: 16px 0;
+  margin: 24px 0;
   overflow: hidden;
+  background: linear-gradient(to bottom, #fff, var(--lh-docs-bgpaper));
+}
+
+.dark .demo-block {
+  background: linear-gradient(to bottom, var(--lh-docs-bgpaper-dark), #16162a);
+}
+
+.demo-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--lh-primary-color), var(--lh-docs-bamboo));
 }
 
 .demo-block-title {
-  padding: 8px 16px;
+  padding: 12px 16px;
   font-size: 14px;
   font-weight: 500;
   color: var(--vp-c-text-2);
   background: var(--vp-c-bg-soft);
   border-bottom: 1px solid var(--vp-c-divider);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--vp-font-family-base);
+}
+
+.demo-block-title::before {
+  content: '▶';
+  font-size: 12px;
+  color: var(--lh-primary-color);
 }
 
 .demo-block-content {
@@ -23,10 +311,189 @@
 }
 
 /* 演示区域暗色模式适配 */
-:root.dark .demo-block {
-  border-color: var(--vp-c-divider-dark);
+/* VitePress 在 .dark 作用域内自行重定义 --vp-c-divider / --vp-c-bg-soft，
+   不存在带 -dark 后缀的变量（原写法解析为 invalid，边框/底色实际失效） */
+.dark .demo-block {
+  border-color: var(--vp-c-divider);
 }
 
-:root.dark .demo-block-title {
-  background: var(--vp-c-bg-soft-dark);
+.dark .demo-block-title {
+  background: var(--vp-c-bg-soft);
+}
+
+/* API 切换按钮 */
+.api-toggle-wrapper {
+  position: sticky;
+  top: 3rem;
+  z-index: 9;
+  background-color: var(--vp-local-nav-bg-color, var(--vp-c-bg-soft));
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.api-toggle {
+  display: flex;
+  gap: 4px;
+  padding: 2px;
+  background: var(--vp-c-bg-soft);
+  border-radius: 4px;
+  border: 1px solid var(--vp-c-divider);
+}
+
+.api-toggle-button {
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: none;
+  background: transparent;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--vp-font-family-base);
+}
+
+.api-toggle-button:hover {
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-bg-soft-up);
+}
+
+.api-toggle-button.active {
+  background: var(--lh-primary-color);
+  /* 主色底上的文字不写死 #fff：金色/松花等浅主色下 #fff 对比度不足 AA */
+  color: var(--lh-color-on-primary, #fff);
+}
+
+/* 版本标签 */
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  margin-left: 8px;
+  border-radius: 12px;
+  background: var(--lh-primary-color-bg);
+  color: var(--lh-primary-color);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* 特色标签 */
+.feature-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.feature-badge--primary {
+  /* 主色底色跟随主色派生（原写死 rgba(44,82,130,.1) 不随预设换色） */
+  background: color-mix(in srgb, var(--lh-primary-color, #2c5282) 10%, transparent);
+  color: var(--lh-primary-color);
+}
+
+.feature-badge--success {
+  background: rgba(56, 161, 105, 0.1);
+  color: var(--lh-docs-bamboo);
+}
+
+.feature-badge--warning {
+  background: rgba(214, 158, 46, 0.1);
+  color: var(--lh-docs-golden);
+}
+
+/* 国风表格 */
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.doc-table th {
+  padding: 10px 16px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-bg-soft);
+  border-bottom: 2px solid var(--lh-primary-color-bg);
+}
+
+.doc-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.doc-table tr:hover {
+  background: var(--vp-c-bg-soft-up);
+}
+
+/* 代码块样式 */
+.vp-doc div[class*='language-'] {
+  border-radius: 6px;
+  border: 1px solid var(--vp-c-divider);
+}
+
+/* 排版优化 */
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  font-family: var(--vp-font-family-base);
+  color: var(--lh-docs-ink);
+}
+
+.dark .vp-doc h1,
+.dark .vp-doc h2,
+.dark .vp-doc h3 {
+  color: #e2e8f0;
+}
+
+/* 水墨动画 */
+@keyframes ink-breathe {
+
+  0%,
+  100% {
+    opacity: 0.05;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.1;
+    transform: scale(1.05);
+  }
+}
+
+.ink-animate {
+  animation: ink-breathe 8s ease-in-out infinite;
+}
+
+/* API 切换包装 */
+.api-toggle-wrapper {
+  position: sticky;
+  top: var(--vp-nav-height,3rem);
+  z-index: 9;
+  background-color: var(--vp-local-nav-bg-color, var(--vp-c-bg-soft));
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .VPNav {
+    padding: 0 12px;
+  }
+
+  .demo-block-content {
+    padding: 16px;
+  }
+
+  .api-toggle-wrapper {
+    /* position: static; */
+    margin-bottom: 12px;
+  }
 }

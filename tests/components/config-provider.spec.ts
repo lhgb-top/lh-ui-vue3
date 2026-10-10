@@ -108,4 +108,15 @@ describe('LhConfigProvider', () => {
     await wrapper.setProps({ size: 'large' })
     expect(wrapper.find('[data-size]').attributes('data-size')).toBe('large')
   })
+
+  // 回归：getThemeVars() 返回的键已带 --lh- 前缀，旧实现会拼成 --lh---lh-primary-color
+  it('does not double-prefix already-prefixed themeVars keys', () => {
+    const wrapper = mount(LhConfigProvider, {
+      props: { themeVars: { '--lh-primary-color': '#2B4C7C' } },
+    })
+    const style = wrapper.attributes('style')
+    // Vue 序列化为 "--lh-primary-color: #2B4C7C;"（冒号后带空格、保留原大小写）
+    expect(style).toMatch(/--lh-primary-color:\s*#2B4C7C/i)
+    expect(style).not.toContain('--lh---lh-')
+  })
 })

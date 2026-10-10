@@ -1,5 +1,8 @@
 <template>
-  <div :class="descriptionsClasses">
+  <div
+    :class="descriptionsClasses"
+    :style="sxStyle"
+  >
     <div
       v-if="props.title || $slots.title"
       class="lh-descriptions__header"
@@ -7,20 +10,20 @@
       <slot name="title">{{ props.title }}</slot>
     </div>
     <div class="lh-descriptions__body">
-      <div
+      <dl
         v-for="(row, rowIndex) in rows"
         :key="rowIndex"
         class="lh-descriptions__row"
         :style="{ display: 'flex' }"
       >
         <template v-for="(cell, cellIndex) in row.cells" :key="`${rowIndex}-${cellIndex}`">
-          <div
+          <dt
             class="lh-descriptions__label"
             :style="{ flex: `0 0 ${labelBasis}%` }"
           >
             {{ cell.item.label }}
-          </div>
-          <div
+          </dt>
+          <dd
             class="lh-descriptions__content"
             :style="{ flex: `0 0 ${contentBasis(cell.span)}%` }"
           >
@@ -30,14 +33,15 @@
             >
               {{ cell.item.value }}
             </slot>
-          </div>
+          </dd>
         </template>
         <div
           v-if="row.filler > 0"
           class="lh-descriptions__filler"
           :style="{ flex: `0 0 ${contentBasis(row.filler)}%` }"
+          aria-hidden="true"
         ></div>
-      </div>
+      </dl>
     </div>
   </div>
 </template>
@@ -46,7 +50,8 @@
 defineOptions({ name: 'LhDescriptions' })
 
 import { computed } from 'vue'
-import { getDescriptionsClassNames, buildDescriptionRows } from '@lh-ui/core/descriptions'
+import { sxToStyle } from '@lh-ui/share/core/shared'
+import { getDescriptionsClassNames, buildDescriptionRows } from '@lh-ui/share/core/descriptions'
 import type { LhDescriptionsProps } from './types'
 
 const props = withDefaults(defineProps<LhDescriptionsProps>(), {
@@ -54,7 +59,11 @@ const props = withDefaults(defineProps<LhDescriptionsProps>(), {
   column: 3,
   border: false,
   items: () => [],
+  sx: undefined,
 })
+
+// sx 快速布局属性：转内联样式作用于根元素
+const sxStyle = computed(() => sxToStyle(props.sx ?? {}))
 
 const rows = computed(() => buildDescriptionRows(props.items, props.column))
 

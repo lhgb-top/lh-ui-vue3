@@ -1,4 +1,5 @@
-import type { LhComponentSize } from '@lh-ui/core/shared'
+import type { LhComponentSize } from '@lh-ui/share/core/shared'
+import type { SxProps } from '@lh-ui/share/core/shared'
 
 export interface LhSliderProps {
   modelValue?: number | [number, number] | null
@@ -10,6 +11,8 @@ export interface LhSliderProps {
   showInput?: boolean
   size?: LhComponentSize
   marks?: Record<number, string>
+  /** sx 快速布局属性 */
+  sx?: SxProps
 }
 
 export type LhSliderSize = LhComponentSize

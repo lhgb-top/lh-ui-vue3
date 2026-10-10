@@ -2,12 +2,17 @@
   <div
     ref="triggerRef"
     class="lh-tooltip"
-    @mouseenter="show"
-    @mouseleave="hide"
+    :style="triggerStyle"
+    :aria-describedby="isVisible ? tooltipId : undefined"
+    @mouseenter="onTriggerMouseenter"
+    @mouseleave="onTriggerMouseleave"
+    @click="onTriggerClick"
+    @focusin="onTriggerFocusin"
+    @focusout="onTriggerFocusout"
   >
     <slot></slot>
 
-    <Teleport to="body">
+    <Teleport :to="teleportTarget">
       <Transition name="lh-tooltip-fade">
         <div
           v-if="isVisible"
@@ -26,7 +31,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { useLhTooltip } from './index'
 import type { LhTooltipProps } from './types'
 
@@ -47,8 +51,10 @@ const props = withDefaults(defineProps<LhTooltipProps>(), {
   closeDelay: undefined,
   effect: 'dark',
   maxWidth: '200px',
+  teleportTarget: 'body',
   themeVars: undefined,
   bgPattern: undefined,
+  sx: undefined,
 })
 
 const {
@@ -59,15 +65,15 @@ const {
   show,
   hide,
   toggle,
+  onTriggerMouseenter,
+  onTriggerMouseleave,
+  onTriggerClick,
+  onTriggerFocusin,
+  onTriggerFocusout,
   popperClass,
-  popperStyle,
-  componentStyle,
+  mergedPopperStyle,
+  triggerStyle,
 } = useLhTooltip(props)
-
-const mergedPopperStyle = computed(() => ({
-  ...popperStyle.value,
-  ...componentStyle.value,
-}))
 
 defineExpose({
   show,

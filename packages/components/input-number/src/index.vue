@@ -1,5 +1,8 @@
 <template>
-  <div :class="wrapperClasses">
+  <div
+    :class="wrapperClasses"
+    :style="sxStyle"
+  >
     <button
       v-if="props.controls"
       type="button"
@@ -15,9 +18,10 @@
       :disabled="props.disabled"
       :placeholder="props.placeholder"
       :name="props.name"
+      :aria-invalid="!!formItem?.errorMessage || undefined"
       @change="handleInputChange"
-      @keydown.up.prevent="handleDecrement"
-      @keydown.down.prevent="handleIncrement"
+      @keydown.up.prevent="handleIncrement"
+      @keydown.down.prevent="handleDecrement"
     />
     <button
       v-if="props.controls"
@@ -32,16 +36,17 @@
 </template>
 
 <script setup lang="ts" name="LhInputNumber">
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
+import { sxToStyle } from '@lh-ui/share/core/shared'
 import {
   clampValue,
   incrementValue,
   decrementValue,
   shouldDisableIncrement,
   shouldDisableDecrement,
-  getDisplayValue,
-} from '@lh-ui/core/input-number'
+} from '@lh-ui/share/core/input-number'
 import type { LhInputNumberProps } from './types'
+import { LH_FORM_ITEM_CONTEXT_KEY } from '~/components/form/src/types'
 
 defineOptions({ name: 'LhInputNumber' })
 
@@ -57,12 +62,18 @@ const props = withDefaults(defineProps<LhInputNumberProps>(), {
   controls: true,
   placeholder: '',
   name: '',
+  sx: undefined,
 })
+
+// sx 快速布局属性：转内联样式作用于根元素
+const sxStyle = computed(() => sxToStyle(props.sx ?? {}))
 
 const emit = defineEmits<{
   'update:modelValue': [value: number | null]
   change: [value: number | null]
 }>()
+
+const formItem = inject(LH_FORM_ITEM_CONTEXT_KEY, null)
 
 const state = computed(() => ({
   value: props.modelValue,

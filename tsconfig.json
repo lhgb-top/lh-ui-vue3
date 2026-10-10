@@ -19,20 +19,14 @@
             "@/*": [
                 "./src/*"
             ],
-            "lh-ui": [
+            "@lh-ui/vue3": [
                 "./src/index.ts"
-            ],
-            "lh-constants": [
-                "./packages/constants/index.ts"
             ],
             "~/*": [
                 "./packages/*"
             ],
             "packages/*": [
                 "./packages/*"
-            ],
-            "@lh-ui/core/*": [
-                "./packages/core/*"
             ],
             "lh-types/*":[
                 "./types/*"

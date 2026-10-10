@@ -15,7 +15,7 @@
           :style="dialogStyle"
         >
           <div
-            :class="['lh-dialog', { 'lh-dialog--fullscreen': props.fullscreen }]"
+            :class="['lh-dialog', { 'lh-dialog--fullscreen': props.fullscreen, 'lh-dialog--center': props.center }]"
             :style="mergedDialogContentStyle"
             role="dialog"
             aria-modal="true"
@@ -93,6 +93,7 @@ const props = withDefaults(defineProps<LhDialogProps>(), {
   zIndex: undefined,
   themeVars: undefined,
   bgPattern: undefined,
+  sx: undefined,
 })
 
 const emit = defineEmits<{

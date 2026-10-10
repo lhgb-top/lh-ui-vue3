@@ -6,11 +6,45 @@
 
 <DemoBlock title="图片头像">
   <LhAvatar src="https://api.dicebear.com/9.x/notionists/svg?seed=mo" />
+  <LhAvatar
+    src="https://api.dicebear.com/9.x/notionists/svg?seed=f"
+    fit="cover"
+    alt="用户头像"
+  />
 </DemoBlock>
 
-```vue
+`fit` 控制裁切模式（原生 object-fit），`alt` 提供替代文本。
+
+```vue composition
+<script setup lang="ts">
+</script>
+
 <template>
-  <LhAvatar src="https://example.com/avatar.png" />
+  <!-- 图片头像 -->
+  <LhAvatar src="https://api.dicebear.com/9.x/notionists/svg?seed=mo" />
+  <!-- fit 裁切 + alt 替代文本 -->
+  <LhAvatar
+    src="https://api.dicebear.com/9.x/notionists/svg?seed=f"
+    fit="cover"
+    alt="用户头像"
+  />
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <!-- 图片头像 -->
+  <LhAvatar src="https://api.dicebear.com/9.x/notionists/svg?seed=mo" />
+  <!-- fit 裁切 + alt 替代文本 -->
+  <LhAvatar
+    src="https://api.dicebear.com/9.x/notionists/svg?seed=f"
+    fit="cover"
+    alt="用户头像"
+  />
 </template>
 ```
 
@@ -25,13 +59,61 @@
   </div>
 </DemoBlock>
 
-```vue
+```vue composition
+<script setup lang="ts">
+</script>
+
 <template>
   <div style="display: flex; align-items: center; gap: 12px">
-    <LhAvatar shape="square" size="small" text="小" />
-    <LhAvatar shape="square" size="medium" text="中" />
-    <LhAvatar shape="square" size="large" text="大" />
-    <LhAvatar size="large" text="圆" />
+    <LhAvatar
+      shape="square"
+      size="small"
+      text="小"
+    />
+    <LhAvatar
+      shape="square"
+      size="medium"
+      text="中"
+    />
+    <LhAvatar
+      shape="square"
+      size="large"
+      text="大"
+    />
+    <LhAvatar
+      size="large"
+      text="圆"
+    />
+  </div>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <div style="display: flex; align-items: center; gap: 12px">
+    <LhAvatar
+      shape="square"
+      size="small"
+      text="小"
+    />
+    <LhAvatar
+      shape="square"
+      size="medium"
+      text="中"
+    />
+    <LhAvatar
+      shape="square"
+      size="large"
+      text="大"
+    />
+    <LhAvatar
+      size="large"
+      text="圆"
+    />
   </div>
 </template>
 ```
@@ -41,16 +123,33 @@
 <DemoBlock title="无图片时按 icon、text 顺序回退">
   <div style="display: flex; align-items: center; gap: 12px">
     <LhAvatar text="水墨" />
-    <LhAvatar icon="lh-icon-user" />
+    <LhAvatar icon="user" />
     <LhAvatar text="Alice Chen" />
   </div>
 </DemoBlock>
 
-```vue
+```vue composition
+<script setup lang="ts">
+</script>
+
 <template>
   <div style="display: flex; align-items: center; gap: 12px">
     <LhAvatar text="水墨" />
-    <LhAvatar icon="lh-icon-user" />
+    <LhAvatar icon="user" />
+    <LhAvatar text="Alice Chen" />
+  </div>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <div style="display: flex; align-items: center; gap: 12px">
+    <LhAvatar text="水墨" />
+    <LhAvatar icon="user" />
     <LhAvatar text="Alice Chen" />
   </div>
 </template>
@@ -62,15 +161,19 @@
 
 <DemoBlock title="失败后回退到 text 并触发 error 事件">
   <LhAvatar
-    src="/broken-avatar.png"
+    :src="brokenAvatarSrc"
     text="备"
     @error="console.log('avatar load error')"
   />
 </DemoBlock>
 
-```vue
+```vue composition
 <template>
-  <LhAvatar src="/broken-avatar.png" text="备" @error="onError" />
+  <LhAvatar
+    src="/broken-avatar.png"
+    text="备"
+    @error="onError"
+  />
 </template>
 
 <script setup lang="ts">
@@ -80,22 +183,137 @@ function onError(e: Event) {
 </script>
 ```
 
+```vue options
+<template>
+  <LhAvatar
+    src="/broken-avatar.png"
+    text="备"
+    @error="onError"
+  />
+</template>
+
+<script>
+export default {
+  methods: {
+    onError(e) {
+      console.log('avatar load error', e)
+    },
+  },
+}
+</script>
+```
+
 ## API
 
 ### Props
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 属性  | 说明                                     | 类型                                                       | 默认值     |
+| ----- | ---------------------------------------- | ---------------------------------------------------------- | ---------- |
 | src | 图片地址，为空时回退到图标/文字 | `string` | — |
 | alt | 替代文本 | `string` | — |
-| icon | 图标类名（src 缺省时展示） | `string` | — |
+| icon | 图标名称（内置 LhIcon 图标，src 缺省时展示） | `LhIconName` | — |
 | text | 文字内容（src 与 icon 缺省时取首字展示） | `string` | — |
-| shape | 形状 | `'circle' \| 'square'` | `'circle'` |
-| size | 尺寸 | `'small' \| 'medium' \| 'large' \| 'mini' \| 'x-large'` | `'medium'` |
-| fit | 图片填充模式 | `'fill' \| 'contain' \| 'cover' \| 'none' \| 'scale-down'` | `'cover'` |
+| shape | 头像形状 | `"circle" \| "square"` | `'circle'` |
+| size | 头像大小 | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
+| fit | 图片加载模式：fill / contain / cover | `"fill" \| "contain" \| "cover" \| "none" \| "scale-down"` | `'cover'` |
+| sx | sx 快速布局属性 | `SxProps` | — |
 
 ### Events
 
-| 事件名 | 说明 | 回调参数 |
-| --- | --- | --- |
-| error | 图片加载失败时触发 | `(e: Event)` |
+| 事件名 | 说明               | 回调参数     |
+| ------ | ------------------ | ------------ |
+| error  | 图片加载失败时触发 | `(e: Event)` |
+
+### 无障碍
+
+- 图片模式由 `<img alt>` 自身提供替代文本；未传 `alt` 时回退到 `text`，再回退到 `avatar`
+- 图标 / 文字模式由根元素承担 `role="img"`，传 `alt` 时作为无障碍名称；图标本身标记为 `aria-hidden`
+
+<!-- lh-types:begin (auto-generated by scripts/gen-type-docs.mjs, do not edit) -->
+
+## 类型定义
+
+本组件对外导出的 TypeScript 类型结构如下（自动提取自 `packages/components/avatar/src/types.ts` 与 `@lh-ui/share/core/*` 源码，点击各条目展开查看完整定义；属性说明见上方 Props 表）：
+
+<details id="type-LhAvatarProps">
+<summary><code>LhAvatarProps</code></summary>
+
+```ts
+export interface LhAvatarProps {
+  /** 图片地址；为空时依次回退到图标、文字 */
+  src?: string
+  /** 图片加载失败的替代文本，同时作为 alt */
+  alt?: string
+  /** 图标名（src 为空或加载失败时展示，取内置 LhIcon 图标） */
+  icon?: LhIconName
+  /** 文字头像内容（src 与 icon 都缺省时取首字展示） */
+  text?: string
+  /** 头像形状 */
+  shape?: LhAvatarComponentShape
+  /** 头像大小 */
+  size?: LhAvatarSize
+  /** 图片加载模式：fill / contain / cover */
+  fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
+  /** sx 快速布局属性 */
+  sx?: SxProps
+}
+```
+
+</details>
+
+<details id="type-LhAvatarSize">
+<summary><code>LhAvatarSize</code></summary>
+
+```ts
+export type LhAvatarSize = LhComponentSize
+```
+
+</details>
+
+<details id="type-LhAvatarShape">
+<summary><code>LhAvatarShape</code></summary>
+
+```ts
+export type LhAvatarShape = LhAvatarComponentShape
+```
+
+</details>
+
+<details id="type-LhAvatarComponentShape">
+<summary><code>LhAvatarComponentShape</code> <sub>（来自 @lh-ui/share/core/avatar）</sub></summary>
+
+```ts
+export type LhAvatarShape = 'circle' | 'square'
+```
+
+</details>
+
+<details id="type-LhIconName">
+<summary><code>LhIconName</code> <sub>（来自 @lh-ui/share/core/icon (svgs.ts)）</sub></summary>
+
+```ts
+export type LhIconName = keyof typeof LH_ICON_SVGS_CONST
+```
+
+</details>
+
+<details id="type-LhComponentSize">
+<summary><code>LhComponentSize</code> <sub>（来自 @lh-ui/share/core/shared）</sub></summary>
+
+```ts
+export type LhComponentSize = (typeof LH_SIZE_CONST)[keyof typeof LH_SIZE_CONST]
+```
+
+</details>
+
+<!-- lh-types:end -->
+<script setup lang="ts">
+import { withBase } from 'vitepress'
+
+// 失败演示的图片地址走 withBase：站点部署到子路径（如 /lhui/plus/）时请求
+// 站内不存在的 /lhui/plus/broken-avatar.png（干净 404 触发 error 事件），
+// 而不是命中主机根路径上其他站点的兜底页。
+// The error-demo URL goes through withBase so the failing request stays inside
+// this site's base under a sub-path deployment.
+const brokenAvatarSrc = withBase('/broken-avatar.png')
+</script>

@@ -19,7 +19,6 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { getIconSvg, getIconSize } from '@lh-ui/core/icon'
 import { useLhIcon } from './index'
 import type { LhIconProps } from './types'
 

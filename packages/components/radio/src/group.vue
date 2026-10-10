@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { provide } from 'vue'
+import { computed, provide } from 'vue'
 import type { LhRadioGroupProps } from './types'
 import { LH_RADIO_GROUP_KEY } from './types'
 
@@ -33,12 +33,10 @@ function onChange(value: unknown) {
 }
 
 provide(LH_RADIO_GROUP_KEY, {
-  modelValue: {
-    get value() { return props.modelValue },
-  },
-  disabled: props.disabled,
-  name: props.name,
-  size: props.size,
+  modelValue: computed(() => props.modelValue),
+  disabled: computed(() => props.disabled),
+  name: computed(() => props.name),
+  size: computed(() => props.size),
   onChange,
 })
 </script>

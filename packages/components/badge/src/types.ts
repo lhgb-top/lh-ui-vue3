@@ -1,5 +1,6 @@
-import type { LhBadgeType } from '@lh-ui/core/badge'
-import type { LhComponentSize } from '@lh-ui/core/shared'
+import type { LhBadgeType } from '@lh-ui/share/core/badge'
+import type { LhComponentSize } from '@lh-ui/share/core/shared'
+import type { SxProps } from '@lh-ui/share/core/shared'
 
 export interface LhBadgeProps {
   type?: LhBadgeType
@@ -11,6 +12,8 @@ export interface LhBadgeProps {
   offset?: [number, number]
   showZero?: boolean
   content?: string
+  /** sx 快速布局属性 */
+  sx?: SxProps
 }
 
 export type LhBadgeSize = LhComponentSize

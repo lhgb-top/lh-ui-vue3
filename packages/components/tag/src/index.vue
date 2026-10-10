@@ -1,7 +1,11 @@
 <template>
   <span
     :class="tagClasses"
+    :style="sxStyle"
+    :role="clickable() ? 'button' : undefined"
+    :tabindex="clickable() ? 0 : undefined"
     @click="handleClick"
+    @keydown="handleKeydown"
   >
     <span class="lh-tag__text">
       <slot></slot>
@@ -10,12 +14,14 @@
       v-if="props.closable"
       class="lh-tag__close"
       :disabled="props.disabled"
+      :aria-label="t('tag.close')"
       @click.stop="handleClose"
     >
       <svg
         viewBox="0 0 24 24"
         width="12"
         height="12"
+        aria-hidden="true"
       >
         <path
           fill="currentColor"
@@ -29,8 +35,10 @@
 <script setup lang="ts">
 defineOptions({ name: 'LhTag' })
 
-import { computed } from 'vue'
-import { getTagClassNames } from '@lh-ui/core/tag'
+import { computed, getCurrentInstance } from 'vue'
+import { sxToStyle, isActivationKey } from '@lh-ui/share/core/shared'
+import { getTagClassNames } from '@lh-ui/share/core/tag'
+import { lhlocale } from '~/locale'
 import type { LhTagProps } from './types'
 
 const props = withDefaults(defineProps<LhTagProps>(), {
@@ -41,12 +49,33 @@ const props = withDefaults(defineProps<LhTagProps>(), {
   round: false,
   hit: false,
   onClose: undefined,
+  sx: undefined,
 })
 
+// sx 快速布局属性：转内联样式作用于根元素
+const sxStyle = computed(() => sxToStyle(props.sx ?? {}))
+
 const emit = defineEmits<{
-  click: [e: MouseEvent]
+  click: [e: Event]
   close: [e: Event]
 }>()
+
+/**
+ * 可点击判定：父级绑定了 click 监听且未禁用。
+ * Vue3 中已声明 emit 的监听会从 attrs 中剔除，且 computed 缓存对动态新增的
+ * vnode.props 键不敏感，故改为渲染期直接读当前 vnode 的 props 求值。
+ */
+const instance = getCurrentInstance()
+function clickable(): boolean {
+  const onClick = (instance?.vnode.props as Record<string, unknown> | undefined)?.onClick
+  return !!onClick && !props.disabled
+}
+
+// 依赖响应式版本号：切换语言时触发重渲染
+const t = (path: string, fallback?: string) => {
+  void lhlocale.version.value
+  return lhlocale.t(path, fallback)
+}
 
 const tagClasses = computed(() =>
   getTagClassNames({
@@ -60,6 +89,15 @@ const tagClasses = computed(() =>
 )
 
 function handleClick(e: MouseEvent) {
+  emit('click', e)
+}
+
+/**
+ * 键盘激活：Enter / Space 等效点击（仅 click 监听存在时生效）
+ */
+function handleKeydown(e: KeyboardEvent) {
+  if (!clickable() || !isActivationKey(e)) return
+  e.preventDefault()
   emit('click', e)
 }
 

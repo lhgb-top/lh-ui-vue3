@@ -1,5 +1,13 @@
 <template>
-  <div :class="progressClasses">
+  <div
+    :class="progressClasses"
+    role="progressbar"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    :aria-valuenow="clamped"
+    :aria-valuetext="text"
+    :style="sxStyle"
+  >
     <!-- 线形进度条 -->
     <template v-if="props.type === 'line'">
       <div
@@ -72,13 +80,14 @@
 defineOptions({ name: 'LhProgress' })
 
 import { computed } from 'vue'
+import { sxToStyle } from '@lh-ui/share/core/shared'
 import {
   clampPercent,
   resolveStatus,
   getProgressClassNames,
   getProgressColor,
   formatPercentText,
-} from '@lh-ui/core/progress'
+} from '@lh-ui/share/core/progress'
 import type { LhProgressProps } from './types'
 
 const props = withDefaults(defineProps<LhProgressProps>(), {
@@ -90,7 +99,11 @@ const props = withDefaults(defineProps<LhProgressProps>(), {
   width: 126,
   showText: true,
   format: undefined,
+  sx: undefined,
 })
+
+// sx 快速布局属性：转内联样式作用于根元素
+const sxStyle = computed(() => sxToStyle(props.sx ?? {}))
 
 const clamped = computed(() => clampPercent(props.percentage))
 

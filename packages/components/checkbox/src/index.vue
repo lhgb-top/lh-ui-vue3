@@ -9,15 +9,17 @@
         'lh-checkbox--indeterminate': props.indeterminate,
       },
     ]"
+    :style="sxStyle"
   >
     <input
       ref="inputRef"
       class="lh-checkbox__input"
       type="checkbox"
-      :name="group?.name || props.name"
+      :name="group?.name.value || props.name"
       :value="props.value"
       :checked="isChecked"
       :disabled="isDisabled"
+      :aria-invalid="!!formItem?.errorMessage || undefined"
       @change="handleChange"
     />
     <span
@@ -35,9 +37,11 @@
 
 <script lang="ts" setup>
 import { computed, inject, ref, watchEffect } from 'vue'
-import { isCheckboxChecked } from '@lh-ui/core/checkbox'
+import { sxToStyle } from '@lh-ui/share/core/shared'
+import { isCheckboxChecked } from '@lh-ui/share/core/checkbox'
 import type { LhCheckboxProps } from './types'
 import { LH_CHECKBOX_GROUP_KEY } from './types'
+import { LH_FORM_ITEM_CONTEXT_KEY } from '~/components/form/src/types'
 
 defineOptions({ name: 'LhCheckbox' })
 
@@ -49,7 +53,11 @@ const props = withDefaults(defineProps<LhCheckboxProps>(), {
   indeterminate: false,
   name: undefined,
   size: 'medium',
+  sx: undefined,
 })
+
+// sx 快速布局属性：转内联样式作用于根元素
+const sxStyle = computed(() => sxToStyle(props.sx ?? {}))
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -57,10 +65,11 @@ const emit = defineEmits<{
 }>()
 
 const group = inject(LH_CHECKBOX_GROUP_KEY, null)
+const formItem = inject(LH_FORM_ITEM_CONTEXT_KEY, null)
 const inputRef = ref<HTMLInputElement | null>(null)
 const isInGroup = Boolean(group && props.value !== undefined)
-const effectiveSize = computed(() => group?.size || props.size)
-const isDisabled = computed(() => Boolean(props.disabled || group?.disabled))
+const effectiveSize = computed(() => group?.size.value || props.size)
+const isDisabled = computed(() => Boolean(props.disabled || group?.disabled.value))
 const isChecked = computed(() => {
   if (isInGroup && group) return isCheckboxChecked(group.values.value, props.value)
   return Boolean(props.modelValue)

@@ -42,7 +42,7 @@
       class="lh-button__icon"
     >
       <slot name="icon">
-        <i :class="props.icon"></i>
+        <LhIcon :name="props.icon" />
       </slot>
     </span>
     <span
@@ -76,7 +76,7 @@
       class="lh-button__icon"
     >
       <slot name="icon">
-        <i :class="props.icon"></i>
+        <LhIcon :name="props.icon" />
       </slot>
     </span>
     <span
@@ -92,6 +92,7 @@
 import { useLhButton } from './index'
 import type { LhButtonProps } from './types'
 import { LH_BUTTON_TYPE_CONST } from './types'
+import LhIcon from '../../icon'
 
 defineOptions({
   name: 'LhButton',
@@ -106,12 +107,13 @@ const props = withDefaults(defineProps<LhButtonProps>(), {
   block: false,
   round: false,
   circle: false,
-  icon: '',
+  icon: undefined,
   nativeType: 'button',
   href: '',
   target: '_self',
   themeVars: undefined,
   bgPattern: undefined,
+  sx: undefined,
 })
 
 const emit = defineEmits<{

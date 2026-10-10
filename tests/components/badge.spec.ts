@@ -72,4 +72,19 @@ describe('LhBadge', () => {
     })
     expect(wrapper.find('sup').exists()).toBe(false)
   })
+
+  it('should mark the dot as decorative but keep value counts readable', () => {
+    const dot = mount(LhBadge, { props: { isDot: true } })
+    expect(dot.find('sup').attributes('aria-hidden')).toBe('true')
+
+    const counted = mount(LhBadge, { props: { value: 5 } })
+    expect(counted.find('sup').attributes('aria-hidden')).toBe('false')
+  })
+
+  it('applies sx props as inline styles on the root element', () => {
+    const wrapper = mount(LhBadge, { props: { value: 5, sx: { mt: 2, w: '50%' } } })
+    const style = wrapper.attributes('style')
+    expect(style).toContain('margin-top: 16px')
+    expect(style).toContain('width: 50%')
+  })
 })

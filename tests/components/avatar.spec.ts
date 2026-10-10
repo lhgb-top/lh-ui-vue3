@@ -33,8 +33,9 @@ describe('LhAvatar', () => {
   })
 
   it('renders icon fallback when src is absent', () => {
-    const wrapper = mount(LhAvatar, { props: { icon: 'lh-icon-user' } })
-    expect(wrapper.find('i.lh-avatar__icon').exists()).toBe(true)
+    const wrapper = mount(LhAvatar, { props: { icon: 'user' } })
+    expect(wrapper.find('.lh-avatar__icon').exists()).toBe(true)
+    expect(wrapper.find('.lh-avatar__icon svg').exists()).toBe(true)
     expect(wrapper.find('img').exists()).toBe(false)
   })
 
@@ -64,5 +65,32 @@ describe('LhAvatar', () => {
       props: { src: 'https://example.com/a.png', fit: 'contain' },
     })
     expect(wrapper.find('img').attributes('style')).toContain('object-fit: contain')
+  })
+
+  it('hides the decorative icon glyph and names the avatar via alt', () => {
+    const icon = mount(LhAvatar, { props: { icon: 'user' } })
+    expect(icon.find('.lh-avatar__icon').attributes('aria-hidden')).toBe('true')
+
+    const named = mount(LhAvatar, {
+      props: { icon: 'user', alt: '用户头像' },
+    })
+    // 非图片分支由根元素承担 img 语义，alt 提供名称
+    expect(named.attributes('role')).toBe('img')
+    expect(named.attributes('aria-label')).toBe('用户头像')
+  })
+
+  it('lets the image element carry its own semantics', () => {
+    const wrapper = mount(LhAvatar, {
+      props: { src: 'https://example.com/a.png', alt: '用户头像' },
+    })
+    expect(wrapper.attributes('role')).toBeUndefined()
+    expect(wrapper.find('img').attributes('alt')).toBe('用户头像')
+  })
+
+  it('applies sx props as inline styles on the root element', () => {
+    const wrapper = mount(LhAvatar, { props: { text: '青', sx: { mt: 2, w: '50%' } } })
+    const style = wrapper.attributes('style')
+    expect(style).toContain('margin-top: 16px')
+    expect(style).toContain('width: 50%')
   })
 })

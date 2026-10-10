@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import vue from '@vitejs/plugin-vue';
 import esbuild from 'rollup-plugin-esbuild';
 import scss from 'rollup-plugin-scss';
+import * as sass from 'sass';
 import replace from '@rollup/plugin-replace';
 import { string } from 'rollup-plugin-string';
 import autoprefixer from 'autoprefixer';
@@ -33,9 +34,10 @@ const components = getComponentPackages();
 function getAliasEntries() {
   return [
     { find: '~', replacement: resolvePath('packages') },
-    { find: 'lh-constants', replacement: resolvePath('packages/constants') },
     { find: 'lh-types', replacement: resolvePath('types') },
-    { find: '@lh-ui/core', replacement: resolvePath('packages/core') },
+    { find: '@lh-ui/vue3', replacement: resolvePath('src/index.ts') },
+    // 只别名 scss 前缀：JS 侧的 @lh-ui/share/* 必须保持 bare 才能被 external 命中
+    { find: '@lh-ui/share/styles', replacement: resolvePath('node_modules/@lh-ui/share/styles') },
   ];
 }
 
@@ -74,14 +76,27 @@ function createBasePlugins() {
     scss({
       // 同时处理组件样式入口与 SFC 样式虚拟模块：
       // @vitejs/plugin-vue 会把 <style> 拆成 `?vue&type=style...` 模块，纯 CSS 的以 `&lang.css` 结尾
+      // 组件 scss 源在 @lh-ui/share 包内（别名指向 node_modules），需单独匹配
       include: [
         /packages\/.*\.scss$/,
+        /@lh-ui[\\/]share[\\/]styles[\\/].*\.scss$/,
         /\.vue\?vue&type=style.*&lang\.(css|scss|sass)$/,
       ],
       output: false,
       inject: true,
       prefixId: false,
       additionalData: '',
+      // 插件 4.0.1 硬编码走 sass legacy render API（不透传 sassOptions），
+      // 这里传一个基于现代 compileString API 的适配器，顺带静默弃用告警
+      sass: {
+        renderSync(options) {
+          const result = sass.compileString(options.data, {
+            loadPaths: options.includePaths,
+            silenceDeprecations: ['legacy-js-api', 'import', 'global-builtin'],
+          })
+          return { css: result.css, map: result.sourceMap ?? null }
+        },
+      },
       autoprefixer: {
         autoprefixer,
       },
@@ -104,7 +119,8 @@ const mainEntry = {
       exports: 'named',
     },
   ],
-  external: ['vue'],
+  // @lh-ui/share 是运行时依赖，保持 bare 引用，不打入产物
+  external: ['vue', /^@lh-ui\/share/],
   plugins: [...createBasePlugins()],
 };
 
@@ -127,7 +143,7 @@ function createComponentEntry(name) {
         exports: 'named',
       },
     ],
-    external: ['vue'],
+    external: ['vue', /^@lh-ui\/share/],
     plugins: [...createBasePlugins()],
   };
 }
@@ -136,33 +152,17 @@ function createComponentEntry(name) {
 // 由 scripts/build-styles.mjs 用 sass API 生成：rollup-plugin-scss 不支持 outputDir，
 // 放在这里只会产出空文件并把真实样式丢进 assets/。
 
-// 常量包
-const constantsEntry = {
-  input: resolvePath('packages/constants/index.ts'),
+// 主题预设包（纯数据入口，供 `@lh-ui/vue3/theme` 子路径消费）
+// 转发 @lh-ui/share/theme：本仓库不再持有主题 TS 源
+const themeEntry = {
+  input: resolvePath('src/theme.ts'),
   output: [
     {
-      file: resolvePath('es/constants/index.js'),
+      file: resolvePath('es/theme/index.js'),
       format: 'es',
     },
     {
-      file: resolvePath('lib/constants/index.js'),
-      format: 'cjs',
-      exports: 'named',
-    },
-  ],
-  plugins: [alias({ entries: getAliasEntries() }), esbuild({ target: 'es2020', sourceMap: true })],
-};
-
-// 语言包
-const localeEntry = {
-  input: resolvePath('packages/locales/index.ts'),
-  output: [
-    {
-      file: resolvePath('es/locale/index.js'),
-      format: 'es',
-    },
-    {
-      file: resolvePath('lib/locale/index.js'),
+      file: resolvePath('lib/theme/index.js'),
       format: 'cjs',
       exports: 'named',
     },
@@ -181,8 +181,7 @@ let configs = [];
 if (formatEnv === 'esm') {
   // ESM: 只构建 JS，不构建 CSS
   configs.push(mainEntry);
-  configs.push(constantsEntry);
-  configs.push(localeEntry);
+  configs.push(themeEntry);
   components.forEach((name) => {
     const entry = createComponentEntry(name);
     if (entry) configs.push(entry);
@@ -190,20 +189,20 @@ if (formatEnv === 'esm') {
 } else if (formatEnv === 'cjs') {
   // CJS: 只构建 JS
   configs.push(mainEntry);
-  configs.push(constantsEntry);
-  configs.push(localeEntry);
+  configs.push(themeEntry);
   components.forEach((name) => {
     const entry = createComponentEntry(name);
     if (entry) configs.push(entry);
   });
 } else if (formatEnv === 'umd') {
-  // UMD: 全量打包含依赖
+  // UMD: 全量打包含依赖（share 无 CDN 全局名，一并打入）
   configs.push({
     input: resolvePath('src/index.ts'),
     output: {
-      file: resolvePath('dist/lh-ui-plus.js'),
+      file: resolvePath('dist/vue3.js'),
       format: 'umd',
-      name: 'LhUIPlus',
+      name: 'LhUI3',
+      exports: 'named',
       globals: { vue: 'Vue' },
     },
     external: ['vue'],
@@ -212,8 +211,7 @@ if (formatEnv === 'esm') {
 } else {
   // 默认全量构建: ESM + CJS（样式产物由 scripts/build-styles.mjs 生成）
   configs.push(mainEntry);
-  configs.push(constantsEntry);
-  configs.push(localeEntry);
+  configs.push(themeEntry);
   components.forEach((name) => {
     const compEntry = createComponentEntry(name);
     if (compEntry) configs.push(compEntry);

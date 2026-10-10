@@ -1,15 +1,24 @@
-import { computed, ref, type Ref } from 'vue'
+import { computed, inject, ref, type Ref } from 'vue'
 import type { LhInputProps } from './types'
 import { useLhConfigContext } from '~/components/config-provider/src/index'
-import { useLhComponentTheme } from '~/utils/composables'
-import { getInputStyle, shouldShowWordLimit, getWordCount, clampString } from '@lh-ui/core/input/logic'
+import { LH_FORM_ITEM_CONTEXT_KEY } from '~/components/form/src/types'
+import { useLhComponentTheme } from '~/composables'
+import { sxToStyle } from '@lh-ui/share/core/shared'
+import { getInputStyle, shouldShowWordLimit, getWordCount, clampString } from '@lh-ui/share/core/input/logic'
 
 export const useLhInput = (props: LhInputProps) => {
   const configContext = useLhConfigContext()
+  // 祖先 LhFormItem 的校验状态：校验失败时原生控件标记 aria-invalid
+  const formItem = inject(LH_FORM_ITEM_CONTEXT_KEY, null)
+  const ariaInvalid = computed(() => !!formItem?.errorMessage || undefined)
   const inputValue: Ref<string> = ref(props.modelValue ?? '')
 
   const inputStyle = computed(() => getInputStyle(props.size || 'medium'))
-  const { componentStyle } = useLhComponentTheme('input', props, configContext)
+  const { componentStyle: _componentStyle } = useLhComponentTheme('input', props, configContext)
+  const componentStyle = computed(() => ({
+    ..._componentStyle.value,
+    ...sxToStyle(props.sx ?? {}),
+  }))
 
   const isDisabled = computed(() => props.disabled)
   const isTextarea = computed(() => props.type === 'textarea')
@@ -42,6 +51,7 @@ export const useLhInput = (props: LhInputProps) => {
     isDisabled,
     isTextarea,
     isFocused,
+    ariaInvalid,
     showsWordLimit,
     wordCount,
     handleInput,

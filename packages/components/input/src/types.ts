@@ -1,4 +1,6 @@
-import type { LH_SIZE_CONST } from 'lh-constants'
+import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhIconName } from '@lh-ui/share/core/icon'
+import type { LH_SIZE_CONST } from '@lh-ui/share/constants'
 
 /**
  * Input 类型
@@ -59,8 +61,10 @@ export interface LhInputProps {
   minlength?: number
   showWordLimit?: boolean
   clearable?: boolean
-  prefixIcon?: string
-  suffixIcon?: string
+  /** 前缀图标名称（内置 LhIcon 图标，如 `search`） */
+  prefixIcon?: LhIconName
+  /** 后缀图标名称（内置 LhIcon 图标，如 `date`） */
+  suffixIcon?: LhIconName
   autofocus?: boolean
   autocomplete?: string
   nativeType?: string
@@ -76,4 +80,6 @@ export interface LhInputProps {
   themeVars?: Record<string, string>
   /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
   bgPattern?: string
+  /** sx 快速布局属性 */
+  sx?: SxProps
 }

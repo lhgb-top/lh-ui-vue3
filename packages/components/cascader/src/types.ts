@@ -1,5 +1,6 @@
-import type { LhCascaderNode, LhCascaderItemConfig } from '@lh-ui/core/cascader'
-import type { LhComponentSize } from '@lh-ui/core/shared'
+import type { LhCascaderNode, LhCascaderItemConfig } from '@lh-ui/share/core/cascader'
+import type { LhComponentSize } from '@lh-ui/share/core/shared'
+import type { SxProps } from '@lh-ui/share/core/shared'
 
 export interface LhCascaderProps {
   modelValue?: (string | number)[]
@@ -18,4 +19,6 @@ export interface LhCascaderProps {
   collapseTags?: boolean
   filterable?: boolean
   itemConfig?: LhCascaderItemConfig
+  /** sx 快速布局属性 */
+  sx?: SxProps
 }

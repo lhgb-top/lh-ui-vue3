@@ -97,8 +97,9 @@ describe('LhButton', () => {
   })
 
   it('renders icon slot when icon prop is provided', () => {
-    const wrapper = mount(LhButton, { props: { icon: 'lh-icon-search' } })
+    const wrapper = mount(LhButton, { props: { icon: 'search' } })
     expect(wrapper.find('.lh-button__icon').exists()).toBe(true)
+    expect(wrapper.find('.lh-button__icon svg').exists()).toBe(true)
   })
 
   it('renders text slot', () => {
@@ -130,5 +131,19 @@ describe('LhButton', () => {
       props: { href: 'https://example.com', target: '_blank' },
     })
     expect(wrapper.attributes('target')).toBe('_blank')
+  })
+
+  it('passes aria-label through to the root button element', () => {
+    // 图标按钮无障碍约定：aria-label 透传到根元素（v-if/v-else 双分支根仍走属性透传）
+    const wrapper = mount(LhButton, { attrs: { 'aria-label': '搜索' } })
+    expect(wrapper.attributes('aria-label')).toBe('搜索')
+  })
+
+  it('passes aria-label through to the anchor element', () => {
+    const wrapper = mount(LhButton, {
+      props: { href: 'https://example.com' },
+      attrs: { 'aria-label': '外部链接' },
+    })
+    expect(wrapper.attributes('aria-label')).toBe('外部链接')
   })
 })

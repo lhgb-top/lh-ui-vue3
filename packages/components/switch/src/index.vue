@@ -4,7 +4,9 @@
     role="switch"
     :aria-checked="state.checked"
     :aria-disabled="state.disabled"
+    :aria-invalid="!!formItem?.errorMessage || undefined"
     tabindex="0"
+    :style="sxStyle"
     @click="toggle"
     @keyup.enter.space="handleKeyup"
   >
@@ -20,9 +22,11 @@
 <script setup lang="ts">
 defineOptions({ name: 'LhSwitch' })
 
-import { computed } from 'vue'
-import { getSwitchClassNames, getSwitchLabel } from '@lh-ui/core/switch'
+import { computed, inject } from 'vue'
+import { sxToStyle } from '@lh-ui/share/core/shared'
+import { getSwitchClassNames, getSwitchLabel } from '@lh-ui/share/core/switch'
 import type { LhSwitchProps } from './types'
+import { LH_FORM_ITEM_CONTEXT_KEY } from '~/components/form/src/types'
 
 const props = withDefaults(defineProps<LhSwitchProps>(), {
   modelValue: false,
@@ -32,7 +36,11 @@ const props = withDefaults(defineProps<LhSwitchProps>(), {
   size: 'medium',
   activeText: '',
   inactiveText: '',
+  sx: undefined,
 })
+
+// sx 快速布局属性：转内联样式作用于根元素
+const sxStyle = computed(() => sxToStyle(props.sx ?? {}))
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -48,6 +56,8 @@ const state = computed(() => ({
   activeText: props.activeText,
   inactiveText: props.inactiveText,
 }))
+
+const formItem = inject(LH_FORM_ITEM_CONTEXT_KEY, null)
 
 const switchClasses = computed(() => getSwitchClassNames(state.value))
 const switchLabel = computed(() => getSwitchLabel(state.value))

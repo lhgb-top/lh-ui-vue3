@@ -1,0 +1,31 @@
+# 私有 npm registry（只读静态托管）
+#
+# 与文档站 /lhui/plus/ 同一套 Nginx，独立 location。把
+# scripts/pack-private.mjs 产出的 private-registry/ 内容上传到
+# /home/webuser/nginx/lhgb/ 即可。
+#
+# 目录布局：
+#   /home/webuser/nginx/lhgb/
+#   ├── @lhgb/vue3              # 元数据 JSON（无扩展名）
+#   └── @lhgb/vue3/
+#       └── lhgb-vue3-<version>.tgz
+#
+# 客户端在 .npmrc 写：
+#   @lhgb:registry=https://www.lhgb.top/lhgb
+# 之后三种包管理器统一：
+#   pnpm add @lhgb/vue3 / npm install @lhgb/vue3 / yarn add @lhgb/vue3
+
+location /lhgb/ {
+  alias /home/webuser/nginx/lhgb/;
+  default_type application/json; # 元数据文件无扩展名，强制按 JSON 返回
+  autoindex off;
+
+  # tarball 直链下载
+  location ~ \.tgz$ {
+    default_type application/octet-stream;
+  }
+
+  # 未来需要鉴权时启用（客户端 .npmrc 写 //www.lhgb.top/lhgb/:_auth=<base64>）
+  # auth_basic "private registry";
+  # auth_basic_user_file /etc/nginx/.htpasswd;
+}

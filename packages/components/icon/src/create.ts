@@ -3,8 +3,8 @@
  * 每个图标可单独导入使用，支持 tree-shaking
  */
 import { defineComponent, h, type PropType } from 'vue'
-import { LH_ICON_SVGS_CONST, getIconSize } from '~/core/icon'
-import type { LhIconName } from '~/core/icon'
+import { LH_ICON_SVGS_CONST, getIconSize } from '@lh-ui/share/core/icon'
+import type { LhIconName } from '@lh-ui/share/core/icon'
 
 export function createIconComponent(name: LhIconName) {
   const path = LH_ICON_SVGS_CONST[name]

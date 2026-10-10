@@ -1,0 +1,224 @@
+# Alert
+
+Static page-level alerts (not imperative — see Message for that). Semantics drive the live-region role: `warning`/`danger` use `role="alert"` for immediate announcement, `info`/`success` use `role="status"` for polite announcement.
+
+## Basic Usage
+
+<DemoBlock title="Four Types">
+  <div class="demo-alert-stack">
+    <LhAlert>A neutral note.</LhAlert>
+    <LhAlert type="success">Operation completed.</LhAlert>
+    <LhAlert type="warning">Disk space is running low.</LhAlert>
+    <LhAlert type="danger">Network connection lost.</LhAlert>
+  </div>
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <!-- Neutral -->
+  <LhAlert>A neutral note.</LhAlert>
+  <!-- success -->
+  <LhAlert type="success">Operation completed.</LhAlert>
+  <!-- warning -->
+  <LhAlert type="warning">Disk space is running low.</LhAlert>
+  <!-- danger -->
+  <LhAlert type="danger">Network connection lost.</LhAlert>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <!-- Neutral -->
+  <LhAlert>A neutral note.</LhAlert>
+  <!-- success -->
+  <LhAlert type="success">Operation completed.</LhAlert>
+  <!-- warning -->
+  <LhAlert type="warning">Disk space is running low.</LhAlert>
+  <!-- danger -->
+  <LhAlert type="danger">Network connection lost.</LhAlert>
+</template>
+```
+
+## Icon and Title
+
+<DemoBlock title="Icon and Title">
+  <div class="demo-alert-stack">
+    <LhAlert type="success" show-icon title="Saved">
+      The document is synced to the cloud.
+    </LhAlert>
+    <LhAlert type="danger" show-icon title="Delete failed">
+      The item is being edited by another collaborator.
+    </LhAlert>
+  </div>
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <!-- Saved -->
+  <LhAlert type="success" show-icon title="Saved">The document is synced to the cloud.</LhAlert>
+  <!-- Delete failed -->
+  <LhAlert type="danger" show-icon title="Delete failed">The item is being edited by another collaborator.</LhAlert>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <!-- Saved -->
+  <LhAlert type="success" show-icon title="Saved">The document is synced to the cloud.</LhAlert>
+  <!-- Delete failed -->
+  <LhAlert type="danger" show-icon title="Delete failed">The item is being edited by another collaborator.</LhAlert>
+</template>
+```
+
+## Closable
+
+<DemoBlock title="Closable">
+  <LhAlert closable>Close me with the button on the right.</LhAlert>
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <!-- Closable -->
+  <LhAlert closable>Close me with the button on the right.</LhAlert>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <!-- Closable -->
+  <LhAlert closable>Close me with the button on the right.</LhAlert>
+</template>
+```
+
+## Plain Style
+
+<DemoBlock title="Plain">
+  <div class="demo-alert-stack">
+    <LhAlert type="warning" plain show-icon>Light outlined style.</LhAlert>
+    <LhAlert type="danger" plain show-icon>Suitable on light backgrounds.</LhAlert>
+  </div>
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <!-- warning plain -->
+  <LhAlert type="warning" plain show-icon>Light outlined style.</LhAlert>
+  <!-- danger plain -->
+  <LhAlert type="danger" plain show-icon>Suitable on light backgrounds.</LhAlert>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <!-- warning plain -->
+  <LhAlert type="warning" plain show-icon>Light outlined style.</LhAlert>
+  <!-- danger plain -->
+  <LhAlert type="danger" plain show-icon>Suitable on light backgrounds.</LhAlert>
+</template>
+```
+
+## API
+
+### Props
+
+| Prop | Description | Type | Default |
+| ---- | ----------- | ---- | ------- |
+| type | Semantic type | `"info" \| "success" \| "warning" \| "danger"` | `'info'` |
+| title | Title (or use the title slot) | `string` | — |
+| closable | Show the close button | `boolean` | `false` |
+| showIcon | Show the semantic icon | `boolean` | `false` |
+| plain | Light outlined style | `boolean` | `false` |
+| closeLabel | Accessible name of the close button (falls back to the `alert.close` locale message) | `string` | — |
+| sx | sx quick-layout properties | `SxProps` | — |
+
+### Events
+
+| Event | Description | Callback |
+| ----- | ----------- | -------- |
+| close | Fired after the close button is clicked | — |
+
+### Slots
+
+| Slot | Description |
+| ---- | ----------- |
+| title | Custom title |
+| default | Description content |
+
+### Accessibility
+
+- `warning`/`danger` → `role="alert"` (immediate); `info`/`success` → `role="status"` (polite)
+- The close button is a real `<button>` with an aria-label from the `alert.close` locale message and a `:focus-visible` ring
+- Tinted backgrounds derive from semantic colors via `color-mix()`, following theme and dark mode automatically
+
+<!-- lh-types:begin (auto-generated by scripts/gen-type-docs.mjs, do not edit) -->
+
+## Type Definitions
+
+The TypeScript type structures exported by this component (auto-extracted from `packages/components/alert/src/types.ts` and `@lh-ui/share/core/*` sources; click each entry to expand; see the Props table above for attribute descriptions):
+
+<details id="type-LhAlertProps">
+<summary><code>LhAlertProps</code></summary>
+
+```ts
+export interface LhAlertProps {
+  type?: LhAlertType
+  title?: string
+  closable?: boolean
+  showIcon?: boolean
+  plain?: boolean
+  closeLabel?: string
+  sx?: SxProps
+}
+```
+
+</details>
+
+<details id="type-LhAlertType">
+<summary><code>LhAlertType</code> <sub>(from @lh-ui/share/core/alert)</sub></summary>
+
+```ts
+export type LhAlertType = 'info' | 'success' | 'warning' | 'danger'
+```
+
+</details>
+
+<!-- lh-types:end -->
+<script setup lang="ts">
+</script>
+
+<style scoped>
+.demo-alert-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+</style>

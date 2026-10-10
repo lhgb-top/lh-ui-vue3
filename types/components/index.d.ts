@@ -1,2 +1,2 @@
 export * from './base';
-export * from 'lh-constants';
+export * from '@lh-ui/share/constants';

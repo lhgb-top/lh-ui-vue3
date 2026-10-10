@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { lhlocale, zhCN } from '~/locales'
+import { lhlocale, zhCN } from '~/locale'
 
 describe('lhlocale', () => {
   // 回归：`const t = lhlocale.t` 解构使用时不得丢失 this（Cascader 曾因此崩溃）

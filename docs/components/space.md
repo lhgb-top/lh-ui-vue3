@@ -1,0 +1,285 @@
+# Space 间距
+
+为子组件提供统一间距的布局容器，基于原生 CSS `gap` 实现。纯布局容器（`role="presentation"`），不参与无障碍树。
+
+## 基础用法
+
+<DemoBlock title="水平间距">
+  <LhSpace>
+    <LhButton>按钮一</LhButton>
+    <LhButton>按钮二</LhButton>
+    <LhButton>按钮三</LhButton>
+  </LhSpace>
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <LhSpace>
+    <LhButton>按钮一</LhButton>
+    <LhButton>按钮二</LhButton>
+    <LhButton>按钮三</LhButton>
+  </LhSpace>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <LhSpace>
+    <LhButton>按钮一</LhButton>
+    <LhButton>按钮二</LhButton>
+    <LhButton>按钮三</LhButton>
+  </LhSpace>
+</template>
+```
+
+## 垂直间距
+
+<DemoBlock title="垂直间距">
+  <LhSpace direction="vertical">
+    <LhButton>按钮一</LhButton>
+    <LhButton>按钮二</LhButton>
+  </LhSpace>
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <LhSpace direction="vertical">
+    <LhButton>按钮一</LhButton>
+    <LhButton>按钮二</LhButton>
+  </LhSpace>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <LhSpace direction="vertical">
+    <LhButton>按钮一</LhButton>
+    <LhButton>按钮二</LhButton>
+  </LhSpace>
+</template>
+```
+
+## 间距尺寸
+
+预设三档映射 `--lh-spacing-*` 主题 token；也支持像素数字或 `[水平, 垂直]` 数组。
+
+<DemoBlock title="间距尺寸">
+  <div class="demo-space-sizes">
+    <LhSpace size="small"><LhButton>small</LhButton><LhButton>small</LhButton></LhSpace>
+    <LhSpace size="medium"><LhButton>medium</LhButton><LhButton>medium</LhButton></LhSpace>
+    <LhSpace size="large"><LhButton>large</LhButton><LhButton>large</LhButton></LhSpace>
+    <LhSpace :size="8"><LhButton>8px</LhButton><LhButton>8px</LhButton></LhSpace>
+  </div>
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <!-- small 预设档位 -->
+  <LhSpace size="small">
+    <LhButton>small</LhButton>
+    <LhButton>small</LhButton>
+  </LhSpace>
+  <!-- medium 预设档位 -->
+  <LhSpace size="medium">
+    <LhButton>medium</LhButton>
+    <LhButton>medium</LhButton>
+  </LhSpace>
+  <!-- large 预设档位 -->
+  <LhSpace size="large">
+    <LhButton>large</LhButton>
+    <LhButton>large</LhButton>
+  </LhSpace>
+  <!-- 自定义像素 8 -->
+  <LhSpace :size="8">
+    <LhButton>8px</LhButton>
+    <LhButton>8px</LhButton>
+  </LhSpace>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <!-- small 预设档位 -->
+  <LhSpace size="small">
+    <LhButton>small</LhButton>
+    <LhButton>small</LhButton>
+  </LhSpace>
+  <!-- medium 预设档位 -->
+  <LhSpace size="medium">
+    <LhButton>medium</LhButton>
+    <LhButton>medium</LhButton>
+  </LhSpace>
+  <!-- large 预设档位 -->
+  <LhSpace size="large">
+    <LhButton>large</LhButton>
+    <LhButton>large</LhButton>
+  </LhSpace>
+  <!-- 自定义像素 8 -->
+  <LhSpace :size="8">
+    <LhButton>8px</LhButton>
+    <LhButton>8px</LhButton>
+  </LhSpace>
+</template>
+```
+
+## 换行与对齐
+
+<DemoBlock title="换行">
+  <LhSpace wrap>
+    <LhTag v-for="n in 12" :key="n">标签 {{ n }}</LhTag>
+  </LhSpace>
+</DemoBlock>
+
+`alignment` 控制子项的对齐方式，默认居中，可切换为起始或末尾对齐。
+
+<DemoBlock title="对齐方式">
+  <LhSpace alignment="start">
+    <LhButton>start 对齐</LhButton>
+    <span style="height: 48px; line-height: 48px">较高内容</span>
+  </LhSpace>
+  <LhSpace alignment="end">
+    <LhButton>end 对齐</LhButton>
+    <span style="height: 48px; line-height: 48px">较高内容</span>
+  </LhSpace>
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <!-- 允许换行 -->
+  <LhSpace wrap>
+    <LhTag v-for="n in 12" :key="n">标签 {{ n }}</LhTag>
+  </LhSpace>
+  <!-- start 对齐 -->
+  <LhSpace alignment="start">
+    <LhButton>start 对齐</LhButton>
+    <span style="height: 48px; line-height: 48px">较高内容</span>
+  </LhSpace>
+  <!-- end 对齐 -->
+  <LhSpace alignment="end">
+    <LhButton>end 对齐</LhButton>
+    <span style="height: 48px; line-height: 48px">较高内容</span>
+  </LhSpace>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <!-- 允许换行 -->
+  <LhSpace wrap>
+    <LhTag v-for="n in 12" :key="n">标签 {{ n }}</LhTag>
+  </LhSpace>
+  <!-- start 对齐 -->
+  <LhSpace alignment="start">
+    <LhButton>start 对齐</LhButton>
+    <span style="height: 48px; line-height: 48px">较高内容</span>
+  </LhSpace>
+  <!-- end 对齐 -->
+  <LhSpace alignment="end">
+    <LhButton>end 对齐</LhButton>
+    <span style="height: 48px; line-height: 48px">较高内容</span>
+  </LhSpace>
+</template>
+```
+
+## Space API
+
+### Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+| ---- | ---- | ---- | ------ |
+| direction | 排列方向 | `"horizontal" \| "vertical"` | `'horizontal'` |
+| size | 间距：预设档位 / 像素数字 / `[水平, 垂直]` | `number \| "small" \| "medium" \| "large" \| [number, number]` | `'medium'` |
+| wrap | 是否允许换行（仅水平方向） | `boolean` | `true` |
+| alignment | 对齐方式 | `"start" \| "center" \| "end" \| "baseline"` | `'start'` |
+| sx | 快速布局属性（如 `{ mt: 2 }`），合并到内联样式且优先级高于 `alignment` | `SxProps` | — |
+
+### 无障碍
+
+- 容器为 `role="presentation"` 的纯布局元素，不拦截焦点
+- 间距基于原生 CSS `gap`，无 DOM 包裹子元素
+
+<style scoped>
+.demo-space-sizes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+</style>
+
+<!-- lh-types:begin (auto-generated by scripts/gen-type-docs.mjs, do not edit) -->
+
+## 类型定义
+
+本组件对外导出的 TypeScript 类型结构如下（自动提取自 `packages/components/space/src/types.ts` 与 `@lh-ui/share/core/*` 源码，点击各条目展开查看完整定义；属性说明见上方 Props 表）：
+
+<details id="type-LhSpaceProps">
+<summary><code>LhSpaceProps</code></summary>
+
+```ts
+export interface LhSpaceProps {
+  /** 排列方向 */
+  direction?: 'horizontal' | 'vertical'
+  /** 间距：预设档位 / 像素数字 / [水平, 垂直] */
+  size?: LhSpaceSizeInput
+  /** 是否允许换行（仅水平方向） */
+  wrap?: boolean
+  /** 对齐方式 */
+  alignment?: LhSpaceAlignment
+  /** sx 快速布局属性 */
+  sx?: SxProps
+}
+```
+
+</details>
+
+<details id="type-LhSpaceSizeInput">
+<summary><code>LhSpaceSizeInput</code> <sub>（来自 @lh-ui/share/core/space）</sub></summary>
+
+```ts
+/**
+ * 归一化间距：预设档位映射 spacing token，数字视为 px
+ */
+export type LhSpaceSizeInput = 'small' | 'medium' | 'large' | number | [number, number]
+```
+
+</details>
+
+<details id="type-LhSpaceAlignment">
+<summary><code>LhSpaceAlignment</code> <sub>（来自 @lh-ui/share/core/space）</sub></summary>
+
+```ts
+/** 间距对齐方式 */
+export type LhSpaceAlignment = 'start' | 'center' | 'end' | 'baseline'
+```
+
+</details>
+
+<!-- lh-types:end -->
