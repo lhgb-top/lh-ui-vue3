@@ -4,6 +4,7 @@ name: Release
 #
 # ① 自动发版通道——推送到 master 且 changeset 或版本号有变动时自动执行 version + publish；
 #   没有待发布的 changeset 时 changesets/action 什么都不做，所以挂在 push 上是安全的。
+#   paths 另纳入 .github/workflows/**：发版链自身的修复（如本触发器/堆上限）需要能重跑发版。
 #   publish 完成后把 changeset publish 本地创建的 tag（<包名>@<版本>）推到 origin，
 #   触发 ② 留档通道。
 # ② 留档通道——推送 @lh-ui/vue3@x.y.z 格式的 tag 时，从 npm 拉已发布的原版 tarball 建
@@ -17,6 +18,7 @@ on:
     paths:
       - '.changeset/**'
       - 'package.json'
+      - '.github/workflows/**'
     tags:
       - '@lh-ui/vue3@**'
   workflow_dispatch:
@@ -34,6 +36,10 @@ jobs:
   publish:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
     runs-on: ubuntu-latest
+
+    # dts 构建每个入口起一个 TS program（rollup.dts.config.js 注释记录过默认堆 OOM）
+    env:
+      NODE_OPTIONS: --max-old-space-size=8192
 
     steps:
       - name: Checkout

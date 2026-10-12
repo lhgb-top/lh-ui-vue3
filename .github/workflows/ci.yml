@@ -10,6 +10,11 @@ jobs:
   verify:
     runs-on: ubuntu-latest
 
+    # dts 构建每个入口起一个 TS program（rollup.dts.config.js 注释记录过默认堆 OOM），
+    # docs:build / coverage 同为吃内存大户，CI runner 上统一放宽堆上限
+    env:
+      NODE_OPTIONS: --max-old-space-size=8192
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
