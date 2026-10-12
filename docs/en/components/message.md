@@ -171,7 +171,7 @@ export default {
 | type | Semantic type | `"success" \| "warning" \| "error" \| "info" \| "danger" \| "loading"` | `'info'` |
 | showClose | Show the close button | `boolean` | `false` |
 | closeLabel | Accessible name for the close button (falls back to locale key `message.close`) | `string` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 Service methods: `LhMessage(options)` / `LhMessage.success/info/warning/danger/loading(content, options?)` return a `{ close }` handle; plus `LhMessage.close(id)`, `LhMessage.closeAll()` and `LhMessage.config({ duration, max, offset, appendTo })`.
 
@@ -184,7 +184,7 @@ Service methods: `LhMessage(options)` / `LhMessage.success/info/warning/danger/l
 | duration | Auto dismiss in ms, `0` disables it (`loading` defaults to `0`, others to `3000`) | `number` | `3000` |
 | showClose | Show the close button | `boolean` | `false` |
 | offset | Offset from the viewport top in px | `number` | `20` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 | onClose | Called after the item closes (auto or manual) | `() => void` | — |
 
 ### LhMessage Events
@@ -218,7 +218,7 @@ export interface LhMessageOptions {
   duration?: number
   showClose?: boolean
   offset?: number
-  sx?: SxProps
+  sx?: LhSxProps
   onClose?: () => void
 }
 ```
@@ -245,7 +245,7 @@ export interface LhMessageProps {
   type?: LhMessageType
   showClose?: boolean
   closeLabel?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -286,7 +286,7 @@ export interface LhMessageRecord {
   duration: number
   showClose: boolean
   offset: number
-  sx?: SxProps
+  sx?: LhSxProps
   onClose?: () => void
 }
 ```

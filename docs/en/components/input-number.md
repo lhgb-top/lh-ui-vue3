@@ -138,7 +138,7 @@ export interface LhInputNumberProps {
   controls?: boolean
   placeholder?: string
   name?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -305,7 +305,7 @@ export default {
 | controls | Show controls | `boolean` | `true` |
 | placeholder | — | `string` | `''` |
 | name | — | `string` | `''` |
-| sx | sx quick-layout props | `SxProps` | — |
+| sx | sx quick-layout props | `LhSxProps` | — |
 
 ## Events
 

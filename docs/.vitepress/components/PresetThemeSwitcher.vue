@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useData } from 'vitepress'
-import { usePresetTheme } from '~/composables'
-import type { ThemePresetName } from '@lh-ui/share/theme'
+import { useLhPresetTheme } from '~/composables'
+import type { LhThemePresetName } from '@lh-ui/share/theme'
 
 const { page } = useData()
 const isEnglish = computed(() => page.value?.relativePath?.startsWith('en/') ?? false)
 
-const { preset, setPreset, presets } = usePresetTheme({ storageKey: 'lh-docs-preset' })
+const { preset, setPreset, presets } = useLhPresetTheme({ storageKey: 'lh-docs-preset' })
 
 const open = ref(false)
 const rootRef = ref<HTMLElement>()
@@ -16,7 +16,7 @@ function toggle() {
   open.value = !open.value
 }
 
-function choose(name: ThemePresetName) {
+function choose(name: LhThemePresetName) {
   setPreset(name)
   open.value = false
 }

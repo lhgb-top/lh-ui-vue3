@@ -237,7 +237,7 @@ export default {
 | background | Mask background (CSS background value) | `string` | — |
 | zIndex | Stacking level | `number` | — |
 | spinner | Show the rotating figure | `boolean` | `true` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 Service: `LhLoading.show({ target?, text?, background?, lock?, spinner?, sx? })` returns a `{ close }` handle; `app.use(LhLoading)` registers the `v-loading` directive.
 
@@ -264,7 +264,7 @@ export interface LhLoadingMaskProps {
   background?: string
   zIndex?: number
   spinner?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -280,7 +280,7 @@ export interface LhLoadingOptions {
   background?: string
   lock?: boolean
   spinner?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

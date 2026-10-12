@@ -126,7 +126,7 @@ export default {
 | --- | --- | --- | --- |
 | modelValue | Active panel(s) (controlled v-model) | `LhCollapseKey \| LhCollapseKey[]` | — |
 | accordion | Only one panel open at a time | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhCollapse Events
 
@@ -142,7 +142,7 @@ export default {
 | name | Unique panel key | `string \| number` | — |
 | title | Title (or title slot) | `string` | — |
 | disabled | Disabled | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ## Accessibility
 
@@ -162,7 +162,7 @@ The TypeScript type structures exported by this component (auto-extracted from `
 export interface LhCollapseProps {
   modelValue?: LhCollapseKey | LhCollapseKey[]
   accordion?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -176,7 +176,7 @@ export interface LhCollapseItemProps {
   name: LhCollapseKey
   title?: string
   disabled?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

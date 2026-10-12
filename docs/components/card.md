@@ -225,7 +225,7 @@ export default {}
 | loading | 加载态：内容区以骨架占位 | `boolean` | `false` |
 | themeVars | 组件级主题变量（键自动加 --lh- 前缀） | `{ [x: string]: string; }` | — |
 | bgPattern | 花纹背景 URL（如 var(--lh-pattern-willow)），不受全局白名单限制 | `string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -286,7 +286,7 @@ export interface LhCardProps {
   /** 花纹背景 URL（如 var(--lh-pattern-willow)），不受全局白名单限制 */
   bgPattern?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

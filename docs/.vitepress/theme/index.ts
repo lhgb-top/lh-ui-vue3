@@ -1,11 +1,13 @@
 import type { App } from 'vue'
-import { h, computed } from 'vue'
+import { h, computed, watchEffect } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { EnhanceAppContext, Theme, useData } from 'vitepress'
 import DemoBlock from '../components/DemoBlock.vue'
 import ApiStyleToggle from '../components/ApiStyleToggle.vue'
 import PresetThemeSwitcher from '../components/PresetThemeSwitcher.vue'
+import ThemeStudio from '../components/ThemeStudio.vue'
 import LhHome from '../components/LhHome.vue'
+import { lhlocale } from '~/locale'
 import {
   LhButton, LhInput, LhIcon, LhTooltip, LhDialog,
   LhForm, LhFormItem, LhSelect, LhCheckbox, LhCheckboxGroup,
@@ -91,7 +93,14 @@ import './style.css'
 const customTheme: Theme = {
   extends: DefaultTheme,
   Layout: () => {
-    const { page } = useData()
+    const { page, lang } = useData()
+
+    // 文案语言跟随 VitePress 的 lang（en 站点 lang 为 'en-US'）。
+    // 语言包 share 已内置注册，setLocale 直接切换即可；watchEffect 在 SSG 期同步执行一次，
+    // 保证每页渲染时文案与页面语言一致（之前组件文案始终是默认中文）
+    watchEffect(() => {
+      lhlocale.setLocale(lang.value === 'en-US' ? 'en-US' : 'zh-CN')
+    })
 
     const isComponentDoc = computed(() => {
       const path = page.value?.relativePath || ''
@@ -109,6 +118,7 @@ const customTheme: Theme = {
   },
   enhanceApp({ app }:EnhanceAppContext) {
     app.component('DemoBlock', DemoBlock)
+    app.component('ThemeStudio', ThemeStudio)
     app.component('LhHome', LhHome)
     app.component('LhButton', LhButton)
     app.component('LhInput', LhInput)

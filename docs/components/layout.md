@@ -137,7 +137,7 @@ export default {}
 | 属性名 | 说明 | 类型 | 默认值 |
 |--------|------|------|--------|
 | direction | 排列方向（含 Aside 时自动为 vertical） | `"horizontal" \| "vertical"` | `'horizontal'` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### LhLayoutAside Props
 
@@ -145,7 +145,7 @@ export default {}
 |--------|------|------|--------|
 | width | 侧栏宽度 | `number \| string` | — |
 | ariaLabel | 无障碍名称（landmark 命名） | `string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 Header / Main / Footer 共用 `sx` 一个 prop。
 
@@ -168,7 +168,7 @@ export interface LhLayoutProps {
   /** 排列方向（含 Aside 时自动为 vertical） */
   direction?: 'horizontal' | 'vertical'
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -181,7 +181,7 @@ export interface LhLayoutProps {
 /** Header / Main / Footer 共用 props */
 export interface LhLayoutSectionProps {
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

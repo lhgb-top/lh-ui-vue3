@@ -239,7 +239,7 @@ export default {
 | closable | Whether tabs can be closed | `boolean` | `false` |
 | addable | Whether to show the add button | `boolean` | `false` |
 | tabPosition | Tab position | `"top" \| "bottom"` | `'top'` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhTabs Events
 
@@ -291,7 +291,7 @@ export interface LhTabsProps {
   closable?: boolean
   addable?: boolean
   tabPosition?: LhTabsPosition
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

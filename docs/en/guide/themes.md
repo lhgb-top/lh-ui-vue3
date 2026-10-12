@@ -2,7 +2,7 @@
 
 lh-ui-plus ships 5 Chinese-style preset themes, ready to use. Two ways to apply them:
 
-- **Global switching** (recommended): `usePresetTheme` writes preset variables to `:root`, applying site-wide and persisted to localStorage.
+- **Global switching** (recommended): `useLhPresetTheme` writes preset variables to `:root`, applying site-wide and persisted to localStorage.
 - **Scoped switching**: `LhConfigProvider :theme-vars` only affects its own subtree — suitable for showing multiple themes side by side on one page.
 
 Preset variables are available via `getThemeVars(name)` (from `@lh-ui/vue3/theme`); the `name` values are listed in the sections below.
@@ -166,7 +166,7 @@ const goldenTheme = getThemeVars('golden')
 
 Two mechanisms, chosen by scope:
 
-- **Global switching** (recommended): `usePresetTheme` writes preset variables to `:root`, applies site-wide and persists to localStorage, surviving refreshes. No `LhConfigProvider` wrapper required.
+- **Global switching** (recommended): `useLhPresetTheme` writes preset variables to `:root`, applies site-wide and persists to localStorage, surviving refreshes. No `LhConfigProvider` wrapper required.
 - **Scoped switching**: `LhConfigProvider :theme-vars` only affects its own subtree — suitable for showing multiple themes side by side on one page.
 
 ### Global Preset Switching
@@ -175,9 +175,9 @@ The buttons below write to `:root`, so the entire docs site would be affected �
 
 ```vue
 <script setup lang="ts">
-import { LhButton, usePresetTheme } from '@lh-ui/vue3'
+import { LhButton, useLhPresetTheme } from '@lh-ui/vue3'
 
-const { preset, setPreset, presets } = usePresetTheme()
+const { preset, setPreset, presets } = useLhPresetTheme()
 </script>
 
 <template>
@@ -224,9 +224,9 @@ Keep the switcher buttons **outside** `LhConfigProvider`, otherwise the buttons 
 
 ```vue
 <script setup lang="ts">
-import { LhConfigProvider, LhButton, LhTag, LhSwitch, usePresetTheme } from '@lh-ui/vue3'
+import { LhConfigProvider, LhButton, LhTag, LhSwitch, useLhPresetTheme } from '@lh-ui/vue3'
 
-const { preset, setPreset, presets, themeVars } = usePresetTheme({ applyToRoot: false })
+const { preset, setPreset, presets, themeVars } = useLhPresetTheme({ applyToRoot: false })
 </script>
 
 <template>
@@ -253,11 +253,11 @@ const { preset, setPreset, presets, themeVars } = usePresetTheme({ applyToRoot: 
 </template>
 ```
 
-> **Prefix conventions**: ConfigProvider prefixing is idempotent — `getThemeVars()` (from `@lh-ui/vue3/theme`) returns keys already prefixed with `--lh-` and can be passed to `:theme-vars` as-is, while `usePresetTheme()`'s `themeVars` comes pre-stripped. Both work directly with `:theme-vars`; no manual prefix handling needed.
+> **Prefix conventions**: ConfigProvider prefixing is idempotent — `getThemeVars()` (from `@lh-ui/vue3/theme`) returns keys already prefixed with `--lh-` and can be passed to `:theme-vars` as-is, while `useLhPresetTheme()`'s `themeVars` comes pre-stripped. Both work directly with `:theme-vars`; no manual prefix handling needed.
 
 <script setup lang="ts">
 import { LhConfigProvider, LhButton, LhTag, LhSwitch } from '~/components'
-import { usePresetTheme } from '~/composables'
+import { useLhPresetTheme } from '~/composables'
 import { getThemeVars } from '@lh-ui/share/theme'
 import '@lh-ui/share/styles/config-provider'
 import '@lh-ui/share/styles/button'
@@ -268,7 +268,7 @@ import '@lh-ui/share/styles/switch'
 const cerblueTheme = getThemeVars('cerblue')
 
 // Scoped preset demo: applyToRoot: false only returns themeVars, scope owned by ConfigProvider
-const { preset, setPreset, presets, themeVars: presetThemeVars } = usePresetTheme({
+const { preset, setPreset, presets, themeVars: presetThemeVars } = useLhPresetTheme({
   applyToRoot: false,
 })
 </script>

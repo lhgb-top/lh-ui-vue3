@@ -188,7 +188,7 @@ LhMessage.config({
 | type | 语义类型 | `"success" \| "warning" \| "error" \| "info" \| "danger" \| "loading"` | `'info'` |
 | showClose | 是否显示关闭按钮 | `boolean` | `false` |
 | closeLabel | 关闭按钮的无障碍名称（未传时取语言包 `message.close`） | `string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 服务方法：`LhMessage(options)` / `LhMessage.success/info/warning/danger/loading(content, options?)`，返回 `{ close }` 句柄；另有 `LhMessage.close(id)`、`LhMessage.closeAll()` 与 `LhMessage.config(options)`。
 
@@ -209,7 +209,7 @@ LhMessage.config({
 | duration | 自动关闭毫秒数，`0` 表示不自动关闭（loading 默认 `0`） | `number` | `3000` |
 | showClose | 是否显示关闭按钮 | `boolean` | `false` |
 | offset | 距视口顶部偏移 px | `number` | `20` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 | onClose | 关闭后的回调 | `() => void` | — |
 
 ## 无障碍
@@ -242,7 +242,7 @@ export interface LhMessageOptions {
   /** 距视口顶部偏移 px（默认 20） */
   offset?: number
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
   /** 关闭（含自动关闭与手动关闭）后的回调 */
   onClose?: () => void
 }
@@ -273,7 +273,7 @@ export interface LhMessageProps {
   showClose?: boolean
   /** 关闭按钮的无障碍名称（未传时取语言包 message.close） */
   closeLabel?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -320,7 +320,7 @@ export interface LhMessageRecord {
   showClose: boolean
   /** 距视口顶部的偏移 px */
   offset: number
-  sx?: SxProps
+  sx?: LhSxProps
   onClose?: () => void
 }
 ```

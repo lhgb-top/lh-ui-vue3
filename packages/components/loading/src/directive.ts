@@ -1,5 +1,5 @@
 import type { Directive } from 'vue'
-import { showLoading } from './service'
+import { showLhLoading } from './service'
 import type { LhLoadingHandle, LhLoadingOptions } from './types'
 
 interface LoadingElement extends HTMLElement {
@@ -16,12 +16,12 @@ export const lhLoading: Directive<
 > = {
   mounted(el, binding) {
     if (!binding.value) return
-    el.__lhLoading = showLoading(applyElement(el, binding))
+    el.__lhLoading = showLhLoading(applyElement(el, binding))
   },
   updated(el, binding) {
     if (binding.value === binding.oldValue) return
     if (binding.value && !el.__lhLoading) {
-      el.__lhLoading = showLoading(applyElement(el, binding))
+      el.__lhLoading = showLhLoading(applyElement(el, binding))
     } else if (!binding.value && el.__lhLoading) {
       el.__lhLoading.close()
       el.__lhLoading = undefined

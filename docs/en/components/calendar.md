@@ -277,7 +277,7 @@ export default {
 | panels | Number of month panels shown at once (flex wrap) | `number` | `1` |
 | placeholder | Placeholder text for input mode | `string` | — |
 | closeOnSelect | Whether input mode collapses the panel after selecting | `boolean` | `true` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhCalendar Events
 
@@ -331,7 +331,7 @@ export interface LhCalendarProps {
   panels?: number
   placeholder?: string
   closeOnSelect?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

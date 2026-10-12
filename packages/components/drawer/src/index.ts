@@ -1,12 +1,12 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { LhDrawerProps } from './types'
 import { useLhConfigContext } from '~/components/config-provider/src/index'
-import { useLhComponentTheme, useLhFocusTrap, useLhZIndex } from '~/composables'
+import { useLhComponentTheme, useLhFocusTrap, useLhOverlayStack, useLhZIndex } from '~/composables'
 import { generateId } from '@lh-ui/share/utils'
 import { lhlocale } from '~/locale'
 import {
-  DEFAULT_DRAWER_DIRECTION,
-  DEFAULT_DRAWER_SIZE,
+  LH_DRAWER_DIRECTION_DEFAULT,
+  LH_DRAWER_SIZE_DEFAULT,
   getDrawerClass,
   getDrawerPanelStyle,
 } from '@lh-ui/share/core/drawer/logic'
@@ -34,9 +34,11 @@ export function useLhDrawer(
     return lhlocale.t(path, fallback)
   }
 
-  const direction = computed(() => props.direction ?? DEFAULT_DRAWER_DIRECTION)
+  const direction = computed(() => props.direction ?? LH_DRAWER_DIRECTION_DEFAULT)
 
   const { trap, release } = useLhFocusTrap()
+  // 弹层打开顺序栈：多弹层叠加时 Esc 只关栈顶（与 Dialog 共用同一套栈）
+  const overlay = useLhOverlayStack()
 
   let bodyOverflow = ''
 
@@ -58,6 +60,7 @@ export function useLhDrawer(
    */
   function open() {
     isVisible.value = true
+    overlay.register()
     emit('update:modelValue', true)
     emit('open')
     lockScroll()
@@ -69,6 +72,7 @@ export function useLhDrawer(
    */
   function close() {
     isVisible.value = false
+    overlay.unregister()
     emit('update:modelValue', false)
     emit('close')
     unlockScroll()
@@ -83,7 +87,9 @@ export function useLhDrawer(
    * Esc 关闭
    */
   function onKeydown(event: KeyboardEvent) {
-    if (isEscapeKey(event) && isVisible.value && props.closeOnEsc !== false) {
+    // 已关闭不响应；多弹层叠加时只有栈顶响应
+    if (!isVisible.value || !overlay.isTopmost()) return
+    if (isEscapeKey(event) && props.closeOnEsc !== false) {
       close()
     }
   }
@@ -103,7 +109,8 @@ export function useLhDrawer(
       document.addEventListener('keydown', onKeydown)
     }
     if (isVisible.value) {
-      // 初始即打开：补上滚动锁定与焦点圈
+      // 初始即打开：补上打开栈登记、滚动锁定与焦点圈
+      overlay.register()
       lockScroll()
       nextTick(() => trap(panelRef.value))
     }
@@ -123,7 +130,7 @@ export function useLhDrawer(
 
   const panelStyle = computed(() => ({
     ...componentStyle.value,
-    ...getDrawerPanelStyle(direction.value, props.size ?? DEFAULT_DRAWER_SIZE),
+    ...getDrawerPanelStyle(direction.value, props.size ?? LH_DRAWER_SIZE_DEFAULT),
     ...sxToStyle(props.sx ?? {}),
   }))
 

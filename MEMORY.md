@@ -33,7 +33,7 @@
   （`--lh-text-color-primary`、`--lh-border-color`、`--lh-*-color-light-5/9`、`--lh-white` 等），
   fallback 硬编码色会静默击穿主题。组件局部覆盖钩子（`--lh-btn-size`、`--lh-tooltip-bg` 等）可豁免。
   这条规则的执行侧在 share 仓库（`pnpm verify:styles`），本仓库只消费。
-- **主题 TS 预设也在 share**：`getThemeVars` / `THEME_PRESETS` / `buildPresetStyleText` 从
+- **主题 TS 预设也在 share**：`getThemeVars` / `LH_THEME_PRESETS` / `buildPresetStyleText` 从
   `@lh-ui/share/theme` 引入；`src/theme.ts` 只是一层 `export *` 转发，保住 `@lh-ui/vue3/theme`
   子路径导出，不要在里面加新逻辑。
 

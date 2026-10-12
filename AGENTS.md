@@ -13,7 +13,7 @@ wrappers that wire props, templates, and styles to it.
 
 ## Layout and layer rules
 
-- `@lh-ui/share`（npm 依赖，`^0.2.0`）— 框架无关共享层，**本仓库不持有其源码**：
+- `@lh-ui/share`（npm 依赖，`^0.3.0`）— 框架无关共享层，**本仓库不持有其源码**：
     - `@lh-ui/share/core/<name>` — 纯函数逻辑与类型（零框架导入）；单测唯一一份在 share 仓库
     - `@lh-ui/share/styles/<name>` — 组件 SCSS **唯一源**（`styles/` 是红线，UI 库不得拷贝手改）
     - `@lh-ui/share/styles/theme/common/` — 令牌与 CSS 变量（主题真源）
@@ -28,8 +28,11 @@ wrappers that wire props, templates, and styles to it.
 - `packages/components/index.ts` — the `lhComponents` registry array plus named exports.
 - `src/index.ts` — the public entry: combines every component, locale, type export, and the global
   style import (`@lh-ui/share/styles/<name>` per component).
-- `packages/composables/index.ts` — shared `useLh*` composables: `useLhSize`, `useLhDisabled`,
-  `useLhNamespace`, `useLhVModel`, `useLhComponentTheme`.
+- `packages/composables/index.ts` — shared `useLh*` composables: `useLhZIndex`, `useLhOverlayStack`
+  （弹层打开顺序栈，Esc 只关栈顶）, `useLhBreakpoint`, `useLhComponentTheme`, `useLhTheme`,
+  `usePresetTheme`, `useLhPopper`, `useLhClickOutside`, `useLhFocusTrap`, `useLhTrigger`,
+  `useLhScrollEnd`.（2026-10 审计清理：零消费者的 `useLhSize` / `useLhDisabled` /
+  `useLhNamespace` / `useLhVModel` 已删除）
 - `packages/locale/index.ts` — Vue 响应式语言壳：把 share 的 `lhlocale`（纯事件发射器）包成
   `ref(version)`，组件里 `void lhlocale.version.value` 即可订阅语言切换。
 - `packages/imperative/index.ts` — 命令式调用（loading/message/notification 的 service 创建）。
@@ -43,14 +46,15 @@ share repo**; the Vue component here only wires props, template, and styles.
 | Task | Command |
 | --- | --- |
 | Playground dev server | `pnpm dev` |
-| Typecheck | `pnpm typecheck` (`tsc --noEmit`) |
+| Typecheck | `pnpm typecheck`（生成 `tsconfig.dev.json` 后 `tsc -p`，家族布局下走兄弟仓源码；`pnpm typecheck:npm` 回退 npm 包类型） |
 | Lint / autofix | `pnpm lint` / `pnpm lint:fix` |
 | Unit tests (utils, registry) | `pnpm test:unit` |
 | Component tests | `pnpm test:components` |
 | Watch mode | `pnpm test` |
 | Coverage | `pnpm test:coverage` |
-| Build | `pnpm build` (`build:esm`, `build:cjs`, `build:umd`, `build:dts`) |
+| Build | `pnpm build` (`build:esm`, `build:cjs`, `build:umd`, `build:dts`)；家族布局本地验证用 `pnpm build:local`（联动兄弟仓已构建产物，见别名红线段例外 3） |
 | Docs | `pnpm docs:dev` / `pnpm docs:build` |
+| Docs 示例规范 + 与 vue2 同步 | `pnpm verify:docs-sync` |
 | Release note | `pnpm changeset` |
 
 Always prefer the narrowest command for the area you touched, e.g.
@@ -81,8 +85,36 @@ paths: `~/*` → `packages/*`, `@/*` → `src/*`, `@lh-ui/vue3` → `src/index.t
 resolve to the repo-root `types/` directory; all current `lh-types/*` usages are type-only imports, so
 they are erased at runtime and have no bundler alias — keep them `import type` (the dts build does alias
 `lh-types` so type imports get inlined into the published declarations). `@lh-ui/share/*` 走 node_modules
-的 exports 映射（`moduleResolution: bundler` 免映射），**不要**给它配路径别名——否则会绕过 external
-打入产物。
+的 exports 映射（`moduleResolution: bundler` 免映射）。**不要在根 `tsconfig.json` 里给它配 paths**
+——根配置是 rollup-plugin-dts（按 `ts.findConfigFile` 从每个入口向上查找）与构建链读取的那一份，
+加了源码映射会让兄弟仓 `.ts` 进入每个 dts program（`rollup.dts.config.js` 注释记录过 120 program
+OOM），且破坏「share 类型随包发布的 `.d.ts`」语义；**也不要**在构建链配置里配 vite/rollup 别名——
+会绕过 external 打入产物。本地联动的三条**例外**（都带存在性守卫，兄弟仓不存在时自动回退 npm 包，
+CI 单仓 clone 无感）：
+
+1. **dev/test 运行时**（`scripts/local-share-alias.mjs` 的 `createLocalShareAliases`）：接在
+   `vite.config.ts` / `vitest.config.ts` / `docs/.vitepress/config.ts` 的 dev 期配置里，家族布局下把
+   `@lh-ui/share/**` 解析到同级 share 仓**源码**（`src/` 与 `styles/`），改 share 即时热更新。
+2. **dev 期 typecheck**（`scripts/gen-dev-tsconfig.mjs` 生成 `tsconfig.dev.json`）：`pnpm typecheck`
+   先跑生成脚本、再 `tsc -p tsconfig.dev.json`。派生配置 `extends` 根配置，只覆盖 `noEmit` 与
+   `paths`——必须把根配置的 5 条别名原样重声明后再追加 `@lh-ui/share/*` → 兄弟仓源码（TS 的
+   `extend()` 对 `paths` 是整体替换，不重声明会丢别名）。`tsconfig.dev.json` 是生成文件，已
+   gitignore，不要手改、不要提交。
+3. **本地构建**（`scripts/link-local-share.mjs`，入口 `pnpm build:local`）：把
+   `node_modules/@lh-ui/share` 改挂到同级 share 仓目录，构建链读其**已构建产物**（`es/` + `lib/` +
+   `styles/`）。解析路径仍是 bare `@lh-ui/share/**`，external 门禁 `['vue', /^@lh-ui\/share/]` 照常
+   生效——不是别名、不绕过 external、不需要 share 先发版。守卫两道：兄弟仓不存在跳过；兄弟仓未
+   `pnpm build`（`es/lib/styles` 缺件）也跳过并提示，避免读到产物空洞。`--restore` 或一次
+   `pnpm install` 还原回 npm 包。**发版链（`pnpm build` / `prepublishOnly`）不用它**，仍读 npm 包。
+
+刻意**保持 npm 解析**的场景：`styles/*` 在 dev tsconfig 里不映射（无类型，`env.d.ts` 的 ambient
+声明已兜底）；`scripts/build-styles.mjs` / `gen-type-docs.mjs` 走 node_modules 解析——未联动时读 npm
+**发版制品**（盯发版用，不要改成源码路径），`build:local` 联动后读兄弟仓产物。
+（`verify-theme-contrast.mjs` 已迁至 lh-ui-share 仓，本仓不再持有。）
+`pnpm typecheck:npm`（`tsc --noEmit` 直读根配置）保留作「按 npm 包类型检查」的回退入口。
+
+**单仓 clone 的前置条件**：回退 npm 包时 `dev/main.ts` 引入的
+`@lh-ui/share/styles/index.scss` 需要 share **≥ 0.4.0**（聚合文件与对应 exports 键自该版本起进入 npm）。
 
 Import rules enforced by convention:
 
@@ -93,12 +125,22 @@ Import rules enforced by convention:
 - Tests import via `~/components/<name>` / `@lh-ui/share/core/<name>`, never `../../packages/...`.
 - `src/index.ts`, `dev/`, and `docs/.vitepress/` import components/styles/themes via `~/` (and
   `@lh-ui/vue3` for the library entry), never `../packages/...`.
+- **展示给用户的示例代码（docs md 里的 ```vue / ```js / ```ts 围栏）只用 npm 包名**
+  （`@lh-ui/vue3` / `@lh-ui/share`），禁止 `~/`、`@/`——用户拷贝出去解析不了。页面级
+  `<script setup>` 块是站点自身运行的代码，仍走 `~/`。`pnpm verify:docs-sync` 强制此约定。
+- **与 vue2 共享的 docs 组件**（`docs/.vitepress/components/ThemeStudio.vue` 等）以本仓为源头，
+  lh-ui-vue2 侧是逐字节同步副本；改动在本仓完成后整体覆盖到兄弟仓，`pnpm verify:docs-sync`
+  校验两端一致（脚本里的 `SHARED_COMPONENTS` 清单两仓同步维护）。
+  共享组件一律写成**双兼容 Options API**（Vue 3 与 Vue 2.7 均可运行——vue2 docs 已于
+  2026-10-10 迁移 VuePress 1.x，其 vue-loader 15 不支持 `<script setup>`），约定：
+  不 import vitepress（语言检测用 `$lang` + pathname 兜底）、模板不用 TS 断言/v-model 参数、
+  样式 `--vp-c-*` 全带 fallback。完整清单见 ThemeStudio.vue 头注释。
 
 ### PT/sx 决策（2026-09-15，详见 `ai/pt-sx-research.md`）
 
 - **PT (PassThrough)**：**不实现**。CSS 变量主题系统 + `themeVars` prop 已覆盖 95% 定制需求。PT 破坏封装且维护成本过高。
 - **sx（轻量版）**：**计划接入**。sx 工具函数已在 `@lh-ui/share/core/shared`（sx 模块），计划先接入 3-5 个高频组件（Button、Input、Dialog、Tooltip 等）作为演示。
-  - 接入方式：在组件 Props 声明 `sx?: SxProps`，根元素绑定 `:style="sxToStyle(props.sx)"`
+  - 接入方式：在组件 Props 声明 `sx?: LhSxProps`，根元素绑定 `:style="sxToStyle(props.sx)"`
   - 首页展示文案："CSS 变量主题系统 + sx 快速布局"
   - 详细调研见 `ai/pt-sx-research.md`
 
@@ -116,6 +158,10 @@ Import rules enforced by convention:
 - **ESLint**: `no-explicit-any` is off, unused vars warn unless prefixed with `_`,
   `vue/multi-word-component-names` is off. `theme/`, `es/`, `lib/`, `dist/` are ignored.
 - Existing comments, docs, and commit messages are written in Chinese; keep that when editing.
+- **命名规范**（详见 `docs/project/development-guide.md`）：反域名根 `top.lhgb`（反写
+  `www.lhgb.top`），npm 端包名维持 `@lh-ui/*`（npm 不允许点号），反域名只落元信息；非第三方
+  符号必须带 `LH` 前缀——常量 `LH_XXX`、类型/接口 `LhXxx`、composable `useLhXxx`、
+  模块级单例 `lhXxx`。`@lh-ui/share` 与第三方依赖的导出不强制。
 - The package has one runtime dependency — `@lh-ui/share`（core 逻辑 / 常量 / 语言包 / 主题 / 全部组件
   scss）。share 先发版、本库随其后（见 share 仓库 AGENTS.md 红线 5）；升级 share 后需全量回归。
 

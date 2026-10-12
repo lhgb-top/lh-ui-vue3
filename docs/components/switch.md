@@ -325,7 +325,7 @@ export default {
 | size | 尺寸 | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
 | activeText | 开启时文本 | `string` | `''` |
 | inactiveText | 关闭时文本 | `string` | `''` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -355,7 +355,7 @@ export interface LhSwitchProps {
   activeText?: string
   inactiveText?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

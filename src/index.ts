@@ -88,7 +88,7 @@ import {
 import { lhlocale, zhCN, enUS } from '~/locale'
 
 // Composables
-import { useLhTheme, usePresetTheme } from '~/composables'
+import { useLhTheme, useLhPresetTheme } from '~/composables'
 import type { LhThemeType } from '~/composables'
 
 // Types
@@ -101,6 +101,9 @@ import type {
 } from '~/components/input'
 import type { LhConfigProviderProps, LhConfigContext } from '~/components/config-provider'
 import type { LhIconProps, LhIconSize } from '~/components/icon'
+// LhIconName 由四个公共 prop（LhButton.icon、LhInput.prefixIcon/suffixIcon、
+// LhAvatar.icon、LhStep.icon）引用，直接从 share 引入再导出，供使用者约束图标名
+import type { LhIconName } from '@lh-ui/share/core/icon'
 import type {
   LhTooltipProps,
   LhTooltipPlacement,
@@ -135,7 +138,7 @@ import type {
   LhDescriptionsProps,
   LhDescriptionsItem,
 } from '~/components/descriptions'
-import type { LocalePath } from '~/locale'
+import type { LhLocalePath } from '~/locale'
 import type { LhDividerProps } from '~/components/divider'
 import type { LhSpaceProps } from '~/components/space'
 import type { LhCardProps } from '~/components/card'
@@ -331,7 +334,7 @@ export {
   enUS,
   // Composables
   useLhTheme,
-  usePresetTheme,
+  useLhPresetTheme,
   // Wave A
   LhDivider,
   LhSpace,
@@ -410,6 +413,7 @@ export type {
   // Icon
   LhIconProps,
   LhIconSize,
+  LhIconName,
   // Tooltip
   LhTooltipProps,
   LhTooltipPlacement,
@@ -539,5 +543,5 @@ export type {
   LhAnchorProps,
   LhVirtualListProps,
   // Locale
-  LocalePath,
+  LhLocalePath,
 }

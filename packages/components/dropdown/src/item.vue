@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { computed, inject, onBeforeUnmount, onMounted, ref } from 'vue'
-import type { LhDropdownItemProps, DropdownItemRecord } from './types'
+import type { LhDropdownItemProps, LhDropdownItemRecord } from './types'
 import { LH_DROPDOWN_KEY } from './types'
 import { getDropdownItemClass } from '@lh-ui/share/core/dropdown/logic'
 
@@ -28,7 +28,7 @@ const emit = defineEmits<{
 const rootRef = ref<HTMLElement | null>(null)
 const ctx = inject(LH_DROPDOWN_KEY, null)
 
-const record: DropdownItemRecord = {
+const record: LhDropdownItemRecord = {
   get el() {
     return rootRef.value as HTMLElement
   },

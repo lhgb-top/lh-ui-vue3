@@ -438,7 +438,7 @@ export default {
 | resizable | Enable column resizing (also needs column-level `resizable`) | `boolean` | `false` |
 | defaultFilteredValues | Default filter state (uncontrolled, keyed by column prop) | `{ [x: string]: (string \| number)[]; }` | `() => ({})` |
 | filteredValues | Controlled filter state (keyed by column prop) | `{ [x: string]: (string \| number)[]; }` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhTable Events
 
@@ -504,7 +504,7 @@ export interface LhTableProps {
   resizable?: boolean
   defaultFilteredValues?: Record<string, (string | number)[]>
   filteredValues?: Record<string, (string | number)[]>
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

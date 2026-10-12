@@ -31,9 +31,9 @@
 import { computed } from 'vue'
 import { groupNotificationsByPosition, isTopPosition } from '@lh-ui/share/core/notification'
 import LhNotificationItem from './index.vue'
-import { closeNotification as close, notificationConfig as config, notificationRecords } from './store'
+import { closeLhNotification as close, lhNotificationConfig as config, lhNotificationRecords } from './store'
 
 defineOptions({ name: 'LhNotificationHost' })
 
-const groups = computed(() => groupNotificationsByPosition(notificationRecords))
+const groups = computed(() => groupNotificationsByPosition(lhNotificationRecords))
 </script>

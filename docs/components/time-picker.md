@@ -299,7 +299,7 @@ export default {
 | stepHour | 小时步进 | `number` | `1` |
 | stepMinute | 分钟步进 | `number` | `1` |
 | stepSecond | 秒步进 | `number` | `1` |
-| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于触发器根元素（浮层面板不受影响） | `SxProps` | — |
+| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于触发器根元素（浮层面板不受影响） | `LhSxProps` | — |
 
 ## TimePicker Events
 
@@ -333,7 +333,7 @@ export interface LhTimePickerProps {
   stepMinute?: number
   stepSecond?: number
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

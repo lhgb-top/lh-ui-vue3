@@ -265,7 +265,7 @@ export default {
 | showClose | Show the close button | `boolean` | `true` |
 | closeLabel | Accessible name for the close button (falls back to locale key `notification.close`) | `string` | — |
 | onClick | Card click callback (gives the card button semantics) | `() => void` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 Service methods: `LhNotification(options)` / `LhNotification.success/info/warning/danger(options)` return a `{ close }` handle; plus `LhNotification.close(id)`, `LhNotification.closeAll()` and `LhNotification.config({ duration, offset, appendTo })`.
 
@@ -287,7 +287,7 @@ In the imperative service API, closing (auto or manual) is reported through the 
 | duration | Auto dismiss in ms, `0` disables it | `number` | `4500` |
 | position | Popup position | `'top-right' \| 'top-left' \| 'bottom-right' \| 'bottom-left'` | `'top-right'` |
 | showClose | Show the close button | `boolean` | `true` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 | onClick | Card click callback | `() => void` | — |
 | onClose | Called after close | `() => void` | — |
 
@@ -315,7 +315,7 @@ export interface LhNotificationOptions {
   duration?: number
   position?: LhNotificationPosition
   showClose?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
   onClick?: () => void
   onClose?: () => void
 }
@@ -358,7 +358,7 @@ export interface LhNotificationProps {
   showClose?: boolean
   closeLabel?: string
   onClick?: () => void
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -386,7 +386,7 @@ export interface LhNotificationRecord {
   duration: number
   position: LhNotificationPosition
   showClose: boolean
-  sx?: SxProps
+  sx?: LhSxProps
   onClick?: () => void
   onClose?: () => void
 }

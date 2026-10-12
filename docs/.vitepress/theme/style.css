@@ -207,6 +207,7 @@ body {
 .VPNav {
   background-color: rgba(250, 248, 245, 0.95);  /* 去掉 !important,VitePress 自带 !important 语义 */
   border-bottom: 1px solid var(--vp-c-divider);
+  position: sticky;
 }
 
 .dark .VPNav {
@@ -323,8 +324,9 @@ body {
 
 /* API 切换按钮 */
 .api-toggle-wrapper {
-  position: sticky;
-  top: 3rem;
+  position:fixed;
+  width: 100%;
+  top: var(--vp-nav-height,3rem);
   z-index: 9;
   background-color: var(--vp-local-nav-bg-color, var(--vp-c-bg-soft));
   display: flex;
@@ -438,6 +440,11 @@ body {
   border: 1px solid var(--vp-c-divider);
 }
 
+.language-vue.vp-adaptive-theme{
+  margin: 0 auto !important;
+  max-width: 100%;
+}
+
 /* 排版优化 */
 .vp-doc h1,
 .vp-doc h2,
@@ -471,16 +478,6 @@ body {
   animation: ink-breathe 8s ease-in-out infinite;
 }
 
-/* API 切换包装 */
-.api-toggle-wrapper {
-  position: sticky;
-  top: var(--vp-nav-height,3rem);
-  z-index: 9;
-  background-color: var(--vp-local-nav-bg-color, var(--vp-c-bg-soft));
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 16px;
-}
 
 /* 响应式 */
 @media (max-width: 768px) {
@@ -493,7 +490,17 @@ body {
   }
 
   .api-toggle-wrapper {
-    /* position: static; */
+    position:sticky;
+    top: 50px;
     margin-bottom: 12px;
   }
+}
+
+/* Grid 组件文档的演示单元（demo 专属样式归文档站，不进组件库样式源） */
+.grid-demo-cell {
+  padding: 10px 12px;
+  background-color: var(--lh-bg-color-page, #F5F0EB);
+  border-radius: var(--lh-border-radius-small, 6px);
+  text-align: center;
+  font-size: var(--lh-font-size-small, 13px);
 }

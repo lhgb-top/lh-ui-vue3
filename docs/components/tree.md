@@ -333,7 +333,7 @@ export default {
 | lazy | 懒加载模式（展开未加载节点时调用 load） | `boolean` | `false` |
 | load | 懒加载回调（resolve 提交子节点并展开，reject 取消） | `(node: LhTreeNode, resolve: (children: LhTreeNode[]) => void, reject: (reason?: unknown) => void) => void` | — |
 | disabled | 整体禁用 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -409,7 +409,7 @@ export interface LhTreeProps {
   /** 整体禁用 */
   disabled?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

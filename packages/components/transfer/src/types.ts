@@ -1,4 +1,4 @@
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhTransferItem } from '@lh-ui/share/core/transfer'
 
 export interface LhTransferProps {
@@ -9,7 +9,7 @@ export interface LhTransferProps {
   /** 禁用 */
   disabled?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 
 export type { LhTransferItem, LhTransferSide } from '@lh-ui/share/core/transfer'

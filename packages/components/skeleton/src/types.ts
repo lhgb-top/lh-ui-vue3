@@ -1,4 +1,4 @@
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhSkeletonVariant } from '@lh-ui/share/core/skeleton'
 
 export interface LhSkeletonProps {
@@ -11,7 +11,7 @@ export interface LhSkeletonProps {
   /** 是否开启动画 */
   animated?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 
 export interface LhSkeletonItemProps {
@@ -20,5 +20,5 @@ export interface LhSkeletonItemProps {
   /** 是否开启动画 */
   animated?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }

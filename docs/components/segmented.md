@@ -129,7 +129,7 @@ export default {
 | options | 选项（字符串快捷写法或对象） | `[LhSegmentedInput](#type-LhSegmentedInput)`[] | — |
 | disabled | 整组禁用 | `boolean` | `false` |
 | block | 撑满容器 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -163,7 +163,7 @@ export interface LhSegmentedProps {
   /** 撑满容器 */
   block?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -210,7 +210,6 @@ const view = ref('列表')
 const seg = ref('day')
 const segDisabled = ref('甲')
 </script>
-const segDisabled = ref('甲')
 
 
 

@@ -329,7 +329,7 @@ export interface LhTagProps {
   round?: boolean
   hit?: boolean
   onClose?: (e: Event) => void
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -400,7 +400,7 @@ const locale = ref('zh-CN')
 | round | Rounded | `boolean` | `false` |
 | hit | Border stroke | `boolean` | `false` |
 | onClose | Custom close handling | `(e: Event) => void` | — |
-| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `SxProps` | — |
+| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `LhSxProps` | — |
 
 ### Events
 

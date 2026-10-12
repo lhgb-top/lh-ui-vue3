@@ -154,7 +154,7 @@ export default {
 | disabled | 禁用 | `boolean` | `false` |
 | placeholder | 占位文本 | `string` | — |
 | teleported | 面板是否挂到 body（默认 true） | `boolean` | `true` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -193,7 +193,7 @@ export interface LhTreeSelectProps {
   /** 面板是否挂到 body（默认 true） */
   teleported?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

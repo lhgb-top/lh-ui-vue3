@@ -1,18 +1,18 @@
-import { mountComponent } from '~/imperative'
+import { mountLhComponent } from '~/imperative'
 import LhNotificationHost from './host.vue'
 import {
-  closeAllNotifications,
-  closeNotification,
-  createNotificationRecord,
-  notificationConfig,
-  openNotificationRecord,
+  closeAllLhNotifications,
+  closeLhNotification,
+  createLhNotificationRecord,
+  lhNotificationConfig,
+  openLhNotificationRecord,
 } from './store'
 import type { LhNotificationConfig, LhNotificationHandle, LhNotificationOptions, LhNotificationType } from './types'
 
 let host: { unmount: () => void } | null = null
 
 function resolveContainer(): HTMLElement {
-  const target = notificationConfig.appendTo
+  const target = lhNotificationConfig.appendTo
   if (typeof target === 'string') {
     return document.querySelector<HTMLElement>(target) ?? document.body
   }
@@ -21,34 +21,34 @@ function resolveContainer(): HTMLElement {
 
 function ensureHost(): void {
   if (host) return
-  host = mountComponent(LhNotificationHost, {}, resolveContainer())
+  host = mountLhComponent(LhNotificationHost, {}, resolveContainer())
 }
 
 /** 打开一条通知，返回可手动关闭的句柄 */
-export function openNotification(options: LhNotificationOptions): LhNotificationHandle {
+export function openLhNotification(options: LhNotificationOptions): LhNotificationHandle {
   ensureHost()
-  const record = createNotificationRecord(options)
-  openNotificationRecord(record)
-  return { close: () => closeNotification(record.id) }
+  const record = createLhNotificationRecord(options)
+  openLhNotificationRecord(record)
+  return { close: () => closeLhNotification(record.id) }
 }
 
 function openTyped(type: LhNotificationType, options: LhNotificationOptions): LhNotificationHandle {
-  return openNotification({ ...options, type })
+  return openLhNotification({ ...options, type })
 }
 
 /**
  * 通知服务：`LhNotification.success({ title, content })`。
  * 四角独立容器（region + aria-live=polite），堆叠走 flex + gap，不依赖组件树。
  */
-export const LhNotification = Object.assign(openNotification, {
+export const LhNotification = Object.assign(openLhNotification, {
   success: (options: LhNotificationOptions) => openTyped('success', options),
   info: (options: LhNotificationOptions) => openTyped('info', options),
   warning: (options: LhNotificationOptions) => openTyped('warning', options),
   danger: (options: LhNotificationOptions) => openTyped('danger', options),
-  close: closeNotification,
-  closeAll: closeAllNotifications,
+  close: closeLhNotification,
+  closeAll: closeAllLhNotifications,
   /** 全局默认配置（duration / offset / appendTo） */
-  config: (options: LhNotificationConfig) => Object.assign(notificationConfig, options),
+  config: (options: LhNotificationConfig) => Object.assign(lhNotificationConfig, options),
 })
 
 Object.defineProperty(LhNotification, 'name', { value: 'LhNotification' })

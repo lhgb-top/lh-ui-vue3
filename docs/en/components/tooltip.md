@@ -414,7 +414,7 @@ export default {
 | teleportTarget | Teleport target (selector or element, defaults to body) | `string \| HTMLElement` | `'body'` |
 | themeVars | Component-level theme variables, overriding the ConfigProvider configuration | `{ [x: string]: string; }` | — |
 | bgPattern | Component-level background pattern, overriding the ConfigProvider configuration | `string` | — |
-| sx | sx quick layout props (applied to the trigger root element) | `SxProps` | — |
+| sx | sx quick layout props (applied to the trigger root element) | `LhSxProps` | — |
 
 > Note: the `'click'` value of `trigger` is not implemented yet (it currently behaves like `'hover'`); click-to-toggle will arrive in a later version.
 
@@ -504,7 +504,7 @@ export interface LhTooltipProps {
   teleportTarget?: string | HTMLElement
   themeVars?: Record<string, string>
   bgPattern?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

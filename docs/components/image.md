@@ -220,7 +220,7 @@ export default {}
 | preview | 是否可点击预览 | `boolean` | `false` |
 | previewSrcList | 预览图列表（未传时退化为 [src]） | `string[]` | — |
 | lazy | 原生懒加载（loading="lazy"） | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### LhImageViewer Props
 
@@ -228,7 +228,7 @@ export default {}
 |--------|------|------|--------|
 | images | 预览图列表 | `string[]` | — |
 | initialIndex | 初始预览的图片下标 | `number` | `0` |
-| sx | sx 快速布局属性（作用于预览图） | `SxProps` | — |
+| sx | sx 快速布局属性（作用于预览图） | `LhSxProps` | — |
 
 ### Events
 
@@ -271,7 +271,7 @@ export interface LhImageProps {
   /** 原生懒加载（loading="lazy"） */
   lazy?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -288,7 +288,7 @@ export interface LhImageViewerProps {
   /** 初始下标 */
   initialIndex?: number
   /** sx 快速布局属性（作用于预览图） */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

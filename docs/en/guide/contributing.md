@@ -106,7 +106,22 @@ The FengMo portal (www.lhgb.top) lists all LH-UI component libraries on its hub 
 pnpm docs:build
 ```
 
-Upload the build output to `/home/webuser/nginx/lh-ui/plus/` on the server (see the `/lhui/plus/` location in the frontend workspace's `docs/nginx-proxy.conf`). Future libraries (Vue 2 / React / Uniapp) extend under `/lhui/{lib-name}/` the same way.
+Upload the build output to `/home/webuser/nginx/lh-ui/plus/` on the server. The authoritative reference copy of the Nginx location snippets lives in the family docs at [`docs/部署/nginx-lhui.conf.md`](../../../../docs/部署/nginx-lhui.conf.md) (the live copy is the frontend workspace's `docs/nginx-proxy.conf`). All eight family sites are deployed under this convention:
+
+| Repo | Base | Alias directory | cleanUrls |
+| --- | --- | --- | --- |
+| lh-ui-plus (this repo) | `/lhui/plus/` | `/home/webuser/nginx/lh-ui/plus/` | No |
+| lh-ui-vue2 | `/lhui/vue2/` | `/home/webuser/nginx/lh-ui/vue2/` | No (VuePress 1.x) |
+| lh-ui-react | `/lhui/react/` | `/home/webuser/nginx/lh-ui/react/` | No |
+| lh-ui-uniapp | `/lhui/uniapp/` | `/home/webuser/nginx/lh-ui/uniapp/` | Yes |
+| lh-ui-android | `/lhui/android/` | `/home/webuser/nginx/lh-ui/android/` | Yes |
+| lh-ui-ios | `/lhui/ios/` | `/home/webuser/nginx/lh-ui/ios/` | Yes |
+| lh-ui-harmony | `/lhui/harmony/` | `/home/webuser/nginx/lh-ui/harmony/` | Yes |
+| lh-ui-windows | `/lhui/windows/` | `/home/webuser/nginx/lh-ui/windows/` | Yes |
+
+The four native-lineage sites (android / ios / harmony / windows) are VitePress sites with inline static HTML simulators — deployed exactly like the four web-lineage sites. New libraries still extend under `/lhui/{lib-name}/` with their own location and `.env.production`.
+
+> Sites with `cleanUrls` enabled (uniapp and the four native sites) require `$uri.html` in the Nginx `try_files` chain, otherwise extensionless URLs never reach the pre-rendered `.html`; non-cleanUrls sites do not need it. See the "Three contracts" section of the reference copy.
 
 ## Code Conventions
 

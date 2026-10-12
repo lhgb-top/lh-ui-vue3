@@ -301,7 +301,7 @@ export default {
 | closeOnEsc | 是否响应 Esc 关闭 | `boolean` | `true` |
 | themeVars | 组件级主题变量，覆盖 ConfigProvider 配置 | `{ [x: string]: string; }` | — |
 | bgPattern | 组件级背景花纹，覆盖 ConfigProvider 配置 | `string` | — |
-| sx | sx 快速布局属性（作用于面板） | `SxProps` | — |
+| sx | sx 快速布局属性（作用于面板） | `LhSxProps` | — |
 
 ### Events
 
@@ -371,7 +371,7 @@ export interface LhDrawerProps {
   /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
   bgPattern?: string
   /** sx 快速布局属性（作用于面板） */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

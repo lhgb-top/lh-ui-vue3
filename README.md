@@ -57,7 +57,7 @@ app.mount('#app')
 - **LhInput** - Input with v-model, clearable, textarea, prefix/suffix support
 - **LhConfigProvider** - Global config via provide/inject
 - **LhIcon** - SVG icon component
-- **LhTooltip** - Tooltip with Popper.js positioning
+- **LhTooltip** - Tooltip with built-in popper positioning (share 自研 core/shared/popper，无第三方依赖)
 - **LhDialog** - Modal dialog
 - **LhForm / LhFormItem** - Form with validation
 - **LhSelect** - Selectable dropdown

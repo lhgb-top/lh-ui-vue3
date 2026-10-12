@@ -5,6 +5,7 @@ import { useLhConfigContext } from '~/components/config-provider/src/index'
 import {
   useLhComponentTheme,
   useLhFocusTrap,
+  useLhOverlayStack,
   useLhPopper,
   useLhTrigger,
   useLhZIndex,
@@ -12,7 +13,7 @@ import {
 import { useLhClickOutside } from '~/composables'
 import { generateId } from '@lh-ui/share/utils'
 import {
-  DEFAULT_POPOVER_PLACEMENT,
+  LH_POPOVER_PLACEMENT_DEFAULT,
   getPopoverClass,
   getPopoverWidthStyle,
   getDefaultDelay,
@@ -36,7 +37,7 @@ export function useLhPopover(props: LhPopoverProps, emit: (event: string, ...arg
   // 外部控制模式（trigger 为 manual 且外部传入 visible）
   const isControlled = computed(() => props.trigger === 'manual' && props.visible !== undefined)
 
-  const placement = computed(() => props.placement ?? DEFAULT_POPOVER_PLACEMENT)
+  const placement = computed(() => props.placement ?? LH_POPOVER_PLACEMENT_DEFAULT)
 
   const { popperStyle, actualPlacement, updatePosition } = useLhPopper({
     triggerRef,
@@ -83,13 +84,17 @@ export function useLhPopover(props: LhPopoverProps, emit: (event: string, ...arg
    */
   const { trap, release } = useLhFocusTrap()
   const isModal = computed(() => props.trigger === 'click')
+  // 弹层打开顺序栈：多弹层叠加时 Esc 只关栈顶（与 Dialog / Drawer 共用）
+  const overlay = useLhOverlayStack()
 
   watch(isVisible, (visible) => {
     if (visible) {
+      overlay.register()
       nextTick(() => {
         if (isModal.value) trap(popperRef.value)
       })
     } else {
+      overlay.unregister()
       release()
     }
   })
@@ -108,6 +113,7 @@ export function useLhPopover(props: LhPopoverProps, emit: (event: string, ...arg
    * ESC 关闭
    */
   function onKeydown(event: KeyboardEvent) {
+    if (!overlay.isTopmost()) return
     if (isEscapeKey(event) && isVisible.value && !isControlled.value) hide()
   }
 

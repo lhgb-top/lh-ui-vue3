@@ -84,7 +84,7 @@ export default {}
 | --- | --- | --- | --- |
 | size | Size | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
 | color | Rotation color (CSS color value; inherits currentColor when unset) | `string` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ## Accessibility
 
@@ -113,7 +113,7 @@ The TypeScript type structures exported by this component (auto-extracted from `
 export interface LhSpinnerProps {
   size?: LhSpinnerSize
   color?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

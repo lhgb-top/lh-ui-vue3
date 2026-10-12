@@ -136,7 +136,7 @@ export default {
 | character | Custom character | `string` | — |
 | showScore | Show score text | `boolean` | `false` |
 | scoreTemplate | Score template ({n} placeholder) | `string` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhRate Events
 
@@ -169,7 +169,7 @@ export interface LhRateProps {
   character?: string
   showScore?: boolean
   scoreTemplate?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

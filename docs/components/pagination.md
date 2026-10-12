@@ -202,7 +202,7 @@ export default {
 | showJumper | 是否显示跳页输入 | `boolean` | `false` |
 | simple | 紧凑模式 | `boolean` | `false` |
 | disabled | 是否禁用 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -252,7 +252,7 @@ export interface LhPaginationProps {
   /** 是否禁用 */
   disabled?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

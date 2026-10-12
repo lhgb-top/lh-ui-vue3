@@ -295,14 +295,17 @@ import {
   wrapTimeValueInRange,
   clampTimeValue,
 } from '@lh-ui/share/core/time-picker'
+import { generateId } from '@lh-ui/share/utils'
+import { useLhZIndex } from '~/composables'
 import type { LhTimePickerProps } from './types'
 
 defineOptions({ name: 'LhTimePicker' })
 
-// Unique ID for each instance
-let nextUid: number = 0
-nextUid++
-const uid = nextUid
+// 每实例唯一 ID：必须走 generateId——旧实现 let nextUid=0; nextUid++ 写在 setup 内，
+// 每个实例独立执行，uid 恒为 1，多实例 panelId 全部撞名（aria-controls 与 closest 歧义）
+// generateId 已带「lh-time-picker_」前缀，panelId 只需补「panel-」段，避免前缀重复
+const uid = generateId('lh-time-picker')
+const { zIndex } = useLhZIndex()
 
 // 依赖响应式版本号：切换语言时触发重渲染
 const t = (path: string, fallback?: string) => {
@@ -347,7 +350,7 @@ const minute = ref(0)
 const second = ref(0)
 const selecting = ref<'hour' | 'minute' | 'second' | null>(null)
 const panelPosition = ref({ top: 0, left: 0 })
-const panelId = `lh-time-picker-panel-${uid}`
+const panelId = `lh-time-picker-panel-${uid.slice('lh-time-picker_'.length)}`
 const teleportTarget = 'body'
 
 const showSecond = computed(() => props.format.includes('ss'))
@@ -381,7 +384,7 @@ const panelStyle = computed<StyleValue>(() => ({
   position: 'fixed',
   top: `${panelPosition.value.top}px`,
   left: `${panelPosition.value.left}px`,
-  zIndex: 3000 + uid,
+  zIndex: zIndex.value,
 }))
 
 const formatDisplay = computed(() => {

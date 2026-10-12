@@ -117,7 +117,7 @@ import {
   toggleCalendarDate,
   normalizeCalendarSpan,
 } from '@lh-ui/share/core/calendar'
-import { LH_KEYS, sxToStyle } from '@lh-ui/share/core/shared'
+import { LH_KEYS, sxToStyle, formatMessage } from '@lh-ui/share/core/shared'
 import { lhlocale } from '~/locale'
 import type { LhCalendarProps } from './types'
 
@@ -256,8 +256,13 @@ const panelMonths = computed(() =>
   }),
 )
 
+// 标题格式按语言包走（zh「2026年10月」/ en「October 2026」）：
+// 月名复用 month1~12，顺序与连接符由 panelTitle 模板决定
 const panelTitle = (panel: { year: number; month: number }) =>
-  `${panel.year} ${t('datepicker.month', '月')} ${t(`datepicker.month${panel.month + 1}`, String(panel.month + 1))}`
+  formatMessage(t('datepicker.panelTitle', '{year}年{month}'), {
+    year: panel.year,
+    month: t(`datepicker.month${panel.month + 1}`, String(panel.month + 1)),
+  })
 
 /** 焦点目标：受控的单个日期（未传或数组形态时以今天兜底）；键盘导航以此为基准移动 */
 const focusDate = ref<Date>(props.modelValue instanceof Date ? props.modelValue : today)

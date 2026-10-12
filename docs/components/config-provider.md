@@ -276,7 +276,7 @@ export default {
 | locale | 国际化配置 | `LocaleType` | — |
 | themeVars | 全局主题变量 | `{ [x: string]: string; }` | — |
 | patternComponents | 花纹背景白名单 | `[LhThemeableComponent](#type-LhThemeableComponent)`[] | — |
-| componentTheme | 按组件名配置主题变量 | `{ button?: Record<string, string>; input?: Record<string, string>; dialog?: Record<string, string>; tooltip?: Record<string, string>; icon?: Record<string, string>; card?: Record<string, string>; alert?: Record<string, string>; popover?: Record<string, string>; popconfirm?: Record<string, string>; drawer?: Record<string, string>; dropdown?: Record<string, string>; message?: Record<string, string>; notification?: Record<string, string>; loading?: Record<string, string>; timeline?: Record<string, string>; collapse?: Record<string, string>; rate?: Record<string, string>; segmented?: Record<string, string>; calendar?: Record<string, string>; affix?: Record<string, string>; backtop?: Record<string, string>; image?: Record<string, string>; menu?: Record<string, string>; table?: Record<string, string>; layout?: Record<string, string>; tree?: Record<string, string>; transfer?: Record<string, string>; upload?: Record<string, string>; anchor?: Record<string, string>; }` | — |
+| componentTheme | 按组件名配置主题变量 | `{ button?: Record<string, string>; input?: Record<string, string>; dialog?: Record<string, string>; tooltip?: Record<string, string>; icon?: Record<string, string>; card?: Record<string, string>; alert?: Record<string, string>; popover?: Record<string, string>; popconfirm?: Record<string, string>; drawer?: Record<string, string>; dropdown?: Record<string, string>; message?: Record<string, string>; notification?: Record<string, string>; loading?: Record<string, string>; timeline?: Record<string, string>; collapse?: Record<string, string>; rate?: Record<string, string>; segmented?: Record<string, string>; calendar?: Record<string, string>; affix?: Record<string, string>; backtop?: Record<string, string>; image?: Record<string, string>; menu?: Record<string, string>; table?: Record<string, string>; layout?: Record<string, string>; tree?: Record<string, string>; transfer?: Record<string, string>; upload?: Record<string, string>; anchor?: Record<string, string>; steps?: Record<string, string>; }` | — |
 
 ### Slots
 
@@ -327,6 +327,7 @@ export type LhThemeableComponent =
   | 'transfer'
   | 'upload'
   | 'anchor'
+  | 'steps'
 ```
 
 </details>

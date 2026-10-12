@@ -1,4 +1,4 @@
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhTableColumn, LhTableRow, LhTableSortOrder } from '@lh-ui/share/core/table'
 
 export interface LhTableProps {
@@ -33,5 +33,5 @@ export interface LhTableProps {
   /** 受控筛选状态（键为列 prop） */
   filteredValues?: Record<string, (string | number)[]>
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }

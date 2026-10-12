@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, inject, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, inject, onMounted, onBeforeUnmount, watch } from 'vue'
 import { sxToStyle, getNextRangeValue } from '@lh-ui/share/core/shared'
 import {
   clampValue,
@@ -109,6 +109,18 @@ const localValue = ref<number | [number, number]>(
   props.modelValue !== null && props.modelValue !== undefined
     ? (Array.isArray(props.modelValue) ? props.modelValue : [props.modelValue, props.modelValue])
     : (props.range ? [props.min, (props.min + props.max) / 2] : [props.min, props.min])
+)
+
+// 受控回显：外部更新 modelValue（表单 reset / 程序赋值）后滑块必须跟随；
+// 拖拽中跳过，避免父级回流的值打断正在进行的拖拽
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (val === null || val === undefined || dragging.value) return
+    // 内部恒为二元组：标量 modelValue 必须归一化为 [v, v]，否则 barStyle 取
+    // localValue[1] 得到 undefined → NaN%，thumb 的 aria-valuenow 也跟着丢失
+    localValue.value = Array.isArray(val) ? [...val] : [val, val]
+  },
 )
 
 // Initialize local value on mount if modelValue is null
@@ -155,6 +167,11 @@ function getCurrentValue(): number | [number, number] {
 const barStyle = computed(() => {
   const v1 = localValue.value[0]
   const v2 = localValue.value[1]
+  if (!props.range) {
+    // 单滑块：从轨道起点填到 thumb 位置；按 range 两端语义算会得到 width: 0%
+    const pct = getPositionFromValue(v1, props.min, props.max) * 100
+    return { left: '0%', width: pct + '%' }
+  }
   const left = getPositionFromValue(Math.min(v1, v2), props.min, props.max) * 100
   const right = 100 - getPositionFromValue(Math.max(v1, v2), props.min, props.max) * 100
   return {
@@ -241,6 +258,23 @@ function onButtonKeydown(event: KeyboardEvent, index: number): void {
   emitValue()
 }
 
+// 拖拽监听句柄：成对记录，组件在拖拽中被卸载时由 onBeforeUnmount 兜底移除
+let dragMoveHandler: ((ev: MouseEvent | TouchEvent) => void) | null = null
+let dragUpHandler: (() => void) | null = null
+
+function detachDragListeners(): void {
+  if (dragMoveHandler) {
+    document.removeEventListener('mousemove', dragMoveHandler)
+    document.removeEventListener('touchmove', dragMoveHandler)
+    dragMoveHandler = null
+  }
+  if (dragUpHandler) {
+    document.removeEventListener('mouseup', dragUpHandler)
+    document.removeEventListener('touchend', dragUpHandler)
+    dragUpHandler = null
+  }
+}
+
 function onDragStart(e: MouseEvent | TouchEvent, index: number): void {
   if (props.disabled) return
   dragging.value = true
@@ -250,11 +284,10 @@ function onDragStart(e: MouseEvent | TouchEvent, index: number): void {
   const upHandler = () => {
     dragging.value = false
     emitValue()
-    document.removeEventListener('mousemove', moveHandler)
-    document.removeEventListener('mouseup', upHandler)
-    document.removeEventListener('touchmove', moveHandler)
-    document.removeEventListener('touchend', upHandler)
+    detachDragListeners()
   }
+  dragMoveHandler = moveHandler
+  dragUpHandler = upHandler
   document.addEventListener('mousemove', moveHandler)
   document.addEventListener('mouseup', upHandler)
   document.addEventListener('touchmove', moveHandler)
@@ -300,5 +333,6 @@ function onDragMove(e: MouseEvent | TouchEvent): void {
 
 onBeforeUnmount(() => {
   dragging.value = false
+  detachDragListeners()
 })
 </script>

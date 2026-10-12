@@ -22,6 +22,8 @@ playwright-report/
 test-results/
 .eslintcache
 *.tsbuildinfo
+# 本地 typecheck 联动配置（scripts/gen-dev-tsconfig.mjs 生成，家族布局下才含 share 映射）
+tsconfig.dev.json
 
 # Local environment and secrets
 .env

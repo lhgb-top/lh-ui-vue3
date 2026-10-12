@@ -157,7 +157,7 @@ export default {}
 | showIcon | Show the semantic icon | `boolean` | `false` |
 | plain | Light outlined style | `boolean` | `false` |
 | closeLabel | Accessible name of the close button (falls back to the `alert.close` locale message) | `string` | — |
-| sx | sx quick-layout properties | `SxProps` | — |
+| sx | sx quick-layout properties | `LhSxProps` | — |
 
 ### Events
 
@@ -195,7 +195,7 @@ export interface LhAlertProps {
   showIcon?: boolean
   plain?: boolean
   closeLabel?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

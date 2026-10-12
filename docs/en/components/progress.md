@@ -188,7 +188,7 @@ export default {}
 | width | Canvas width in px for circle mode | `number` | `126` |
 | showText | Show text | `boolean` | `true` |
 | format | Custom text formatter | `(percentage: number) => string` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### Slots
 
@@ -220,7 +220,7 @@ export interface LhProgressProps {
   width?: number
   showText?: boolean
   format?: (percentage: number) => string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

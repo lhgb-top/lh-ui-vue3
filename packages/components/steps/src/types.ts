@@ -1,5 +1,5 @@
 import type { InjectionKey, Ref } from 'vue'
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhIconName } from '@lh-ui/share/core/icon'
 import type { LhStepStatus, LhStepsDirection } from '@lh-ui/share/core/steps'
 
@@ -12,8 +12,10 @@ export interface LhStepsProps {
   clickable?: boolean
   /** 整体覆盖所有步骤的状态（用于自定义展示） */
   status?: LhStepStatus
+  /** 组件级主题变量（键自动加 --lh- 前缀，如 `steps-item-basis`） */
+  themeVars?: Record<string, string>
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 
 export interface LhStepProps {
@@ -35,6 +37,8 @@ export interface LhStepsContext {
   clickable: Ref<boolean>
   /** 整体覆盖状态 */
   forcedStatus: Ref<LhStepStatus | undefined>
+  /** 横向折行时每行最后一项的索引（用于隐藏行末连接线；纵向为空数组） */
+  lineLastIndices: Ref<number[]>
   /** 点击导航到指定步骤 */
   select: (index: number) => void
 }

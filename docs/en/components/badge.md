@@ -387,7 +387,7 @@ export interface LhBadgeProps {
   offset?: [number, number]
   showZero?: boolean
   content?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -450,7 +450,7 @@ const isHidden = ref(false)
 | offset | Offset | `[number, number]` | — |
 | showZero | Show zero | `boolean` | `false` |
 | content | Custom content | `string` | — |
-| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `SxProps` | — |
+| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `LhSxProps` | — |
 
 ## Slots
 

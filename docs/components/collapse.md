@@ -132,7 +132,7 @@ export default {
 |--------|------|------|--------|
 | modelValue | 当前激活的面板（受控 v-model，单值或数组） | `LhCollapseKey \| LhCollapseKey[]` | — |
 | accordion | 手风琴模式：同时只展开一个 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -148,7 +148,7 @@ export default {
 | name | 面板唯一标识 | `string \| number` | — |
 | title | 标题（也可用 title 插槽） | `string` | — |
 | disabled | 禁用 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 插槽：`title` 标题、`default` 内容。
 
@@ -175,7 +175,7 @@ export interface LhCollapseProps {
   /** 手风琴模式：同时只展开一个 */
   accordion?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -193,7 +193,7 @@ export interface LhCollapseItemProps {
   title?: string
   disabled?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

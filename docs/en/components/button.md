@@ -389,7 +389,7 @@ export default {
 | target | Link open behavior | `string` | `'_self'` |
 | themeVars | Component-level theme variables, overrides ConfigProvider | `{ [x: string]: string; }` | — |
 | bgPattern | Component-level background pattern, overrides ConfigProvider | `string` | — |
-| sx | sx quick-layout props | `SxProps` | — |
+| sx | sx quick-layout props | `LhSxProps` | — |
 
 ## Events
 
@@ -447,7 +447,7 @@ export interface LhButtonProps {
 
   bgPattern?: string
 
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

@@ -127,7 +127,7 @@ export default {}
 | maxSize | Per-file size limit (bytes) | `number` | `[LH_UPLOAD_MAX_SIZE](#const-LH_UPLOAD_MAX_SIZE)` |
 | maxCount | Count limit (0 = unlimited) | `number` | `0` |
 | request | Upload function (local selection and validation only when omitted) | `(options: { file: File; onProgress: (percent: number) => void; }) => Promise<{ url?: string; }>` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhUpload Events
 
@@ -156,7 +156,7 @@ export interface LhUploadProps {
   maxSize?: number
   maxCount?: number
   request?: LhUploadRequest
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

@@ -426,7 +426,7 @@ export interface LhBadgeProps {
   showZero?: boolean
   content?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -561,7 +561,7 @@ export default {
 | offset | 偏移量 | `[number, number]` | — |
 | showZero | 是否显示0 | `boolean` | `false` |
 | content | 自定义内容 | `string` | — |
-| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于根元素 | `SxProps` | — |
+| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于根元素 | `LhSxProps` | — |
 
 ## 无障碍
 

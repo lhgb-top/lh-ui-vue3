@@ -8,26 +8,26 @@ import type { LhNotificationPosition, LhNotificationRecord, LhNotificationType }
  */
 
 /** 服务默认值（LhNotification.config 可覆盖） */
-export const notificationConfig = reactive({
+export const lhNotificationConfig = reactive({
   duration: undefined as number | undefined,
   offset: 20,
   appendTo: 'body' as string | HTMLElement,
 })
 
 /** 服务队列（host 直接消费的响应式数组，时间正序） */
-export const notificationRecords = reactive<LhNotificationRecord[]>([])
+export const lhNotificationRecords = reactive<LhNotificationRecord[]>([])
 
 const timers = new Map<number, ReturnType<typeof setTimeout>>()
 let seq = 0
 
-export function nextNotificationId(): number {
+export function nextLhNotificationId(): number {
   return ++seq
 }
 
-export function closeNotification(id: number): void {
-  const index = notificationRecords.findIndex((record) => record.id === id)
+export function closeLhNotification(id: number): void {
+  const index = lhNotificationRecords.findIndex((record) => record.id === id)
   if (index === -1) return
-  const [record] = notificationRecords.splice(index, 1)
+  const [record] = lhNotificationRecords.splice(index, 1)
   const timer = timers.get(id)
   if (timer !== undefined) {
     clearTimeout(timer)
@@ -37,20 +37,20 @@ export function closeNotification(id: number): void {
 }
 
 /** 入队 + 自动关闭计时器 */
-export function openNotificationRecord(record: LhNotificationRecord): void {
-  notificationRecords.push(record)
+export function openLhNotificationRecord(record: LhNotificationRecord): void {
+  lhNotificationRecords.push(record)
   if (record.duration > 0) {
-    timers.set(record.id, setTimeout(() => closeNotification(record.id), record.duration))
+    timers.set(record.id, setTimeout(() => closeLhNotification(record.id), record.duration))
   }
 }
 
 /** 关闭全部通知 */
-export function closeAllNotifications(): void {
-  for (const record of [...notificationRecords]) closeNotification(record.id)
+export function closeAllLhNotifications(): void {
+  for (const record of [...lhNotificationRecords]) closeLhNotification(record.id)
 }
 
 /** 构造一条记录（选项归一） */
-export function createNotificationRecord(options: {
+export function createLhNotificationRecord(options: {
   title: string
   content?: string
   type?: LhNotificationType
@@ -61,11 +61,11 @@ export function createNotificationRecord(options: {
   onClose?: () => void
 }): LhNotificationRecord {
   return {
-    id: nextNotificationId(),
+    id: nextLhNotificationId(),
     type: (options.type ?? 'info') as LhNotificationType,
     title: options.title,
     content: options.content ?? '',
-    duration: options.duration ?? notificationConfig.duration ?? LH_NOTIFICATION_DURATION_DEFAULT,
+    duration: options.duration ?? lhNotificationConfig.duration ?? LH_NOTIFICATION_DURATION_DEFAULT,
     position: (options.position ?? 'top-right') as LhNotificationPosition,
     showClose: options.showClose !== false,
     onClick: options.onClick,

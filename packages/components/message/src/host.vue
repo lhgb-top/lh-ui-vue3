@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import LhMessageItem from './index.vue'
-import { closeMessage as close, messageConfig as config, messageRecords as records } from './store'
+import { closeLhMessage as close, lhMessageConfig as config, lhMessageRecords as records } from './store'
 
 defineOptions({ name: 'LhMessageHost' })
 </script>

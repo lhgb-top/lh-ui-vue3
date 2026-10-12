@@ -81,7 +81,7 @@ export default {}
 | offsetTop | 距视口顶部多少像素触发吸顶 | `number` | `0` |
 | offsetBottom | 距视口底部多少像素触发吸底（优先于 offsetTop） | `number` | `0` |
 | target | 滚动监听容器（选择器或元素，默认视口） | `string \| HTMLElement` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -127,7 +127,7 @@ export interface LhAffixProps {
   /** 滚动监听容器（选择器或元素，默认视口） */
   target?: string | HTMLElement
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

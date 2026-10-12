@@ -67,19 +67,20 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "rollup -c --environment BUILD:production && node scripts/build-styles.mjs && rollup -c rollup.dts.config.js && rollup -c --environment FORMAT:umd",
+    "build": "node scripts/sync-version.mjs && rollup -c --environment BUILD:production && node scripts/build-styles.mjs && rollup -c rollup.dts.config.js && rollup -c --environment FORMAT:umd",
     "build:esm": "rollup -c --environment FORMAT:esm",
     "build:dts": "rollup -c rollup.dts.config.js",
     "build:cjs": "rollup -c --environment FORMAT:cjs",
     "build:umd": "rollup -c --environment FORMAT:umd",
     "build:styles": "node scripts/build-styles.mjs",
+    "build:local": "node scripts/link-local-share.mjs && pnpm build",
     "verify:dts": "node scripts/verify-dts.mjs",
-    "theme:check": "node scripts/verify-theme-contrast.mjs",
     "lint": "eslint src packages tests dev scripts rollup.config.js rollup.dts.config.js vite.config.ts vitest.config.ts",
     "lint:fix": "eslint src packages tests dev scripts rollup.config.js rollup.dts.config.js vite.config.ts vitest.config.ts --fix",
     "format": "prettier --write eslint.config.mjs rollup.dts.config.js .prettierrc.json .changeset/**/*.md",
     "format:check": "prettier --check eslint.config.mjs rollup.dts.config.js .prettierrc.json .changeset/**/*.md",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "node scripts/gen-dev-tsconfig.mjs && tsc -p tsconfig.dev.json --noEmit",
+    "typecheck:npm": "tsc --noEmit",
     "changeset": "changeset",
     "changeset:status": "changeset status",
     "changeset:version": "changeset version",
@@ -95,6 +96,7 @@
     "api:check": "node scripts/gen-api-tables.mjs --check",
     "api:fix": "node scripts/gen-api-tables.mjs --fix",
     "docs:check-demos": "node scripts/check-api-style-pairs.mjs --check --check-demos",
+    "verify:docs-sync": "node scripts/verify-docs-sync.mjs",
     "types:check": "node scripts/gen-type-docs.mjs --check",
     "types:fix": "node scripts/gen-type-docs.mjs --fix"
   },
@@ -132,6 +134,6 @@
     "vue": "^3.5.43"
   },
   "dependencies": {
-    "@lh-ui/share": "^0.3.0"
+    "@lh-ui/share": "^0.4.0"
   }
 }

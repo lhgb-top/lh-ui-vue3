@@ -219,7 +219,7 @@ export default {}
 | size | Spacing: preset / pixels / `[horizontal, vertical]` | `number \| "small" \| "medium" \| "large" \| [number, number]` | `'medium'` |
 | wrap | Allow wrapping (horizontal only) | `boolean` | `true` |
 | alignment | Alignment | `"start" \| "center" \| "end" \| "baseline"` | `'start'` |
-| sx | Shorthand layout props (e.g. `{ mt: 2 }`), merged into the inline styles and taking precedence over `alignment` | `SxProps` | — |
+| sx | Shorthand layout props (e.g. `{ mt: 2 }`), merged into the inline styles and taking precedence over `alignment` | `LhSxProps` | — |
 
 ### Accessibility
 
@@ -249,7 +249,7 @@ export interface LhSpaceProps {
   size?: LhSpaceSizeInput
   wrap?: boolean
   alignment?: LhSpaceAlignment
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

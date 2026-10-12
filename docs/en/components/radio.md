@@ -113,7 +113,7 @@ export interface LhRadioProps {
   disabled?: boolean
   name?: string
   size?: LhRadioSize
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -241,7 +241,7 @@ export default {
 | disabled | Disabled | `boolean` | `false` |
 | name | — | `string` | — |
 | size | Size | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
-| sx | sx quick-layout props | `SxProps` | — |
+| sx | sx quick-layout props | `LhSxProps` | — |
 
 ## Events
 

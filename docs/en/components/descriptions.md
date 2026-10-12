@@ -318,7 +318,7 @@ export default {
 | column | Number of item columns per row | `number` | `3` |
 | border | Whether to display borders | `boolean` | `false` |
 | items | Item list | `[LhDescriptionsItem](#type-LhDescriptionsItem)`[] | `() => []` |
-| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `SxProps` | — |
+| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `LhSxProps` | — |
 
 ### LhDescriptionsItem
 
@@ -355,7 +355,7 @@ export interface LhDescriptionsProps {
   column?: number
   border?: boolean
   items: LhDescriptionsItem[]
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

@@ -115,7 +115,7 @@ export default {
 | right | 距右侧偏移 px | `number` | `40` |
 | bottom | 距底部偏移 px | `number` | `40` |
 | smooth | 是否平滑滚动 | `boolean` | `true` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -153,7 +153,7 @@ export interface LhBackTopProps {
   /** 是否平滑滚动 */
   smooth?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

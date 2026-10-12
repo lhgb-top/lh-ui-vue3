@@ -411,7 +411,7 @@ export default {}
 | maxHeight | Menu max height (numbers are px) | `string \| number` | — |
 | themeVars | Component-level theme variables | `{ [x: string]: string; }` | — |
 | bgPattern | Component-level background pattern, overriding the ConfigProvider configuration | `string` | — |
-| sx | sx shorthand styles (applied to the trigger root) | `SxProps` | — |
+| sx | sx shorthand styles (applied to the trigger root) | `LhSxProps` | — |
 
 ### Events
 
@@ -475,7 +475,7 @@ export interface LhDropdownProps {
   maxHeight?: string | number
   themeVars?: Record<string, string>
   bgPattern?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

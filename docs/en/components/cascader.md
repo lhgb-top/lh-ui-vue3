@@ -89,7 +89,7 @@ export interface LhCascaderProps {
   collapseTags?: boolean
   filterable?: boolean
   itemConfig?: LhCascaderItemConfig
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -780,7 +780,7 @@ export default {
 | collapseTags | Collapse tags in multi-select mode | `boolean` | `false` |
 | filterable | Searchable | `boolean` | `false` |
 | itemConfig | — | `[LhCascaderItemConfig](#type-LhCascaderItemConfig)` | `() => ({})` |
-| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the trigger root element (the floating panel is not affected) | `SxProps` | — |
+| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the trigger root element (the floating panel is not affected) | `LhSxProps` | — |
 
 ## Events
 

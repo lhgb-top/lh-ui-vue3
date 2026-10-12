@@ -149,7 +149,7 @@ export interface LhSwitchProps {
   size?: LhComponentSize
   activeText?: string
   inactiveText?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -369,7 +369,7 @@ export default {
 | size | Size | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
 | activeText | Text when on | `string` | `''` |
 | inactiveText | Text when off | `string` | `''` |
-| sx | sx quick-layout props | `SxProps` | — |
+| sx | sx quick-layout props | `LhSxProps` | — |
 
 ### Events
 

@@ -215,7 +215,7 @@ export default {}
 | preview | Enable click preview | `boolean` | `false` |
 | previewSrcList | Preview list (defaults to [src]) | `string[]` | — |
 | lazy | Native lazy loading | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhImage Events
 
@@ -234,7 +234,7 @@ The standalone previewer `LhImageViewer` is exported for programmatic previewing
 | --- | --- | --- | --- |
 | images | Preview image list | `string[]` | — |
 | initialIndex | Index of the image shown first | `number` | `0` |
-| sx | Quick layout props (applied to the preview image) | `SxProps` | — |
+| sx | Quick layout props (applied to the preview image) | `LhSxProps` | — |
 
 | Event | Description | Callback |
 |-------|-------------|----------|
@@ -263,7 +263,7 @@ export interface LhImageProps {
   preview?: boolean
   previewSrcList?: string[]
   lazy?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -276,7 +276,7 @@ export interface LhImageProps {
 export interface LhImageViewerProps {
   images: string[]
   initialIndex?: number
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

@@ -219,7 +219,7 @@ export default {}
 | size | 间距：预设档位 / 像素数字 / `[水平, 垂直]` | `number \| "small" \| "medium" \| "large" \| [number, number]` | `'medium'` |
 | wrap | 是否允许换行（仅水平方向） | `boolean` | `true` |
 | alignment | 对齐方式 | `"start" \| "center" \| "end" \| "baseline"` | `'start'` |
-| sx | 快速布局属性（如 `{ mt: 2 }`），合并到内联样式且优先级高于 `alignment` | `SxProps` | — |
+| sx | 快速布局属性（如 `{ mt: 2 }`），合并到内联样式且优先级高于 `alignment` | `LhSxProps` | — |
 
 ### 无障碍
 
@@ -254,7 +254,7 @@ export interface LhSpaceProps {
   /** 对齐方式 */
   alignment?: LhSpaceAlignment
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

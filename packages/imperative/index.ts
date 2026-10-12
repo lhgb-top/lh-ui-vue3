@@ -6,7 +6,7 @@ import type { Component } from 'vue'
  * 供 Message / Notification / Loading 的服务式 API 复用。
  * 返回 unmount 时同步卸载 app 并移除容器节点。
  */
-export function mountComponent(
+export function mountLhComponent(
   component: Component,
   props: Record<string, unknown> = {},
   target: HTMLElement = document.body,

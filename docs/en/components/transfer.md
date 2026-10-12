@@ -50,7 +50,7 @@ export default {
 `disabled` disables the whole transfer.
 
 <DemoBlock title="Disabled transfer">
-  <LhTransfer :data="items" v-model="source" disabled />
+  <LhTransfer :data="items" v-model="sourceDisabled" disabled />
 </DemoBlock>
 
 ```vue composition
@@ -100,7 +100,7 @@ export default {
 | data | Full data source | `[LhTransferItem](#type-LhTransferItem)`[] | — |
 | modelValue | Source (left) key list | `(string \| number)[]` | `() => []` |
 | disabled | Disabled | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhTransfer Events
 
@@ -137,7 +137,7 @@ export interface LhTransferProps {
   data: LhTransferItem[]
   modelValue?: Array<string | number>
   disabled?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -168,7 +168,10 @@ export interface LhTransferItem {
 <!-- lh-types:end -->
 <script setup>
 import { ref } from 'vue'
+// One selected set per demo: every DemoBlock on the page shares this single setup
+// scope, so a shared ref would let the basic demo empty out the disabled demo too
 const source = ref(['a'])
+const sourceDisabled = ref(['a'])
 const items = [
   { key: 'a', label: 'A' },
   { key: 'b', label: 'B' },

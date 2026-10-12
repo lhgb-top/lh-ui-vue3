@@ -216,7 +216,7 @@ export default {
 | shape | 头像形状 | `"circle" \| "square"` | `'circle'` |
 | size | 头像大小 | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
 | fit | 图片加载模式：fill / contain / cover | `"fill" \| "contain" \| "cover" \| "none" \| "scale-down"` | `'cover'` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -255,7 +255,7 @@ export interface LhAvatarProps {
   /** 图片加载模式：fill / contain / cover */
   fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

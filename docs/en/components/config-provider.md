@@ -245,7 +245,7 @@ export default {}
 | locale | i18n configuration | `LocaleType` | — |
 | themeVars | Global theme variables | `{ [x: string]: string; }` | — |
 | patternComponents | Pattern background whitelist | `[LhThemeableComponent](#type-LhThemeableComponent)`[] | — |
-| componentTheme | Component-specific theme | `{ button?: Record<string, string>; input?: Record<string, string>; dialog?: Record<string, string>; tooltip?: Record<string, string>; icon?: Record<string, string>; card?: Record<string, string>; alert?: Record<string, string>; popover?: Record<string, string>; popconfirm?: Record<string, string>; drawer?: Record<string, string>; dropdown?: Record<string, string>; message?: Record<string, string>; notification?: Record<string, string>; loading?: Record<string, string>; timeline?: Record<string, string>; collapse?: Record<string, string>; rate?: Record<string, string>; segmented?: Record<string, string>; calendar?: Record<string, string>; affix?: Record<string, string>; backtop?: Record<string, string>; image?: Record<string, string>; menu?: Record<string, string>; table?: Record<string, string>; layout?: Record<string, string>; tree?: Record<string, string>; transfer?: Record<string, string>; upload?: Record<string, string>; anchor?: Record<string, string>; }` | — |
+| componentTheme | Component-specific theme | `{ button?: Record<string, string>; input?: Record<string, string>; dialog?: Record<string, string>; tooltip?: Record<string, string>; icon?: Record<string, string>; card?: Record<string, string>; alert?: Record<string, string>; popover?: Record<string, string>; popconfirm?: Record<string, string>; drawer?: Record<string, string>; dropdown?: Record<string, string>; message?: Record<string, string>; notification?: Record<string, string>; loading?: Record<string, string>; timeline?: Record<string, string>; collapse?: Record<string, string>; rate?: Record<string, string>; segmented?: Record<string, string>; calendar?: Record<string, string>; affix?: Record<string, string>; backtop?: Record<string, string>; image?: Record<string, string>; menu?: Record<string, string>; table?: Record<string, string>; layout?: Record<string, string>; tree?: Record<string, string>; transfer?: Record<string, string>; upload?: Record<string, string>; anchor?: Record<string, string>; steps?: Record<string, string>; }` | — |
 
 ## Slots
 
@@ -293,6 +293,7 @@ export type LhThemeableComponent =
   | 'transfer'
   | 'upload'
   | 'anchor'
+  | 'steps'
 ```
 
 </details>

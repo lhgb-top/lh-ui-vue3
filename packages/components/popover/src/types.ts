@@ -1,5 +1,5 @@
 import type { LhPlacement, LhPopoverTrigger } from '@lh-ui/share/core/popover'
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 
 export type { LhPlacement as LhPopoverPlacement, LhPopoverTrigger }
 
@@ -34,5 +34,5 @@ export interface LhPopoverProps {
   /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
   bgPattern?: string
   /** sx 快速布局属性（作用于触发器根元素） */
-  sx?: SxProps
+  sx?: LhSxProps
 }

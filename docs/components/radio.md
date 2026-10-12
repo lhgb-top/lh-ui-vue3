@@ -343,7 +343,7 @@ export default {
 | disabled | 是否禁用 | `boolean` | `false` |
 | name | 原生表单名称 | `string` | — |
 | size | 尺寸 | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### LhRadioGroup Props
 
@@ -395,7 +395,7 @@ export interface LhRadioProps {
   name?: string
   size?: LhRadioSize
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

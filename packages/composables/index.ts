@@ -1,6 +1,6 @@
 /**
  * @lh-ui/vue3 Shared Composables
- * 
+ *
  * 跨组件共享的通用逻辑
  */
 
@@ -13,94 +13,17 @@ import {
   unref,
   watch,
   type Ref,
-  type ComputedRef,
 } from 'vue'
-import type { LhSizes } from 'lh-types/components'
 import { toCssVarName, stripCssVarName } from '@lh-ui/share/utils/css-var'
 import {
-  THEME_PRESETS,
+  LH_THEME_PRESETS,
   getThemeVars,
   buildPresetStyleText,
-  PRESET_THEME_STYLE_ID,
+  LH_PRESET_THEME_STYLE_ID,
 } from '@lh-ui/share/theme'
 import { LH_GRID_BREAKPOINTS, resolveBreakpoint } from '@lh-ui/share/core/grid'
 import type { LhGridBreakpoint } from '@lh-ui/share/core/grid'
-import type { ThemePresetName } from '@lh-ui/share/theme'
-
-/**
- * useLhSize - 尺寸逻辑计算
- * 从 props 和 ConfigProvider 注入中获取有效尺寸
- */
-export function useLhSize(
-  props: { size?: string },
-  configSize?: Ref<LhSizes | undefined> | ComputedRef<LhSizes | undefined>,
-  defaultSize: string = 'medium'
-) {
-  const effectiveSize = computed(() => {
-    return props.size || configSize?.value || defaultSize
-  })
-
-  return { effectiveSize }
-}
-
-/**
- * useLhDisabled - 禁用状态逻辑
- */
-export function useLhDisabled(
-  props: { disabled?: boolean; loading?: boolean }
-) {
-  const isDisabled = computed(() => {
-    return props.disabled === true || props.loading === true
-  })
-
-  return { isDisabled }
-}
-
-/**
- * useLhNamespace - 生成 BEM 风格的 class 名
- */
-export function useLhNamespace(block: string) {
-  const namespace = 'lh'
-
-  const b = () => `${namespace}-${block}`
-  const e = (element: string) => `${namespace}-${block}__${element}`
-  const m = (modifier: string) => `${namespace}-${block}--${modifier}`
-  const em = (element: string, modifier: string) => `${namespace}-${block}__${element}--${modifier}`
-  const is = (name: string, state?: boolean | string) => {
-    if (state === undefined || state === false) return ''
-    if (state === true) return `is-${name}`
-    return `is-${state}`
-  }
-
-  return { b, e, m, em, is }
-}
-
-/**
- * useLhVModel - 简化的 v-model 双向绑定
- */
-export function useLhVModel<T>(
-  props: { modelValue?: T },
-  emit: (event: 'update:modelValue', value: T) => void,
-  defaultValue?: T
-) {
-  const model = ref<T>((props.modelValue ?? defaultValue ?? undefined) as T) as Ref<T>
-
-  watch(() => props.modelValue, (val) => {
-    if (val !== undefined) {
-      model.value = val as T
-    }
-  })
-
-  function updateModel(value: T) {
-    model.value = value
-    emit('update:modelValue', value)
-  }
-
-  return {
-    model,
-    updateModel,
-  }
-}
+import type { LhThemePresetName } from '@lh-ui/share/theme'
 
 /**
  * useLhZIndex - 递增的 z-index 管理
@@ -114,6 +37,36 @@ export function useLhZIndex() {
   }
 
   return { zIndex, nextZIndex }
+}
+
+/**
+ * useLhOverlayStack - 弹层打开顺序栈
+ *
+ * 模块级栈记录当前打开的弹层（dialog / drawer 等）：多弹层叠加时 Esc 只关栈顶，
+ * 避免一次按键把底下所有弹层一起带走。每个实例 open 时 register、关闭时 unregister，
+ * 组件卸载时自动出栈兜底。与 useLhZIndex 的递增体系配套。
+ */
+const _overlayStack: symbol[] = []
+export function useLhOverlayStack() {
+  const id = Symbol('lh-overlay')
+
+  function register() {
+    _overlayStack.push(id)
+  }
+
+  function unregister() {
+    const index = _overlayStack.lastIndexOf(id)
+    if (index >= 0) _overlayStack.splice(index, 1)
+  }
+
+  /** 本实例是否处于栈顶（只有栈顶响应 Esc） */
+  function isTopmost() {
+    return _overlayStack[_overlayStack.length - 1] === id
+  }
+
+  onBeforeUnmount(unregister)
+
+  return { register, unregister, isTopmost }
 }
 
 /**
@@ -290,7 +243,7 @@ export function useLhTheme(options?: {
 }
 
 /**
- * usePresetTheme - 预设主题切换
+ * useLhPresetTheme - 预设主题切换
  *
  * 与 `useLhTheme`（明暗模式）互补：`useLhTheme` 切 `data-theme` 暗色变量，
  * 本 composable 把预设色板变量写到 `:root`，换的是 `--lh-*` 配色。
@@ -312,12 +265,12 @@ export function useLhTheme(options?: {
  *
  * @example
  * ```ts
- * const { preset, setPreset, presets, themeVars } = usePresetTheme()
+ * const { preset, setPreset, presets, themeVars } = useLhPresetTheme()
  * setPreset('songhua')
  * ```
  */
-export function usePresetTheme(options?: {
-  initialPreset?: ThemePresetName
+export function useLhPresetTheme(options?: {
+  initialPreset?: LhThemePresetName
   storageKey?: string
   /** 是否把变量写到 :root，默认 true。设为 false 可只取 themeVars 自己接管应用 */
   applyToRoot?: boolean
@@ -325,30 +278,30 @@ export function usePresetTheme(options?: {
   const storageKey = options?.storageKey ?? 'lh-ui-preset'
   const applyToRoot = options?.applyToRoot ?? true
 
-  const initPreset = (): ThemePresetName => {
+  const initPreset = (): LhThemePresetName => {
     if (options?.initialPreset) return options.initialPreset
     try {
       const stored = localStorage.getItem(storageKey)
-      const matched = stored ? THEME_PRESETS.find((p) => p.name === stored) : undefined
+      const matched = stored ? LH_THEME_PRESETS.find((p) => p.name === stored) : undefined
       if (matched) return matched.name
     }
     catch { /* localStorage may be unavailable in SSR environments */ }
-    return THEME_PRESETS[0].name
+    return LH_THEME_PRESETS[0].name
   }
 
-  const preset = ref<ThemePresetName>(initPreset())
+  const preset = ref<LhThemePresetName>(initPreset())
 
-  const applyPreset = (name: ThemePresetName) => {
+  const applyPreset = (name: LhThemePresetName) => {
     const vars = getThemeVars(name)
     if (!vars) return
     // applyToRoot: false 时不写 :root 也不持久化 —— 该模式只负责产出 themeVars，
     // 作用域与持久化都应由调用方自己接管，避免污染全局 key
     if (!applyToRoot) return
     if (typeof document !== 'undefined') {
-      let styleEl = document.getElementById(PRESET_THEME_STYLE_ID) as HTMLStyleElement | null
+      let styleEl = document.getElementById(LH_PRESET_THEME_STYLE_ID) as HTMLStyleElement | null
       if (!styleEl) {
         styleEl = document.createElement('style')
-        styleEl.id = PRESET_THEME_STYLE_ID
+        styleEl.id = LH_PRESET_THEME_STYLE_ID
       }
       styleEl.textContent = buildPresetStyleText(vars)
       // 始终挪到 head 末尾：开发模式下组件样式由 Vite 在运行时注入，
@@ -364,7 +317,7 @@ export function usePresetTheme(options?: {
   applyPreset(preset.value)
 
   /** 设置预设主题 */
-  const setPreset = (name: ThemePresetName) => {
+  const setPreset = (name: LhThemePresetName) => {
     preset.value = name
     applyPreset(name)
   }
@@ -379,7 +332,7 @@ export function usePresetTheme(options?: {
     return result
   })
 
-  return { preset, setPreset, presets: THEME_PRESETS, themeVars }
+  return { preset, setPreset, presets: LH_THEME_PRESETS, themeVars }
 }
 
 // ============================================================================
@@ -810,6 +763,9 @@ export function useLhScrollEnd(
 ) {
   let timer: ReturnType<typeof setTimeout> | null = null
   const delay = options.delay ?? LH_BACKTOP_SCROLLEND_DELAY
+  // 挂载时的目标必须留档：卸载时重新调用 getTarget() 若返回不同目标
+  // （元素被替换），原目标上的监听器会泄漏
+  let attachedTarget: HTMLElement | Window | null = null
 
   function debounced(): void {
     if (timer) clearTimeout(timer)
@@ -829,6 +785,7 @@ export function useLhScrollEnd(
   onMounted(() => {
     const target = getTarget()
     if (!target) return
+    attachedTarget = target
     if (supportsScrollEnd(target)) {
       target.addEventListener('scrollend', handler, { passive: true })
     } else {
@@ -837,10 +794,11 @@ export function useLhScrollEnd(
   })
 
   onBeforeUnmount(() => {
-    const target = getTarget()
+    const target = attachedTarget
     if (target) {
       if (supportsScrollEnd(target)) target.removeEventListener('scrollend', handler)
       else target.removeEventListener('scroll', debounced)
+      attachedTarget = null
     }
     clear()
   })

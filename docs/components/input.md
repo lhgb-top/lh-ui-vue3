@@ -1,4 +1,4 @@
-﻿# Input 输入框
+# Input 输入框
 
 输入框组件，支持文本输入、密码、字数统计等功能。
 
@@ -508,7 +508,7 @@ export default {
 | label | — | `string` | — |
 | themeVars | 组件级主题变量，覆盖 ConfigProvider 配置 | `{ [x: string]: string; }` | — |
 | bgPattern | 组件级背景花纹，覆盖 ConfigProvider 配置 | `string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -603,7 +603,7 @@ export interface LhInputProps {
   /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
   bgPattern?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

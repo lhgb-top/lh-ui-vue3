@@ -162,7 +162,7 @@ export default {}
 | showIcon | 是否显示语义图标 | `boolean` | `false` |
 | plain | 浅色朴素样式（白底描边） | `boolean` | `false` |
 | closeLabel | 关闭按钮的无障碍名称（未传时取语言包 `alert.close`） | `string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -207,7 +207,7 @@ export interface LhAlertProps {
   /** 关闭按钮的无障碍名称（未传时取语言包 alert.close） */
   closeLabel?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

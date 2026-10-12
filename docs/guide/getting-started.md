@@ -66,7 +66,7 @@ import { zhCN } from '@lh-ui/vue3'
 
 - `locale`：语言包，从包根路径具名导入（`zhCN` / `enUS`）。
 - `size`：全局尺寸，可选 `small` / `medium` / `large` / `mini`。
-- `themeVars`：主题变量，键名可省略 `--lh-` 前缀。预设主题可用 `usePresetTheme` 一键切换，详见[预设主题](/guide/themes)。
+- `themeVars`：主题变量，键名可省略 `--lh-` 前缀。预设主题可用 `useLhPresetTheme` 一键切换，详见[预设主题](/guide/themes)。
 
 ## 在线示例
 

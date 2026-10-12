@@ -272,7 +272,7 @@ describe('LhTimePicker keyboard / ARIA', () => {
     expect(trigger.attributes('tabindex')).toBe('0')
     expect(trigger.attributes('aria-expanded')).toBe('false')
     expect(trigger.attributes('aria-haspopup')).toBe('dialog')
-    expect(trigger.attributes('aria-controls')).toMatch(/^lh-time-picker-panel-\d+$/)
+    expect(trigger.attributes('aria-controls')).toMatch(/^lh-time-picker-panel-\d+_\d+$/)
     restoreLocale()
   })
 

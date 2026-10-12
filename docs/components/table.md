@@ -494,7 +494,7 @@ export default {
 | resizable | 开启列宽拖拽（仍需列级 resizable 配合） | `boolean` | `false` |
 | defaultFilteredValues | 默认筛选状态（非受控，键为列 prop） | `{ [x: string]: (string \| number)[]; }` | `() => ({})` |
 | filteredValues | 受控筛选状态（键为列 prop） | `{ [x: string]: (string \| number)[]; }` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -576,7 +576,7 @@ export interface LhTableProps {
   /** 受控筛选状态（键为列 prop） */
   filteredValues?: Record<string, (string | number)[]>
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

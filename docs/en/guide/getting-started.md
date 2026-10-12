@@ -66,7 +66,7 @@ import { zhCN } from '@lh-ui/vue3'
 
 - `locale`: locale messages, imported as named exports (`zhCN` / `enUS`) from the package root.
 - `size`: global size — `small` / `medium` / `large` / `mini`.
-- `themeVars`: theme variables; the `--lh-` prefix may be omitted. Preset themes can be switched with `usePresetTheme` — see [Theme Presets](/en/guide/themes).
+- `themeVars`: theme variables; the `--lh-` prefix may be omitted. Preset themes can be switched with `useLhPresetTheme` — see [Theme Presets](/en/guide/themes).
 
 ## Demo
 

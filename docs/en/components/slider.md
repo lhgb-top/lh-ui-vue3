@@ -377,7 +377,7 @@ export default {
 | showInput | Show input box | `boolean` | `false` |
 | size | Size | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
 | marks | Mark points | `{ [x: number]: string; }` | — |
-| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `SxProps` | — |
+| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `LhSxProps` | — |
 
 ### Events
 
@@ -406,7 +406,7 @@ export interface LhSliderProps {
   showInput?: boolean
   size?: LhComponentSize
   marks?: Record<number, string>
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

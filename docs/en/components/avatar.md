@@ -207,7 +207,7 @@ export default {
 | shape | Shape | `"circle" \| "square"` | `'circle'` |
 | size | Size | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
 | fit | Image fill mode | `"fill" \| "contain" \| "cover" \| "none" \| "scale-down"` | `'cover'` |
-| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `SxProps` | — |
+| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `LhSxProps` | — |
 
 ## Events
 
@@ -245,7 +245,7 @@ export interface LhAvatarProps {
 
   fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

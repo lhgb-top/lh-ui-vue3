@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useData, withBase } from 'vitepress'
-import { LhConfigProvider, LhButton } from '~/components'
+import { LhConfigProvider } from '~/components'
 import { HOME_COMPONENT_COUNT, HOME_COMPONENT_GROUPS } from '../data/components'
 
 // 中英文站点共用本组件，按页面语言渲染文案。
@@ -21,21 +21,6 @@ function componentLink(link: string): string {
   return withBase(isEn.value ? `/en${link}` : link)
 }
 
-function toggleTheme() {
-  themeMode.value = themeMode.value === 'light' ? 'dark' : 'light'
-  document.documentElement.classList.toggle('dark', themeMode.value === 'dark')
-}
-
-function toggleLang(lang: 'zh' | 'en') {
-  // 部署到子路径时 location.pathname 带 base 前缀，用 withBase 拼出正确目标
-  const currentPath = window.location.pathname
-  if (lang === 'en' && !currentPath.includes('/en/')) {
-    window.location.href = withBase('/en/')
-  } else if (lang === 'zh' && currentPath.includes('/en/')) {
-    window.location.href = withBase('/')
-  }
-}
-
 onMounted(() => {
   setTimeout(() => {
     animated.value = true
@@ -48,36 +33,6 @@ onMounted(() => {
     class="lh-home"
     :class="{ dark: themeMode === 'dark' }"
   >
-    <!-- 水墨装饰 -->
-    <div
-      class="ink-decoration ink-decoration--circle ink-animate"
-      style="top: 10%; right: -100px"
-    ></div>
-    <div
-      class="ink-decoration ink-decoration--circle ink-animate"
-      style="bottom: 20%; left: -150px; width: 400px; height: 400px"
-    ></div>
-
-    <!-- 主题切换 -->
-    <div class="theme-toggle">
-      <LhButton
-        size="small"
-        plain
-        @click="toggleTheme"
-      >
-        <span v-if="themeMode === 'light'">🌙</span>
-        <span v-else>☀️</span>
-        {{ themeMode === 'light' ? t('暗色模式', 'Dark') : t('浅色模式', 'Light') }}
-      </LhButton>
-      <LhButton
-        size="small"
-        plain
-        @click="toggleLang(isEn ? 'zh' : 'en')"
-      >
-        {{ isEn ? '中文' : 'EN' }}
-      </LhButton>
-    </div>
-
     <LhConfigProvider :class="{ dark: themeMode === 'dark' }">
       <!-- 数据统计 -->
       <div
@@ -118,12 +73,15 @@ onMounted(() => {
             <span class="code-dot code-dot--yellow"></span>
             <span class="code-dot code-dot--green"></span>
           </div>
-          <pre><code><span class="code-comment">{{ t('# 安装', '# Install') }}</span>
-npm install @lh-ui/vue3
-
-<span class="code-comment">{{ t('# 使用', '# Usage') }}</span>
-import { LhButton, LhInput } from '@lh-ui/vue3'
-import '@lh-ui/vue3/dist/index.css'</code></pre>
+          <pre>
+            <code>
+              <span class="code-comment">{{ t('# 安装', '# Install') }}</span>
+                npm install @lh-ui/vue3
+              <span class="code-comment">{{ t('# 使用', '# Usage') }}</span>
+              import { LhButton, LhInput } from '@lh-ui/vue3'
+              import '@lh-ui/vue3/dist/index.css'
+            </code>
+          </pre>
         </div>
       </div>
 
@@ -136,10 +94,21 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
           <div class="feature-icon">🎨</div>
           <h3>{{ t('国风设计', 'Chinese Aesthetic Design') }}</h3>
           <!-- 水墨丹青为意境词，英文语境保留中文并附注释 -->
-          <p>{{ t('源自传统水墨丹青，靛蓝为主、朱砂点缀、宣纸为底', '源自传统水墨丹青 — indigo primary, cinnabar accents, rice-paper base') }}</p>
+          <p>
+            {{
+              t(
+                '源自传统水墨丹青，靛蓝为主、朱砂点缀、宣纸为底',
+                '源自传统水墨丹青 — indigo primary, cinnabar accents, rice-paper base',
+              )
+            }}
+          </p>
           <div class="feature-tags">
-            <span class="feature-badge feature-badge--primary">{{ t('CSS 变量', 'CSS Variables') }}</span>
-            <span class="feature-badge feature-badge--success">{{ t('暗色模式', 'Dark Mode') }}</span>
+            <span class="feature-badge feature-badge--primary">
+              {{ t('CSS 变量', 'CSS Variables') }}
+            </span>
+            <span class="feature-badge feature-badge--success">
+              {{ t('暗色模式', 'Dark Mode') }}
+            </span>
           </div>
         </div>
 
@@ -149,7 +118,14 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
         >
           <div class="feature-icon">🧩</div>
           <h3>{{ t('跨框架架构', 'Framework-agnostic Architecture') }}</h3>
-          <p>{{ t('核心纯函数逻辑与框架解耦，Vue 3 / React / Vue 2 均可接入', 'Framework-decoupled pure-function core — plug into Vue 3, React, or Vue 2') }}</p>
+          <p>
+            {{
+              t(
+                '核心纯函数逻辑与框架解耦，Vue 3 / React / Vue 2 均可接入',
+                'Framework-decoupled pure-function core — plug into Vue 3, React, or Vue 2',
+              )
+            }}
+          </p>
           <div class="feature-tags">
             <span class="feature-badge feature-badge--primary">TypeScript</span>
             <span class="feature-badge feature-badge--success">Pure Logic</span>
@@ -163,10 +139,19 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
           <div class="feature-icon">🌊</div>
           <h3>{{ t('花纹背景', 'Pattern Backgrounds') }}</h3>
           <!-- 柳叶/祥云等花纹名为意境词，保留中文并附英文对照 -->
-            <p>{{ t('6种预设国风花纹：柳叶、祥云、波浪、雪花、梅花、竹节', 'Six guofeng patterns — 柳叶 willow · 祥云 cloud · 波浪 wave · 雪花 snow · 梅花 plum · 竹节 bamboo') }}</p>
+          <p>
+            {{
+              t(
+                '6种预设国风花纹：柳叶、祥云、波浪、雪花、梅花、竹节',
+                'Six guofeng patterns — 柳叶 willow · 祥云 cloud · 波浪 wave · 雪花 snow · 梅花 plum · 竹节 bamboo',
+              )
+            }}
+          </p>
           <div class="feature-tags">
             <span class="feature-badge feature-badge--primary">bg-pattern</span>
-            <span class="feature-badge feature-badge--warning">{{ t('6种预设', '6 Presets') }}</span>
+            <span class="feature-badge feature-badge--warning">
+              {{ t('6种预设', '6 Presets') }}
+            </span>
           </div>
         </div>
 
@@ -176,10 +161,19 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
         >
           <div class="feature-icon">🌍</div>
           <h3>{{ t('国际化', 'Internationalization') }}</h3>
-          <p>{{ t('内置 ConfigProvider 配置体系，支持多语言统一管理', 'Built-in ConfigProvider system for unified multi-language management') }}</p>
+          <p>
+            {{
+              t(
+                '内置 ConfigProvider 配置体系，支持多语言统一管理',
+                'Built-in ConfigProvider system for unified multi-language management',
+              )
+            }}
+          </p>
           <div class="feature-tags">
             <span class="feature-badge feature-badge--primary">i18n</span>
-            <span class="feature-badge feature-badge--success">{{ t('中英双语', 'Bilingual') }}</span>
+            <span class="feature-badge feature-badge--success">
+              {{ t('中英双语', 'Bilingual') }}
+            </span>
           </div>
         </div>
       </div>
@@ -279,14 +273,14 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
 <style scoped>
 .lh-home {
   position: relative;
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 40px 0px;
 }
 
 .theme-toggle {
   position: sticky;
-  top: 20px;
+  top: var(--vp-nav-height);
   right: 20px;
   z-index: 100;
   display: flex;
@@ -366,9 +360,11 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
 .code-dot--red {
   background: #ff5f56;
 }
+
 .code-dot--yellow {
   background: #ffbd2e;
 }
+
 .code-dot--green {
   background: #27ca40;
 }
@@ -520,7 +516,7 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
 
 .overview-groups {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, 1fr);
   gap: 24px;
 }
 
@@ -544,7 +540,10 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
 
 .overview-chips {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, min(140px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  
   gap: 10px;
 }
 
@@ -553,6 +552,7 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
   overflow: hidden;
   display: flex;
   align-items: center;
+  gap:1rem;
   justify-content: space-between;
   padding: 10px 12px;
   border: 1px solid var(--vp-c-divider);
@@ -562,6 +562,7 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
   font-weight: 500;
   color: var(--vp-c-text-1);
   text-decoration: none;
+  max-width:fit-content;
   transition:
     transform 0.2s ease,
     border-color 0.2s ease;
@@ -629,6 +630,7 @@ import '@lh-ui/vue3/dist/index.css'</code></pre>
   100% {
     transform: translateY(0) rotate(0deg);
   }
+
   50% {
     transform: translateY(-20px) rotate(2deg);
   }

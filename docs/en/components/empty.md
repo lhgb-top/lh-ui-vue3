@@ -125,7 +125,7 @@ export default {}
 | ---- | ----------- | ---- | ------- |
 | description | Description text (falls back to the `empty.description` locale message when unset) | `string` | — |
 | image | Custom image URL (replaces the default inline illustration) | `string` | — |
-| sx | sx quick-layout properties | `SxProps` | — |
+| sx | sx quick-layout properties | `LhSxProps` | — |
 
 ### Slots
 
@@ -153,7 +153,7 @@ The TypeScript type structures exported by this component (auto-extracted from `
 export interface LhEmptyProps {
   description?: string
   image?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

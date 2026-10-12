@@ -1334,7 +1334,7 @@
         <h3>文字与图标</h3>
         <div class="demo-box">
           <lh-avatar text="水墨" />
-          <lh-avatar icon="lh-icon-user" />
+          <lh-avatar icon="user" />
           <lh-avatar text="Alice Chen" />
         </div>
 
@@ -2105,6 +2105,7 @@ import LhBackTop from '~/components/backtop'
 import LhMenu, { LhMenuItem, LhSubMenu } from '~/components/menu'
 import LhTable from '~/components/table'
 import LhTree from '~/components/tree'
+import type { LhTreeNode } from '@lh-ui/share/core/tree'
 import { LhRow, LhCol } from '~/components/grid'
 import LhTreeSelect from '~/components/tree-select'
 import LhTransfer from '~/components/transfer'
@@ -2124,7 +2125,7 @@ import '@lh-ui/share/styles/backtop'
 import '@lh-ui/share/styles/image'
 import { LhMessage } from '~/components/message'
 import { LhNotification } from '~/components/notification'
-import { LhLoading, showLoading } from '~/components/loading'
+import { LhLoading, showLhLoading } from '~/components/loading'
 import '@lh-ui/share/styles/spinner'
 import '@lh-ui/share/styles/message'
 import '@lh-ui/share/styles/notification'
@@ -2292,12 +2293,14 @@ const menuActive = ref('home')
 
 // —— 阶段化增强概览 ——
 const enhanceCols = [
-  { prop: 'name', label: '名称', width: 120, resizable: true, fixed: 'left' },
+  { prop: 'name', label: '名称', width: 120, resizable: true, fixed: 'left' as const },
   { label: '归属', children: [
     { prop: 'team', label: '小组' },
     { prop: 'city', label: '城市', width: 100, filters: [
       { text: '杭州', value: '杭州' },
       { text: '苏州', value: '苏州' },
+      // 陆离·设计·北京 这一行原本筛不出来：过滤项要覆盖数据里出现的每个城市
+      { text: '北京', value: '北京' },
     ] },
   ] },
   { prop: 'age', label: '年龄', sortable: true, width: 90 },
@@ -2308,12 +2311,12 @@ const enhanceRows = [
   { id: 3, name: '陆离', team: '设计', city: '北京', age: 31 },
 ]
 const enhanceResizeLog = ref('（未调整）')
-function onEnhanceResize({ prop, width }) {
+function onEnhanceResize({ prop, width }: { prop: string; width: number }) {
   enhanceResizeLog.value = `${prop} → ${width}px`
 }
 
 const lazyTreeData = ref([{ key: 'lazy', label: '点我加载', isLeaf: false }])
-function loadLazyNodes(node, resolve) {
+function loadLazyNodes(node: LhTreeNode, resolve: (children: LhTreeNode[]) => void) {
   setTimeout(() => {
     resolve([
       { key: 'lazy-1', label: '子节点一', isLeaf: true },
@@ -2323,7 +2326,7 @@ function loadLazyNodes(node, resolve) {
 }
 
 const scrollEndLog = ref('（未滚动）')
-function onBackTopScrollEnd(scrollTop) {
+function onBackTopScrollEnd(scrollTop: number) {
   scrollEndLog.value = `${scrollTop}px`
 }
 const tableCols = [
@@ -2383,7 +2386,7 @@ const imagePreviewList = [
 ]
 
 function showBoxLoading() {
-  const handle = showLoading({ target: loadingBoxRef.value, text: '拼命加载中' })
+  const handle = showLhLoading({ target: loadingBoxRef.value, text: '拼命加载中' })
   setTimeout(() => handle.close(), 2000)
 }
 

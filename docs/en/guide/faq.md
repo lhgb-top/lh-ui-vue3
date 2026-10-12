@@ -44,11 +44,11 @@ const { theme, toggleTheme } = useLhTheme()
 
 ### How to switch preset themes?
 
-Use `usePresetTheme`:
+Use `useLhPresetTheme`:
 
 ```ts
-import { usePresetTheme } from '@lh-ui/vue3'
-const { preset, setPreset, presets } = usePresetTheme()
+import { useLhPresetTheme } from '@lh-ui/vue3'
+const { preset, setPreset, presets } = useLhPresetTheme()
 setPreset('songhua') // switches to Pine Green, written to :root and persisted
 ```
 

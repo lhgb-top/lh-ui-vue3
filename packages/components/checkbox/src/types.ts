@@ -1,5 +1,5 @@
 import type { InjectionKey, Ref } from 'vue'
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 
 export type LhCheckboxSize = 'small' | 'medium' | 'large'
 
@@ -12,7 +12,7 @@ export interface LhCheckboxProps {
   name?: string
   size?: LhCheckboxSize
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 
 export interface LhCheckboxGroupProps {

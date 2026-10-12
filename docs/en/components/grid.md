@@ -266,7 +266,7 @@ export default {}
 | align | Cross-axis alignment | `'top' \| 'middle' \| 'bottom'` | `'top'` |
 | gutter | Column gap (px or [horizontal, vertical]) | `number \| [number, number]` | `0` |
 | wrap | Wrap columns | `boolean` | `true` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhCol Props
 
@@ -282,7 +282,7 @@ export default {}
 | lg | 1024px and up | `LhColSize` | — |
 | xl | 1280px and up | `LhColSize` | — |
 | sizes | Per-breakpoint declaration (equivalent to xs~xl) | `Partial<Record<LhGridBreakpoint, LhColSize>>` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ## Accessibility
 
@@ -321,7 +321,7 @@ export interface LhRowProps {
   align?: LhRowAlign
   gutter?: number | [number, number]
   wrap?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -342,7 +342,7 @@ export interface LhColProps {
   lg?: LhColSize
   xl?: LhColSize
   sizes?: LhBreakpointSizes
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

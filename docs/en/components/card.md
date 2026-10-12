@@ -5,7 +5,7 @@ A container for headers, content, and footer actions. Supports whole-card clicka
 ## Basic Usage
 
 <DemoBlock title="Basic Usage">
-  <LhCard title="Rain on Banana Leaves" style="max-width: 320px">
+  <LhCard title="Rain on Banana LhLeaves" style="max-width: 320px">
     Through the window I know the night rain; the banana leaves sound first.
   </LhCard>
 </DemoBlock>
@@ -15,7 +15,7 @@ A container for headers, content, and footer actions. Supports whole-card clicka
 </script>
 
 <template>
-  <LhCard title="Rain on Banana Leaves">
+  <LhCard title="Rain on Banana LhLeaves">
     Through the window I know the night rain; the banana leaves sound first.
   </LhCard>
 </template>
@@ -27,7 +27,7 @@ export default {}
 </script>
 
 <template>
-  <LhCard title="Rain on Banana Leaves">
+  <LhCard title="Rain on Banana LhLeaves">
     Through the window I know the night rain; the banana leaves sound first.
   </LhCard>
 </template>
@@ -226,7 +226,7 @@ export default {}
 | loading | Loading state: the body shows a skeleton placeholder | `boolean` | `false` |
 | themeVars | Component-level theme variables (keys get the --lh- prefix automatically) | `{ [x: string]: string; }` | — |
 | bgPattern | Pattern background URL (e.g. var(--lh-pattern-willow)), not limited by the global whitelist | `string` | — |
-| sx | sx quick-layout properties | `SxProps` | — |
+| sx | sx quick-layout properties | `LhSxProps` | — |
 
 ### Events
 
@@ -280,7 +280,7 @@ export interface LhCardProps {
   loading?: boolean
   themeVars?: Record<string, string>
   bgPattern?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

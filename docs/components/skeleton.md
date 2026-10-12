@@ -143,7 +143,7 @@ export default {}
 | rows | 文本行数 | `number` | `3` |
 | avatar | 是否包含圆形头像占位 | `boolean` | `false` |
 | animated | 是否开启动画 | `boolean` | `true` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Slots
 
@@ -159,7 +159,7 @@ export default {}
 | ---- | ---- | ---- | ------ |
 | variant | 占位块形状 | `'text' \| 'rect' \| 'circle'` | `'text'` |
 | animated | 是否开启动画 | `boolean` | `true` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### 主题变量
 
@@ -195,7 +195,7 @@ export interface LhSkeletonProps {
   /** 是否开启动画 */
   animated?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -211,7 +211,7 @@ export interface LhSkeletonItemProps {
   /** 是否开启动画 */
   animated?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

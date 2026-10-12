@@ -431,7 +431,7 @@ export default {
 | hideAfter | Hide delay (ms) | `number` | — |
 | themeVars | Component-level theme variables, overriding the ConfigProvider configuration | `{ [x: string]: string; }` | — |
 | bgPattern | Component-level background pattern, overriding the ConfigProvider configuration | `string` | — |
-| sx | sx layout props (applied to the trigger root) | `SxProps` | — |
+| sx | sx layout props (applied to the trigger root) | `LhSxProps` | — |
 
 ### Events
 
@@ -494,7 +494,7 @@ export interface LhPopoverProps {
   hideAfter?: number
   themeVars?: Record<string, string>
   bgPattern?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

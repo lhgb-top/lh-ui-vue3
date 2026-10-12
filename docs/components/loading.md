@@ -237,7 +237,7 @@ export default {
 | background | 遮罩背景色（CSS background 值） | `string` | — |
 | zIndex | 层级 | `number` | — |
 | spinner | 是否显示旋转图标 | `boolean` | `true` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 服务：`LhLoading.show({ target?, text?, background?, lock?, spinner?, sx? })` 返回 `{ close }`；`app.use(LhLoading)` 注册 `v-loading` 指令。
 
@@ -270,7 +270,7 @@ export interface LhLoadingMaskProps {
   zIndex?: number
   /** 是否显示旋转图标（默认 true） */
   spinner?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -292,7 +292,7 @@ export interface LhLoadingOptions {
   lock?: boolean
   /** 是否显示旋转图标 */
   spinner?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

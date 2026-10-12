@@ -132,7 +132,7 @@ export default {
 | character | 自定义字符 | `string` | — |
 | showScore | 显示分数文本 | `boolean` | `false` |
 | scoreTemplate | 分数模板（{n} 占位） | `string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -175,7 +175,7 @@ export interface LhRateProps {
   /** 分数模板（{n} 占位） */
   scoreTemplate?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

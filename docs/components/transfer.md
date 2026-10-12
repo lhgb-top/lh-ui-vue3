@@ -50,7 +50,7 @@ export default {
 `disabled` 禁用整个穿梭框。
 
 <DemoBlock title="禁用穿梭框">
-  <LhTransfer :data="items" v-model="source" disabled />
+  <LhTransfer :data="items" v-model="sourceDisabled" disabled />
 </DemoBlock>
 
 ```vue composition
@@ -100,7 +100,7 @@ export default {
 | data | 全量数据 | `[LhTransferItem](#type-LhTransferItem)`[] | — |
 | modelValue | 左侧（源）键列表（受控 v-model） | `(string \| number)[]` | `() => []` |
 | disabled | 禁用 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -141,7 +141,7 @@ export interface LhTransferProps {
   /** 禁用 */
   disabled?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -177,7 +177,10 @@ export interface LhTransferItem {
 <!-- lh-types:end -->
 <script setup>
 import { ref } from 'vue'
+// 每个 demo 独立一份选中集合：同一页所有 DemoBlock 共用这份 setup，
+// 共用一个 ref 时基础 demo 里挪走的项会让禁用 demo 也跟着空
 const source = ref(['a'])
+const sourceDisabled = ref(['a'])
 const items = [
   { key: 'a', label: '甲' },
   { key: 'b', label: '乙' },

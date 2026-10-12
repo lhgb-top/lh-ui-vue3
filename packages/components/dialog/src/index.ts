@@ -1,7 +1,7 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import type { LhDialogProps } from './types'
 import { useLhConfigContext } from '~/components/config-provider/src/index'
-import { useLhComponentTheme, useLhFocusTrap } from '~/composables'
+import { useLhComponentTheme, useLhFocusTrap, useLhOverlayStack } from '~/composables'
 import { isEscapeKey, sxToStyle } from '@lh-ui/share/core/shared'
 import { canClose, getDialogStyle } from '@lh-ui/share/core/dialog/logic'
 
@@ -22,26 +22,30 @@ export function useLhDialog(
   let initialX = 0
   let initialY = 0
   let bodyOverflow = ''
+  // 滚动锁状态跟踪：未锁过不得解锁，否则会把其他弹层的滚动锁一并解掉
+  let scrollLocked = false
 
   // 组件主题
   const configContext = useLhConfigContext()
   const theme = useLhComponentTheme('dialog', props, configContext)
   // 焦点圈：打开时圈住对话框，关闭时归还焦点（与 Drawer / Popover 一致）
   const { trap, release } = useLhFocusTrap()
+  // 弹层打开顺序栈：多弹层叠加时 Esc 只关栈顶（与 Drawer 共用同一套栈）
+  const overlay = useLhOverlayStack()
   const componentStyle = computed(() => ({
     ...theme.componentStyle.value,
     ...sxToStyle(props.sx ?? {}),
   }))
 
-  // 同步外部 modelValue
+  // 同步外部 modelValue（状态守卫防双发：遮罩/Esc 关闭 → update:modelValue 回流时
+  // isVisible 已为 false，直接跳过，close/beforeClose/unlockScroll 不再跑第二遍）
   watch(() => props.modelValue, (val) => {
-    if (val !== undefined) {
-      isVisible.value = val
-      if (val) {
-        open()
-      } else {
-        close()
-      }
+    if (val === undefined) return
+    if (val && !isVisible.value) {
+      isVisible.value = true
+      open()
+    } else if (!val && isVisible.value) {
+      close()
     }
   })
 
@@ -49,6 +53,7 @@ export function useLhDialog(
    * 打开 Dialog
    */
   function open() {
+    overlay.register()
     emit('open')
     lockScroll()
     nextTick(() => {
@@ -74,6 +79,7 @@ export function useLhDialog(
 
   function doClose() {
     isVisible.value = false
+    overlay.unregister()
     emit('update:modelValue', false)
     emit('close')
     unlockScroll()
@@ -97,6 +103,9 @@ export function useLhDialog(
    * 键盘 ESC 关闭
    */
   function handleKeyDown(e: KeyboardEvent) {
+    // 已关闭的实例不响应 Esc，也不得触发 unlockScroll（会解掉别的弹层的滚动锁）；
+    // 多弹层叠加时只有栈顶响应（与 Drawer 同一打开顺序栈）
+    if (!isVisible.value || !overlay.isTopmost()) return
     if (isEscapeKey(e) && canClose({ closeOnPressEscape: props.closeOnPressEscape }, 'escape')) {
       close()
     }
@@ -107,8 +116,10 @@ export function useLhDialog(
    */
   function lockScroll() {
     if (props.lockScroll !== false) {
+      if (typeof document === 'undefined') return
       bodyOverflow = document.body.style.overflow
       document.body.style.overflow = 'hidden'
+      scrollLocked = true
     }
   }
 
@@ -116,7 +127,9 @@ export function useLhDialog(
    * 解锁 body 滚动
    */
   function unlockScroll() {
-    if (props.lockScroll !== false) {
+    if (props.lockScroll !== false && scrollLocked) {
+      scrollLocked = false
+      if (typeof document === 'undefined') return
       document.body.style.overflow = bodyOverflow || ''
     }
   }
@@ -124,10 +137,19 @@ export function useLhDialog(
   // 挂载键盘监听
   onMounted(() => {
     document.addEventListener('keydown', handleKeyDown)
+    if (isVisible.value) {
+      // 初始 modelValue=true：watch 不会触发，补上滚动锁与焦点圈（对齐 Drawer）
+      lockScroll()
+      overlay.register()
+      nextTick(() => {
+        trap(dialogRef.value)
+      })
+    }
   })
 
   onUnmounted(() => {
     document.removeEventListener('keydown', handleKeyDown)
+    detachDragListeners()
     unlockScroll()
   })
 
@@ -172,6 +194,12 @@ export function useLhDialog(
     document.addEventListener('mouseup', onMouseUp)
   }
 
+  /** 拖拽监听成对清理：组件在拖拽中被卸载时由 onUnmounted 兜底移除 */
+  function detachDragListeners() {
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+  }
+
   function onMouseMove(e: MouseEvent) {
     if (!isDragging) return
     const dx = e.clientX - startX
@@ -204,8 +232,7 @@ export function useLhDialog(
 
   function onMouseUp() {
     isDragging = false
-    document.removeEventListener('mousemove', onMouseMove)
-    document.removeEventListener('mouseup', onMouseUp)
+    detachDragListeners()
   }
 
   /**

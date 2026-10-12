@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { h } from 'vue'
+import { h, nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import LhSteps, { LhStep } from '~/components/steps'
 
@@ -85,6 +85,47 @@ describe('LhSteps', () => {
   it('applies the vertical direction class', () => {
     const wrapper = mountSteps({ direction: 'vertical' })
     expect(wrapper.find('.lh-steps--vertical').exists()).toBe(true)
+    wrapper.unmount()
+  })
+
+  it('marks the last step of each wrapped horizontal line', async () => {
+    const wrapper = mountSteps()
+    const items = wrapper.findAll('.lh-steps__item')
+
+    // jsdom 没有真实布局，手动模拟折行：前两步在第一行，第三步折到第二行
+    ;[0, 0, 40].forEach((top, index) => {
+      Object.defineProperty(items[index].element, 'offsetTop', { value: top, configurable: true })
+    })
+    // 折行位置由 watch 监听方向变化重算（回调在 nextTick 后执行，多等一拍）
+    await wrapper.setProps({ direction: 'vertical' })
+    await wrapper.setProps({ direction: 'horizontal' })
+    await nextTick()
+    await nextTick()
+
+    expect(items[0].classes()).not.toContain('lh-steps__item--line-last')
+    expect(items[1].classes()).toContain('lh-steps__item--line-last')
+    expect(items[2].classes()).toContain('lh-steps__item--line-last')
+    wrapper.unmount()
+  })
+
+  it('emits no last-item class (the connector uses the structural :last-child)', () => {
+    const wrapper = mountSteps()
+    const items = wrapper.findAll('.lh-steps__item')
+    // 末项语义改由样式 :last-child 承担：JS 类在子项分批注册时会首屏全命中，已移除
+    expect(items.every((item) => !item.classes().includes('lh-steps__item--last'))).toBe(true)
+    wrapper.unmount()
+  })
+
+  it('never marks line-last steps in the vertical direction', () => {
+    const wrapper = mountSteps({ direction: 'vertical' })
+    const items = wrapper.findAll('.lh-steps__item')
+    expect(items.every((item) => !item.classes().includes('lh-steps__item--line-last'))).toBe(true)
+    wrapper.unmount()
+  })
+
+  it('applies component theme vars to the root element', () => {
+    const wrapper = mountSteps({ themeVars: { 'steps-item-basis': '220px' } })
+    expect(wrapper.find('ol.lh-steps').attributes('style')).toContain('--lh-steps-item-basis: 220px')
     wrapper.unmount()
   })
 

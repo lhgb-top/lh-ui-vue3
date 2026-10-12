@@ -5,6 +5,7 @@
 .prettierignore
 eslint.config.mjs
 tsconfig.json
+tsconfig.dev.json
 vite.config.ts
 vitest.config.ts
 rollup.config.js

@@ -304,14 +304,16 @@ import {
   formatDate,
   isDateDisabled,
 } from '@lh-ui/share/core/date-picker'
+import { generateId } from '@lh-ui/share/utils'
+import { useLhZIndex } from '~/composables'
 import type { LhDatePickerProps } from './types'
 
 defineOptions({ name: 'LhDatePicker' })
 
-// Unique ID for each instance
-let nextUid: number = 0
-nextUid++
-const uid = nextUid
+// 每实例唯一 ID：必须走 generateId——旧实现 let nextUid=0; nextUid++ 写在 setup 内，
+// 每个实例独立执行，uid 恒为 1，多实例 panelId 全部撞名（aria-controls 与 getElementById 歧义）
+const uid = generateId('lh-date-picker')
+const { zIndex } = useLhZIndex()
 
 // 依赖响应式版本号：切换语言时触发重渲染
 const t = (path: string, fallback?: string) => {
@@ -423,7 +425,7 @@ const panelStyle = computed<StyleValue>(() => ({
   position: 'fixed',
   top: `${panelPosition.value.top}px`,
   left: `${panelPosition.value.left}px`,
-  zIndex: 3000 + uid,
+  zIndex: zIndex.value,
 }))
 
 const calendarDays = computed(() =>
@@ -760,6 +762,13 @@ function selectToday() {
 }
 
 function confirmSelection() {
+  // datetime / range 模式尚未实现时间选择与区间选择 UI（产品决策项，见台账 P-08）：
+  // 外部已传入区间值（数组）时不得用单个 Date 覆盖——此前会静默丢失区间数据
+  if (Array.isArray(props.modelValue)) {
+    internalVisible.value = false
+    returnFocusToTrigger()
+    return
+  }
   const val = tempSelection.value
   emit('update:modelValue', val)
   emit('change', val)

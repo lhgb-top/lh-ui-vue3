@@ -265,7 +265,7 @@ export default {
 | showClose | 是否显示关闭按钮 | `boolean` | `true` |
 | closeLabel | 关闭按钮的无障碍名称（未传时取语言包 `notification.close`） | `string` | — |
 | onClick | 点击卡片回调（传入后卡片以 button 语义呈现） | `() => void` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 服务方法：`LhNotification(options)` / `LhNotification.success/info/warning/danger(options)`，返回 `{ close }` 句柄；另有 `LhNotification.close(id)`、`LhNotification.closeAll()` 与 `LhNotification.config({ duration, offset, appendTo })`。
 
@@ -287,7 +287,7 @@ export default {
 | duration | 自动关闭毫秒数，`0` 表示不自动关闭 | `number` | `4500` |
 | position | 弹出位置 | `'top-right' \| 'top-left' \| 'bottom-right' \| 'bottom-left'` | `'top-right'` |
 | showClose | 是否显示关闭按钮 | `boolean` | `true` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 | onClick | 点击卡片回调 | `() => void` | — |
 | onClose | 关闭后的回调 | `() => void` | — |
 
@@ -323,7 +323,7 @@ export interface LhNotificationOptions {
   /** 是否显示关闭按钮（默认 true） */
   showClose?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
   /** 点击卡片回调（传入后卡片可聚焦、以 button 语义呈现） */
   onClick?: () => void
   /** 关闭（含自动与手动）后的回调 */
@@ -374,7 +374,7 @@ export interface LhNotificationProps {
   closeLabel?: string
   /** 传入后卡片可点击 */
   onClick?: () => void
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -405,7 +405,7 @@ export interface LhNotificationRecord {
   duration: number
   position: LhNotificationPosition
   showClose: boolean
-  sx?: SxProps
+  sx?: LhSxProps
   onClick?: () => void
   onClose?: () => void
 }

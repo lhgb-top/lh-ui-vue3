@@ -1,4 +1,4 @@
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhTreeNode } from '@lh-ui/share/core/tree'
 
 export interface LhTreeSelectProps {
@@ -15,7 +15,7 @@ export interface LhTreeSelectProps {
   /** 面板是否挂到 body（默认 true） */
   teleported?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 
 export type { LhTreeNode } from '@lh-ui/share/core/tree'

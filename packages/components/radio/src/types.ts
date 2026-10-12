@@ -1,6 +1,6 @@
 import type { InjectionKey, Ref } from 'vue'
 import { LH_SIZE_CONST } from '@lh-ui/share/constants'
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 
 export type LhRadioSize = typeof LH_SIZE_CONST[keyof typeof LH_SIZE_CONST]
 
@@ -12,7 +12,7 @@ export interface LhRadioProps {
   name?: string
   size?: LhRadioSize
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 
 export interface LhRadioGroupProps {

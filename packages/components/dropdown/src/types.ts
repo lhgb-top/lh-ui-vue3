@@ -1,6 +1,6 @@
 import type { InjectionKey, Ref } from 'vue'
 import type { LhDropdownPlacement, LhDropdownTrigger } from '@lh-ui/share/core/dropdown'
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 
 export type { LhDropdownPlacement, LhDropdownTrigger }
 
@@ -29,7 +29,7 @@ export interface LhDropdownProps {
   /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
   bgPattern?: string
   /** sx 快速布局属性（作用于触发器根元素） */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 
 /**
@@ -46,15 +46,15 @@ export interface LhDropdownItemProps {
 
 /** 注册给子项的菜单上下文 */
 export interface LhDropdownContext {
-  items: Ref<DropdownItemRecord[]>
+  items: Ref<LhDropdownItemRecord[]>
   activeIndex: Ref<number>
-  registerItem(item: DropdownItemRecord): void
-  unregisterItem(item: DropdownItemRecord): void
+  registerItem(item: LhDropdownItemRecord): void
+  unregisterItem(item: LhDropdownItemRecord): void
   onItemClick(command: string | number | undefined): void
 }
 
 /** 运行期菜单项记录 */
-export interface DropdownItemRecord {
+export interface LhDropdownItemRecord {
   el: HTMLElement
   command?: string | number
   disabled?: boolean

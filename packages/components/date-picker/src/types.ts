@@ -1,6 +1,6 @@
 import type { LhDatePickerMode } from '@lh-ui/share/core/date-picker'
 import type { LhComponentSize } from '@lh-ui/share/core/shared'
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 
 export interface LhDatePickerProps {
   modelValue?: Date | [Date, Date] | null
@@ -15,5 +15,5 @@ export interface LhDatePickerProps {
   cellClassName?: (date: Date) => string
   popperClass?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }

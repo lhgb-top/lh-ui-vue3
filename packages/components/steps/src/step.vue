@@ -71,8 +71,6 @@ if (context) {
 const ownIndex = computed(() =>
   context ? context.itemTokens.value.indexOf(token) : -1,
 )
-const total = computed(() => (context ? context.itemTokens.value.length : 1))
-const isLast = computed(() => ownIndex.value === total.value - 1)
 
 const status = computed(() =>
   getStepStatus({
@@ -86,8 +84,19 @@ const clickable = computed(() => !!context?.clickable.value)
 // 当前步骤与历史步骤可点击导航；等待中的后续步骤不引导跳转
 const isButton = computed(() => clickable.value && status.value !== 'wait')
 
+// 折行时本项若为行末项，隐藏指向行尾空白的连接线
+const isLineLast = computed(() =>
+  context ? context.lineLastIndices.value.includes(ownIndex.value) : false,
+)
+
+// 「末项」语义由连接线样式的 :last-child 承担，不再输出 JS 类：子项分批注册时
+// 基于总数的 isLast 会让每一项在首屏（含 SSR/SSG）都被误判为末项
 const itemClasses = computed(() =>
-  getStepClassNames({ status: status.value, isLast: isLast.value, clickable: isButton.value }),
+  getStepClassNames({
+    status: status.value,
+    clickable: isButton.value,
+    lineLast: isLineLast.value,
+  }),
 )
 
 const iconChar = computed(() => {

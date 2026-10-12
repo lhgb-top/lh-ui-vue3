@@ -2,6 +2,8 @@
 
 lh-ui-plus 提供了一套完整的 CSS 变量主题系统，支持国风主题色、暗色模式、花纹背景、运行时切换等丰富定制能力。
 
+> 想要可视化地调色并直接导出一份 scss？见 [主题定制台](/guide/theme-studio)。
+
 ## 国风主题色体系
 
 组件库以传统水墨丹青为设计灵感，定义了 8 种国风色彩主题：
@@ -174,7 +176,7 @@ export default {
 
 除了内置的明暗主题，组件库支持通过 `themeVars` 自定义任意颜色组合，实现个性化主题。
 
-> 下面示例是**手写自定义变量**的演示，取值为讲解而调整，与[预设主题](/guide/themes)中的同名内置预设（`cerblue` / `songhua` / `zhusha`）并不完全相同。要直接使用内置预设，请用 `usePresetTheme` 或 `getThemeVars(name)`。
+> 下面示例是**手写自定义变量**的演示，取值为讲解而调整，与[预设主题](/guide/themes)中的同名内置预设（`cerblue` / `songhua` / `zhusha`）并不完全相同。要直接使用内置预设，请用 `useLhPresetTheme` 或 `getThemeVars(name)`。
 
 ### 青花瓷主题
 

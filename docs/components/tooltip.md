@@ -475,7 +475,7 @@ export default {
 | teleportTarget | Teleport 目标（选择器或元素，默认 body） | `string \| HTMLElement` | `'body'` |
 | themeVars | 组件级主题变量，覆盖 ConfigProvider 配置 | `{ [x: string]: string; }` | — |
 | bgPattern | 组件级背景花纹，覆盖 ConfigProvider 配置 | `string` | — |
-| sx | sx 快速布局属性（作用于触发器根元素） | `SxProps` | — |
+| sx | sx 快速布局属性（作用于触发器根元素） | `LhSxProps` | — |
 
 > 注：`trigger` 的 `'click'` 取值当前尚未实现（行为等同 `'hover'`），点击切换将在后续版本提供。
 
@@ -598,7 +598,7 @@ export interface LhTooltipProps {
   /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
   bgPattern?: string
   /** sx 快速布局属性（作用于触发器根元素） */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

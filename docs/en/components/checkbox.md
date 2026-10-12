@@ -346,7 +346,7 @@ export default {
 | indeterminate | Indeterminate state | `boolean` | `false` |
 | name | — | `string` | — |
 | size | Size | `"small" \| "medium" \| "large"` | `'medium'` |
-| sx | sx quick-layout props | `SxProps` | — |
+| sx | sx quick-layout props | `LhSxProps` | — |
 
 ### LhCheckboxGroup Props
 
@@ -397,7 +397,7 @@ export interface LhCheckboxProps {
   indeterminate?: boolean
   name?: string
   size?: LhCheckboxSize
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

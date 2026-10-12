@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import { lhLoading } from './src/directive'
-import { LhLoading, showLoading, closeLoading } from './src/service'
+import { LhLoading, showLhLoading, closeLhLoading } from './src/service'
 
 /**
  * 加载服务 + 指令入口：
@@ -17,5 +17,5 @@ Object.defineProperty(LhLoadingService, 'name', { value: 'LhLoading' })
 
 export default LhLoadingService
 export { LhLoadingService as LhLoading }
-export { showLoading, closeLoading, lhLoading as loadingDirective }
+export { showLhLoading, closeLhLoading, lhLoading as loadingDirective }
 export type { LhLoadingHandle, LhLoadingMaskProps, LhLoadingOptions } from './src/types'

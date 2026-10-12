@@ -188,7 +188,7 @@ export default {}
 | width | 圆形模式画布宽度 px | `number` | `126` |
 | showText | 是否展示文字 | `boolean` | `true` |
 | format | 自定义文字格式化 | `(percentage: number) => string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Slots
 
@@ -227,7 +227,7 @@ export interface LhProgressProps {
   /** 自定义文字格式化 */
   format?: (percentage: number) => string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

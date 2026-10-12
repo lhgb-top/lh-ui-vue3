@@ -88,7 +88,7 @@ export default {
 ```vue composition
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { LhForm, LhFormItem, LhInput, LhButton } from '@lh-ui/vue3'
+import { LhForm, LhFormItem, LhInput, LhButton, LhMessage } from '@lh-ui/vue3'
 
 const formRef = ref()
 const formModel = reactive({
@@ -104,6 +104,7 @@ const formRules = {
 async function submitForm() {
   const valid = await formRef.value.validate()
   if (valid) {
+    LhMessage.success('Submitted')
     console.log('Submitted', formModel)
   }
 }
@@ -131,7 +132,7 @@ function resetForm() {
 
 ```vue options
 <script>
-import { LhForm, LhFormItem, LhInput, LhButton } from '@lh-ui/vue3'
+import { LhForm, LhFormItem, LhInput, LhButton, LhMessage } from '@lh-ui/vue3'
 
 export default {
   components: { LhForm, LhFormItem, LhInput, LhButton },
@@ -148,6 +149,7 @@ export default {
     async submitForm() {
       const valid = await this.$refs.formRef.validate()
       if (valid) {
+        LhMessage.success('Submitted')
         console.log('Submitted', this.formModel)
       }
     },
@@ -352,7 +354,7 @@ export interface LhFormProps {
   labelWidth?: string | number
   inline?: boolean
 
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -390,7 +392,14 @@ export interface LhFormRule {
 import { reactive, ref } from 'vue'
 import zhCN from '@lh-ui/share/locales/lang/zh-CN'
 import enUS from '@lh-ui/share/locales/lang/en-US'
-import { LhForm, LhFormItem, LhInput, LhButton, LhConfigProvider } from '@lh-ui/vue3'
+import {
+  LhForm,
+  LhFormItem,
+  LhInput,
+  LhButton,
+  LhConfigProvider,
+  LhMessage,
+} from '@lh-ui/vue3'
 
 const form = reactive({
   name: '',
@@ -418,6 +427,8 @@ const cerblueTheme = {
 async function submitForm() {
   const valid = await formRef.value.validate()
   if (valid) {
+    // Give a visible signal on success: console.log alone shows nothing on screen
+    LhMessage.success('Submitted')
     console.log('Submitted', formModel)
   }
 }
@@ -497,7 +508,7 @@ export default {
 | labelPosition | Label position | `"left" \| "right" \| "top"` | `'right'` |
 | labelWidth | Label width | `string \| number` | — |
 | inline | Inline layout | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhFormItem Props
 

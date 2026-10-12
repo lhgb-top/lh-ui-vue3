@@ -260,7 +260,7 @@ export default {
 | hideAfter | Delay before hiding (ms) | `number` | — |
 | themeVars | Component-level theme variables, overriding the ConfigProvider configuration | `{ [x: string]: string; }` | — |
 | bgPattern | Component-level background pattern, overriding the ConfigProvider configuration | `string` | — |
-| sx | sx quick layout props (applied to the trigger root element) | `SxProps` | — |
+| sx | sx quick layout props (applied to the trigger root element) | `LhSxProps` | — |
 
 ### Events
 
@@ -321,7 +321,7 @@ export interface LhPopconfirmProps {
   hideAfter?: number
   themeVars?: Record<string, string>
   bgPattern?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

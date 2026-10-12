@@ -44,11 +44,11 @@ const { theme, toggleTheme } = useLhTheme()
 
 ### 如何切换预设主题？
 
-用 `usePresetTheme`：
+用 `useLhPresetTheme`：
 
 ```ts
-import { usePresetTheme } from '@lh-ui/vue3'
-const { preset, setPreset, presets } = usePresetTheme()
+import { useLhPresetTheme } from '@lh-ui/vue3'
+const { preset, setPreset, presets } = useLhPresetTheme()
 setPreset('songhua') // 切到松花绿，写入 :root 并持久化
 ```
 

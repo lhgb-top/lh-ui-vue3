@@ -78,7 +78,7 @@ export default {}
 
 ## With Label
 
-Labels are horizontal-only; align with `label-position`.
+Labels work in both directions: align horizontally with `label-position`; vertical labels are always centred.
 
 <DemoBlock title="With Label">
   <LhDivider label-position="left">Listening to the rain in a tower in youth</LhDivider>
@@ -146,17 +146,17 @@ export default {}
 
 | Prop | Description | Type | Default |
 | ---- | ----------- | ---- | ------- |
-| direction | Divider direction (labels are not rendered vertically) | `"horizontal" \| "vertical"` | `'horizontal'` |
+| direction | Divider direction | `"horizontal" \| "vertical"` | `'horizontal'` |
 | dashed | Dashed style | `boolean` | `false` |
-| labelPosition | Label alignment | `"left" \| "center" \| "right"` | `'center'` |
+| labelPosition | Label alignment (horizontal only; vertical labels are always centred) | `"left" \| "center" \| "right"` | `'center'` |
 | borderStyle | Border style (e.g. `'dotted'`), reserved | `string` | — |
-| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `SxProps` | — |
+| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the root element | `LhSxProps` | — |
 
 ### Slots
 
 | Slot | Description | Default |
 | ---- | ----------- | ------- |
-| default | Divider label text (horizontal only) | — |
+| default | Divider label text (left/right when horizontal, above/below when vertical) | — |
 
 ### Accessibility
 
@@ -191,7 +191,7 @@ export interface LhDividerProps {
   dashed?: boolean
   labelPosition?: LhDividerLabelPosition
   borderStyle?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

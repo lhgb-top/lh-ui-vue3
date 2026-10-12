@@ -139,7 +139,7 @@ export default {}
 | Attribute | Description | Type | Default |
 | --- | --- | --- | --- |
 | direction | Direction (auto vertical when an Aside is present) | `"horizontal" \| "vertical"` | `'horizontal'` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhLayoutAside Props
 
@@ -147,7 +147,7 @@ export default {}
 | --- | --- | --- | --- |
 | width | Aside width | `number \| string` | — |
 | ariaLabel | Accessible name (landmark labelling) | `string` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 Header / Main / Footer take only `sx`.
 
@@ -168,7 +168,7 @@ The TypeScript type structures exported by this component (auto-extracted from `
 ```ts
 export interface LhLayoutProps {
   direction?: 'horizontal' | 'vertical'
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -179,7 +179,7 @@ export interface LhLayoutProps {
 
 ```ts
 export interface LhLayoutSectionProps {
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

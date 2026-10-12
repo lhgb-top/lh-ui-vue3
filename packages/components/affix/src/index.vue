@@ -51,7 +51,12 @@ function updateFixed(): void {
   const el = placeholderRef.value
   if (!el) return
   const rect = el.getBoundingClientRect()
-  const next = isAffixFixed({ top: rect.top, bottom: rect.bottom }, offsetTop.value, offsetBottom.value)
+  const next = isAffixFixed(
+    { top: rect.top, bottom: rect.bottom },
+    offsetTop.value,
+    offsetBottom.value,
+    window.innerHeight,
+  )
   if (next !== fixed.value) {
     fixed.value = next
     emit('change', next)
@@ -91,7 +96,7 @@ const affixStyle = computed(() => {
   return {
     ...getAffixFixedStyle(offsetTop.value, offsetBottom.value),
     zIndex: zIndex.value,
-    width: `${placeholderRef.value?.offsetWidth ?? 'auto'}px`,
+    width: placeholderRef.value ? `${placeholderRef.value.offsetWidth}px` : 'auto',
     ...sxToStyle(props.sx ?? {}),
   }
 })

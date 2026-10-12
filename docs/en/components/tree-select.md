@@ -160,7 +160,7 @@ export default {
 | disabled | Disabled | `boolean` | `false` |
 | placeholder | Placeholder text | `string` | — |
 | teleported | Teleport the panel to body | `boolean` | `true` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhTreeSelect Events
 
@@ -192,7 +192,7 @@ export interface LhTreeSelectProps {
   disabled?: boolean
   placeholder?: string
   teleported?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

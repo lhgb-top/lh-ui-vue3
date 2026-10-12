@@ -2,7 +2,7 @@
 
 lh-ui-plus 内置 5 种国风预设主题，开箱即用。有两种使用方式：
 
-- **全局切换**（推荐）：`usePresetTheme` 把预设变量写到 `:root`，整站生效并持久化到 localStorage。
+- **全局切换**（推荐）：`useLhPresetTheme` 把预设变量写到 `:root`，整站生效并持久化到 localStorage。
 - **局部切换**：`LhConfigProvider :theme-vars` 只影响其子树，适合同一页面内并列展示多套主题。
 
 预设变量可通过 `getThemeVars(name)`（来自 `@lh-ui/vue3/theme`）获取，`name` 取值见下方各小节。
@@ -165,7 +165,7 @@ const goldenTheme = getThemeVars('golden')
 
 两种机制，按作用域选择：
 
-- **全局切换**（推荐）：`usePresetTheme` 把预设变量写到 `:root`，整站生效并持久化到 localStorage，刷新后保持选择。无需 `LhConfigProvider` 包裹。
+- **全局切换**（推荐）：`useLhPresetTheme` 把预设变量写到 `:root`，整站生效并持久化到 localStorage，刷新后保持选择。无需 `LhConfigProvider` 包裹。
 - **局部切换**：`LhConfigProvider :theme-vars` 只影响其子树，适合同一页面内并列展示多套主题。
 
 ### 全局预设切换
@@ -174,9 +174,9 @@ const goldenTheme = getThemeVars('golden')
 
 ```vue
 <script setup lang="ts">
-import { LhButton, usePresetTheme } from '@lh-ui/vue3'
+import { LhButton, useLhPresetTheme } from '@lh-ui/vue3'
 
-const { preset, setPreset, presets } = usePresetTheme()
+const { preset, setPreset, presets } = useLhPresetTheme()
 </script>
 
 <template>
@@ -223,9 +223,9 @@ const { preset, setPreset, presets } = usePresetTheme()
 
 ```vue
 <script setup lang="ts">
-import { LhConfigProvider, LhButton, LhTag, LhSwitch, usePresetTheme } from '@lh-ui/vue3'
+import { LhConfigProvider, LhButton, LhTag, LhSwitch, useLhPresetTheme } from '@lh-ui/vue3'
 
-const { preset, setPreset, presets, themeVars } = usePresetTheme({ applyToRoot: false })
+const { preset, setPreset, presets, themeVars } = useLhPresetTheme({ applyToRoot: false })
 </script>
 
 <template>
@@ -252,11 +252,11 @@ const { preset, setPreset, presets, themeVars } = usePresetTheme({ applyToRoot: 
 </template>
 ```
 
-> **前缀写法**：ConfigProvider 的前缀处理是幂等的，`getThemeVars()`（来自 `@lh-ui/vue3/theme`）返回的键已带 `--lh-` 前缀，可直接传入 `:theme-vars`；而 `usePresetTheme()` 返回的 `themeVars` 已去掉前缀。两者都能直接用于 `:theme-vars`，无需二次处理。
+> **前缀写法**：ConfigProvider 的前缀处理是幂等的，`getThemeVars()`（来自 `@lh-ui/vue3/theme`）返回的键已带 `--lh-` 前缀，可直接传入 `:theme-vars`；而 `useLhPresetTheme()` 返回的 `themeVars` 已去掉前缀。两者都能直接用于 `:theme-vars`，无需二次处理。
 
 <script setup lang="ts">
 import { LhConfigProvider, LhButton, LhTag, LhSwitch } from '~/components'
-import { usePresetTheme } from '~/composables'
+import { useLhPresetTheme } from '~/composables'
 import { getThemeVars } from '@lh-ui/share/theme'
 import '@lh-ui/share/styles/config-provider'
 import '@lh-ui/share/styles/button'
@@ -267,7 +267,7 @@ import '@lh-ui/share/styles/switch'
 const cerblueTheme = getThemeVars('cerblue')
 
 // 局部预设切换演示：applyToRoot: false 只取 themeVars，作用域交给 ConfigProvider
-const { preset, setPreset, presets, themeVars: presetThemeVars } = usePresetTheme({
+const { preset, setPreset, presets, themeVars: presetThemeVars } = useLhPresetTheme({
   applyToRoot: false,
 })
 </script>

@@ -196,7 +196,7 @@ export default {}
 |--------|------|------|--------|
 | separator | 分隔符字符 | `string` | `'/'` |
 | maxItems | 最大可见项数（首项 + 省略号 + 末尾若干项），超出折叠 | `number` | `0` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### LhBreadcrumbItem Props
 
@@ -236,7 +236,7 @@ export interface LhBreadcrumbProps {
   /** 最大可见项数（首项 + 省略号 + 末尾若干项），超出折叠；0 或不传表示不折叠 */
   maxItems?: number
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

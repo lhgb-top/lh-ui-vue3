@@ -127,7 +127,7 @@ export default {}
 | maxSize | 单个文件大小上限（字节） | `number` | `[LH_UPLOAD_MAX_SIZE](#const-LH_UPLOAD_MAX_SIZE)` |
 | maxCount | 数量上限（0 为不限） | `number` | `0` |
 | request | 上传请求函数（不传则只做本地选择与校验） | `(options: { file: File; onProgress: (percent: number) => void; }) => Promise<{ url?: string; }>` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -176,7 +176,7 @@ export interface LhUploadProps {
   /** 上传请求函数（不传则只做本地选择与校验） */
   request?: LhUploadRequest
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

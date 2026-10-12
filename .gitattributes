@@ -1,0 +1,14 @@
+# 统一行尾为 LF：git 签出/暂存时自动归一，避免 CRLF 文件再次混入
+* text=auto eol=lf
+
+# 二进制资源不参与 EOL 归一
+*.svg binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

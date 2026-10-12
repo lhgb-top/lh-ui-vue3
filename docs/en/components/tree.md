@@ -334,7 +334,7 @@ export default {
 | lazy | Lazy mode (calls load when expanding unloaded nodes) | `boolean` | `false` |
 | load | Lazy load callback (resolve commits children and expands, reject cancels) | `(node: LhTreeNode, resolve: (children: LhTreeNode[]) => void, reject: (reason?: unknown) => void) => void` | — |
 | disabled | Disable the whole tree | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhTree Events
 
@@ -395,7 +395,7 @@ export interface LhTreeProps {
     reject: (reason?: unknown) => void,
   ) => void
   disabled?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

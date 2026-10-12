@@ -46,7 +46,7 @@ packages/composables/  Vue 专属 composables
 - Props/Emit 强类型定义
 - 事件回调签名携带载荷类型
 - IDE 智能补全
-- 类型覆盖率以 `pnpm typecheck` 守护（`SxProps` 等动态工具类型保留受控的索引签名）
+- 类型覆盖率以 `pnpm typecheck` 守护（`LhSxProps` 等动态工具类型保留受控的索引签名）
 
 ## CSS 变量主题系统
 

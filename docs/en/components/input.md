@@ -72,7 +72,7 @@ export interface LhInputProps {
 
   bgPattern?: string
 
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -541,7 +541,7 @@ export default {
 | label | — | `string` | — |
 | themeVars | Component-level theme variables, overrides ConfigProvider | `{ [x: string]: string; }` | — |
 | bgPattern | Component-level background pattern, overrides ConfigProvider | `string` | — |
-| sx | sx quick-layout props | `SxProps` | — |
+| sx | sx quick-layout props | `LhSxProps` | — |
 
 ## Events
 

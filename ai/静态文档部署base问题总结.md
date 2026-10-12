@@ -2,6 +2,12 @@
 
 > 2026-10-08 排查并修复 lh-ui-plus / lh-ui-vue2 两站部署到 `/lhui/{库名}/` 后资源全站 404 的问题。
 > 本文记录根因、VitePress base 机制的完整边界、两站的具体修复，以及后续 react / uniapp 站上线前的排查清单。
+>
+> **2026-10-11 更新**：vue2 站已于 2026-10-10 从 VitePress 迁移至 **VuePress 1.x**（注册表活渲染，
+> iframe / build:demo 链路整体退役）。因此本文**第四节 vue2 部分、第七节 vue2 验证示例与「vue2 站
+> iframe 演示的验证技巧」一节反映的是迁移前（VitePress 时代）的状态**，已在该处补注；VuePress 1.x
+> 时代的事实以这些补注为准。第三节「VitePress base 机制边界」仍是 VitePress 站（plus / react /
+> uniapp / 原生四端）的通用结论，与 VuePress 无关。
 
 ## 一、现象
 
@@ -126,32 +132,76 @@ vue2 站一开始就用对了（`docs/public/`），dist 根目录能看到 `log
 
 ### lh-ui-vue2（`/lhui/vue2/`）
 
-1. `docs/.vitepress/config.ts`：同样改用 `loadEnv`；默认 base 从 `/vue2/` 改为 `/`
-   （原默认值与 nginx 的 `/lhui/vue2/` 不一致）。
-2. 新增 `docs/.env.production`（`DOCS_BASE=/lhui/vue2/`）与 `docs/.env.development`（`DOCS_BASE=/`）。
+> **⚠ 2026-10-11 补注**：本小节写于 VitePress 时代。vue2 站已于 2026-10-10 迁移至
+> **VuePress 1.x**，下列条目中已失效的部分以 ~~删除线~~ 标注，迁移后的事实见下方「迁移后现状」。
+
+1. ~~`docs/.vitepress/config.ts`~~ → 现为 `docs/.vuepress/config.ts`：~~同样改用 `loadEnv`~~
+   → VuePress 经 bundle-require 内联加载配置，**不能引 vite 的 `loadEnv`**，改为手写
+   `loadDocsEnv()`（逐行正则解析 `docs/.env` + `docs/.env.<mode>`，行内 `DOCS_*` 变量最后覆盖）；
+   默认 base 从 `/vue2/` 改为 `/`（原默认值与 nginx 的 `/lhui/vue2/` 不一致）。
+2. `docs/.env.production`（`DOCS_BASE=/lhui/vue2/`）与 `docs/.env.development`（`DOCS_BASE=/`），
+   迁移后另补 `DOCS_HOSTNAME=https://www.lhgb.top` 供 sitemap 与 og:url 拼接。
 3. vue2 的 `.gitignore` 没有 `.env.*` 规则，无需加例外。
-4. **vue2 站不需要动演示部分**——它的 live demo 是 iframe 方案（VitePress 是 Vue3，无法直接渲染 Vue2 SFC）：
-   - `DemoBlock.vue` 的 iframe src 已用 `withBase('/demos/${name}.html')`
+4. ~~**vue2 站不需要动演示部分**——它的 live demo 是 iframe 方案（VitePress 是 Vue3，无法直接渲染 Vue2 SFC）：~~
+   - ~~`DemoBlock.vue` 的 iframe src 已用 `withBase('/demos/${name}.html')`~~
+   - ~~`scripts/build:demo.mjs` + `scripts/copy-demo.mjs` 把 demo 沙箱构建产物拷进 `docs/public/demos/`，~~
+     ~~内部资源重写成相对路径 `./assets/`（平铺后与 assets 同级）~~
+   - ~~`index.md` hero 图片 `/logo.svg` 经 VPImage 自动补 base~~
+   - ~~`docs/public/` 位置本来就对，robots.txt 无 Sitemap 行，不需要后处理脚本~~
+
+**迁移后现状（VuePress 1.x，2026-10-11 核实）**：iframe 沙箱整体退役，live demo 改为
+**注册表活渲染**——`docs/.vuepress/components/DemoBlock.vue` 直接 `import { DEMOS } from '../../../dev/demos'`
+（注册表真源 `dev/demos/index.ts`，与 dev 沙箱同源），用 `<component :is>` 在 `<client-only>` 内
+运行时编译渲染；webpack alias 让 docs 构建直接吃 `src/` 源码（`@lh-ui/vue2$ → src/index.ts`、
+`vue$ → vue/dist/vue.esm.js` 提供完整构建）。因此：
+
+- ~~`scripts/build:demo.mjs` / `scripts/copy-demo.mjs`~~ **两脚本均已删除**，`pnpm build:demo` 不存在；
+- ~~`docs/public/demos/`~~ **目录不存在**，静态资源按 VuePress 1.x 约定迁到 `docs/.vuepress/public/`
+  （仅 `.nojekyll` / `logo.svg` / `robots.txt`）；
+- **demo 无独立构建产物**，base 对 live demo 的覆盖问题随之消失（运行时组件走站点管线，与 iframe
+  src 字符串绕过管线的情形不同）；
+- 产物目录由 `docs/.vitepress/dist/` 变为 `docs/.vuepress/dist/`，构建命令必须走根目录的
+  `pnpm docs:build`（= `pnpm --dir docs build`，内层 `node --max-old-space-size=8192` 调
+  vuepress cli；不能 `cd docs && pnpm build`，pnpm 11 的 `verify-deps-before-run` 会阻断）。
    - `scripts/copy-demo.mjs` 已把 demo html 内部资源重写成相对路径 `./assets/`（平铺后与 assets 同级）
    - `index.md` hero 图片 `/logo.svg` 经 VPImage 自动补 base
    - `docs/public/` 位置本来就对，robots.txt 无 Sitemap 行，不需要后处理脚本
 
 ## 五、部署架构（供对照）
 
-生产由单台 Nginx 按路径分流（详见前端工作区 `docs/nginx-proxy.conf`）：
+生产由单台 Nginx 按路径分流（线上真身在前端工作区 `docs/nginx-proxy.conf`，家族 docs 存了
+权威参考副本：[`docs/部署/nginx-lhui.conf.md`](../../docs/部署/nginx-lhui.conf.md)）：
 
 ```
-/lhui/plus/  → alias /home/webuser/nginx/lh-ui/plus/     （lh-ui-plus 构建产物）
-/lhui/vue2/  → alias /home/webuser/nginx/lh-ui/vue2/     （lh-ui-vue2 构建产物）
+/lhui/plus/     → alias /home/webuser/nginx/lh-ui/plus/      （lh-ui-plus 构建产物）
+/lhui/vue2/     → alias /home/webuser/nginx/lh-ui/vue2/      （lh-ui-vue2 构建产物）
+/lhui/react/    → alias /home/webuser/nginx/lh-ui/react/     （lh-ui-react 构建产物）
+/lhui/uniapp/   → alias /home/webuser/nginx/lh-ui/uniapp/    （lh-ui-uniapp 构建产物）
+/lhui/android/  → alias /home/webuser/nginx/lh-ui/android/   （lh-ui-android 构建产物）
+/lhui/ios/      → alias /home/webuser/nginx/lh-ui/ios/       （lh-ui-ios 构建产物）
+/lhui/harmony/  → alias /home/webuser/nginx/lh-ui/harmony/   （lh-ui-harmony 构建产物）
+/lhui/c/        → alias /home/webuser/nginx/lh-ui/c/         （lh-ui-c 构建产物）
 ```
 
 统一约定 `/lhui/{库名}/`：各组件库文档站是**独立项目**，以 `DOCS_BASE=/lhui/{库名}/` 构建后
-整目录上传到对应 alias 目录。后续 react / uniapp 站照此扩展 location。
+整目录上传到对应 alias 目录。八站已全部按此约定配置完毕（web 血脉四站 + 原生血脉四站，
+原生站是 VitePress 内嵌静态 HTML 模拟器，部署方式相同）。
 
-注意：`try_files $uri $uri/ /lhui/plus/index.html;` 的 fallback 路径**必须带 base 前缀**
-（alias 下 fallback 相对于 alias 根），否则刷新深链路会 404。
+两条 try_files 契约：
 
-## 六、上线前排查清单（给后续 react / uniapp 站）
+1. fallback 路径**必须带 base 前缀**（alias 下 fallback 相对于 alias 根），否则刷新深链路 404。
+2. **cleanUrls 站必须加 `$uri.html`**：uniapp / android / ios / harmony / c 五站开了
+   `cleanUrls: true`，链接不带 `.html` 但产物仍是 `xxx.html`，缺这一段会 fallback 到
+   index.html 由前端路由兜底，首屏闪烁且 SEO 取不到预渲染内容。plus / vue2 / react 不需要。
+
+## 六、上线前排查清单（给后续各站）
+
+> 2026-10-11 回填：react 站 base 已确认为 `/lhui/react/`（无需改）；uniapp 站原为离群值
+> `/uniapp/`，已修正为 `/lhui/uniapp/`（见其 changeset `uniapp-docs-base`）；原生四端
+> （android / ios / harmony / c）base 均已确认为 `/lhui/{端}/`，android / harmony 的 dist
+> 已实测带前缀，ios / c 尚未构建过，部署前需先跑一次 `pnpm docs:build`。
+> 同期另修 ios / c 的本地搜索配置位置（`search` 从 `locales.root.themeConfig` 移到顶层
+> `themeConfig`，否则搜索框空壳，见各自 changeset）。
 
 构建前：
 
@@ -173,6 +223,7 @@ vue2 站一开始就用对了（`docs/public/`），dist 根目录能看到 `log
 构建后验证：
 
 - [ ] `grep -c <base 关键字> dist/index.html` 应 > 0
+- [ ] 开了 `cleanUrls: true` 的站，nginx `try_files` 链含 `$uri.html`，且深链路不带 `.html` 访问能命中预渲染文件
 - [ ] dist 根目录有 `robots.txt`（若 public 里放了的话）
 - [ ] 抽查页面的 `<img src>` 是否带 base 前缀
 - [ ] `pnpm docs:preview` 走一遍深链路 + 刷新，确认 `try_files` fallback 正确
@@ -188,26 +239,38 @@ ls docs/.vitepress/dist/robots.txt docs/.vitepress/dist/logo.svg  # 都存在 �
 grep -o 'src="[^"]*logo[^"]*"' docs/.vitepress/dist/components/empty.html  # → /lhui/plus/logo.svg ✅
 cat docs/.vitepress/dist/robots.txt                             # Sitemap: https://www.lhgb.top/lhui/plus/sitemap.xml ✅
 
-# lh-ui-vue2
+# lh-ui-vue2（VitePress 时代，2026-10-08）
 cd lh-ui-vue2
-pnpm build:demo   # demo 沙箱构建 + 拷入 docs/public/demos（iframe 内容）
 pnpm docs:build
 grep -c "lhui" docs/.vitepress/dist/index.html                 # → 10 ✅
 ```
 
-### vue2 站 iframe 演示的验证技巧
+### vue2 站 base 的验证方式（VuePress 1.x 迁移后）
 
-vue2 的 live demo 包在 `<ClientOnly>` 里（SSR 阶段不渲染，避免 isDark hydration mismatch
-导致 iframe 二次加载），所以**静态 HTML 里 grep 不到 iframe**。正确的验证方式是查
-`__VP_SITE_DATA__` 里烘焙的 base——`withBase()` 运行时读的就是它：
+> **⚠ 2026-10-11 改写**：原「iframe 演示的验证技巧」一节依赖 `__VP_SITE_DATA__` 与
+> `docs/.vitepress/dist/demos/`，随 VuePress 1.x 迁移全部失效（`__VP_SITE_DATA__` 是 VitePress
+> 专有，VuePress 产物里不存在；demos 目录已随 iframe 方案退役）。以下为迁移后的实测方式。
+
+VuePress 1.x 不把 base 烘焙成单个可 grep 的常量，而是拆成三处，验证时查任意一处即可：
 
 ```bash
-grep -o 'base.\{0,20\}' docs/.vitepress/dist/index.html   # → base\":\"/lhui/vue2/\", ✅
-ls docs/.vitepress/dist/demos/ | wc -l                    # → 59（demos 已进 dist）✅
-grep -o 'src="[^"]*"' docs/.vitepress/dist/demos/button.html | head -3
-# → ./assets/demo-es6THxlK.js 等，均为相对路径（copy-demo.mjs 重写，不受 base 影响）✅
+cd lh-ui-vue2
+pnpm docs:build              # 必须是根目录的包装命令，不能 cd docs
+
+# ① HTML 里所有资源链接已预拼前缀（最直观）
+grep -o 'href="/lhui/vue2/[^"]*"' docs/.vuepress/dist/index.html | head -3
+# → /lhui/vue2/logo.svg、/lhui/vue2/assets/css/0.styles.*.css 等 ✅
+grep -c "lhui" docs/.vuepress/dist/index.html                 # → 17 ✅
+
+# ② app bundle 内的 webpack publicPath
+grep -o 'l\.p="[^"]*"' docs/.vuepress/dist/assets/js/app.*.js  # → l.p="/lhui/vue2/" ✅
+
+# ③ app bundle 内的 siteData（等价于 VitePress 的 __VP_SITE_DATA__）
+grep -o 'base:"[^"]*"' docs/.vuepress/dist/assets/js/app.*.js  # → base:"/lhui/vue2/" ✅
 ```
 
-一句话：**SSR 产物查 HTML，客户端渲染的组件查 `__VP_SITE_DATA__` 的 base。**
+一句话：**SSG 产物查 HTML 里的资源前缀；运行时基准查 bundle 的 publicPath 与 siteData。**
+VitePress 站对应查 `__VP_SITE_DATA__`，VuePress 站查上面三处——两者不要混用。
 
-> 说明：本次两站的构建与验证已实际执行（用户授权当日可跑构建），上述数字为真实输出。
+> 说明：plus 站的构建与验证已实际执行（用户授权当日可跑构建），上述数字为真实输出；
+> vue2 站的数字为 2026-10-11 迁移后实测（`grep -c` = 17，组件页 = 16）。

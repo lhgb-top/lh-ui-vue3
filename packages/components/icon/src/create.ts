@@ -6,7 +6,7 @@ import { defineComponent, h, type PropType } from 'vue'
 import { LH_ICON_SVGS_CONST, getIconSize } from '@lh-ui/share/core/icon'
 import type { LhIconName } from '@lh-ui/share/core/icon'
 
-export function createIconComponent(name: LhIconName) {
+export function createLhIconComponent(name: LhIconName) {
   const path = LH_ICON_SVGS_CONST[name]
   // 转换名称：star → LhIconStar, arrow-up → LhIconArrowUp
   const componentName = `LhIcon${name

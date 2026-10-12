@@ -104,7 +104,7 @@ export default {
 | options | Options (string shorthand or objects) | `[LhSegmentedInput](#type-LhSegmentedInput)`[] | — |
 | disabled | Disable the whole group | `boolean` | `false` |
 | block | Stretch to fill the container | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhSegmented Events
 
@@ -133,7 +133,7 @@ export interface LhSegmentedProps {
   options: LhSegmentedInput[]
   disabled?: boolean
   block?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

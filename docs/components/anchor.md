@@ -108,7 +108,7 @@ export default {
 | offset | 锚点区域相对滚动容器顶部的偏移（用于联动判定） | `number` | `0` |
 | direction | 排列方向 | `"vertical" \| "horizontal"` | `'vertical'` |
 | smooth | 平滑滚动 | `boolean` | `true` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -153,7 +153,7 @@ export interface LhAnchorProps {
   /** 平滑滚动 */
   smooth?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

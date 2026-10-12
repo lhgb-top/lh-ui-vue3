@@ -84,7 +84,7 @@ export default {}
 |--------|------|------|--------|
 | size | 尺寸 | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
 | color | 旋转颜色（CSS color 值，未传时继承 currentColor） | `string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ## 无障碍
 
@@ -116,7 +116,7 @@ export interface LhSpinnerProps {
   /** 旋转颜色（CSS color 值，未传时继承 currentColor） */
   color?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

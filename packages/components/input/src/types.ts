@@ -1,4 +1,4 @@
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhIconName } from '@lh-ui/share/core/icon'
 import type { LH_SIZE_CONST } from '@lh-ui/share/constants'
 
@@ -81,5 +81,5 @@ export interface LhInputProps {
   /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
   bgPattern?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }

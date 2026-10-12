@@ -1,4 +1,4 @@
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhTreeNode } from '@lh-ui/share/core/tree'
 
 export interface LhTreeProps {
@@ -35,7 +35,7 @@ export interface LhTreeProps {
   /** 整体禁用 */
   disabled?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 
 export type { LhTreeNode, LhTreeCheckState, LhFlatTreeNode } from '@lh-ui/share/core/tree'

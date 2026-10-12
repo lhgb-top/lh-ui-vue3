@@ -15,7 +15,7 @@ import {
   lhlocale as sharedLocale,
   type LhLocaleType,
   type LhLocaleMessages,
-  type LocalePath,
+  type LhLocalePath,
   type LhTranslate,
   type LhTranslateArray,
 } from '@lh-ui/share/locales'
@@ -45,4 +45,4 @@ sharedLocale.subscribe((v) => {
 // 语言包直接源再导出（两段式 import+export 会让按需构建图判定为本模块未使用，
 // 在 30 个组件入口各刷一遍 unused external import 告警）
 export { zhCN, enUS } from '@lh-ui/share/locales'
-export type { LocalePath, LhTranslate, LhTranslateArray }
+export type { LhLocalePath, LhTranslate, LhTranslateArray }

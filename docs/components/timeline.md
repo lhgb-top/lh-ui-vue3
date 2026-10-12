@@ -111,7 +111,7 @@ export default {}
 | 属性名 | 说明 | 类型 | 默认值 |
 |--------|------|------|--------|
 | mode | 布局模式 | `"left" \| "alternate"` | `'left'` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### LhTimelineItem Props
 
@@ -120,7 +120,7 @@ export default {}
 | timestamp | 时间戳 | `string` | — |
 | type | 节点语义类型 | `'primary' \| 'success' \| 'warning' \| 'danger'` | — |
 | hollow | 空心节点 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 插槽：`default` 内容、`timestamp` 时间戳、`dot` 自定义圆点。
 
@@ -145,7 +145,7 @@ export interface LhTimelineItemProps {
   type?: 'primary' | 'success' | 'warning' | 'danger'
   hollow?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -160,7 +160,7 @@ export interface LhTimelineProps {
   /** 布局模式（alternate 左右交替） */
   mode?: LhTimelineMode
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

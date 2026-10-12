@@ -47,7 +47,7 @@ export interface LhDialogProps {
 
   bgPattern?: string
 
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -533,7 +533,7 @@ export default {
 | zIndex | z-index | `number` | — |
 | themeVars | Component-level theme variables, overriding ConfigProvider configuration | `{ [x: string]: string; }` | — |
 | bgPattern | Component-level background pattern, overriding ConfigProvider configuration | `string` | — |
-| sx | sx quick-layout props | `SxProps` | — |
+| sx | sx quick-layout props | `LhSxProps` | — |
 
 ## Events
 

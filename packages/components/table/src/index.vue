@@ -8,9 +8,11 @@
     :aria-colcount="leafColumns.length"
   >
     <div
+      ref="headerRef"
       class="lh-table__header"
       role="rowgroup"
       :style="headerStyle"
+      @scroll="onHeaderScroll"
     >
       <div
         v-for="(row, rowIndex) in headerRows"
@@ -141,6 +143,7 @@
 
       <div
         v-else
+        ref="phantomRef"
         class="lh-table__phantom"
         :style="{ height: `${totalHeight}px` }"
       >
@@ -154,7 +157,10 @@
             class="lh-table__row"
             role="row"
             :style="{ ...gridRowStyle, ...rowStyle }"
+            tabindex="0"
             @click="emit('rowClick', row, range.start + i)"
+            @keydown.enter.prevent="emit('rowClick', row, range.start + i)"
+            @keydown.space.prevent="emit('rowClick', row, range.start + i)"
           >
             <div
               v-for="(column, colIndex) in leafColumns"
@@ -439,6 +445,8 @@ const sortedRows = computed(() =>
 /** ============ 虚拟滚动 ============ */
 const isVirtual = computed(() => props.height != null)
 const bodyRef = ref<HTMLElement | null>(null)
+const headerRef = ref<HTMLElement | null>(null)
+const phantomRef = ref<HTMLElement | null>(null)
 const rootRef = ref<HTMLElement | null>(null)
 const scrollTop = ref(0)
 const viewportHeight = ref(0)
@@ -457,8 +465,28 @@ const rowStyle = computed(() =>
 )
 
 function onScroll(event: Event): void {
-  if (!isVirtual.value) return
-  scrollTop.value = (event.target as HTMLElement).scrollTop
+  const target = event.target as HTMLElement
+  if (isVirtual.value) {
+    scrollTop.value = target.scrollTop
+  }
+  // 横向滚动同步表头：表头/表体是两个独立的宽度体系，scrollLeft 不同步会列错位
+  syncScrollLeft(target, headerRef.value)
+}
+
+/**
+ * 表头↔表体横向滚动双向同步（header 的滚动条在 SCSS 里已隐藏，横向滚动只由表体承担）。
+ * 同步标记防止两个 scroll 事件互相触发形成回环。
+ */
+let isSyncingScroll = false
+function syncScrollLeft(source: HTMLElement | null, target: HTMLElement | null): void {
+  if (!source || !target || isSyncingScroll) return
+  isSyncingScroll = true
+  target.scrollLeft = source.scrollLeft
+  isSyncingScroll = false
+}
+
+function onHeaderScroll(event: Event): void {
+  syncScrollLeft(event.target as HTMLElement, bodyRef.value)
 }
 
 let resizeObserver: ResizeObserver | null = null
@@ -468,11 +496,31 @@ function measure(): void {
   if (el) viewportHeight.value = el.clientHeight
 }
 
+/**
+ * 表体的竖向滚动条会吃掉一段宽度（平台相关，Chrome 桌面约 15px）。表头与表体共用同一份
+ * gridTemplate，但两端网格区域不同宽时 fr 列解析结果不同，列边界错位。给表头右侧补等宽
+ * 内边距，让表头网格与表体内容区同宽（表头背景色自然铺满这段槽位）。
+ */
+function syncHeaderGutter(): void {
+  const body = bodyRef.value
+  const header = headerRef.value
+  if (!body || !header) return
+  const gutter = body.offsetWidth - body.clientWidth
+  header.style.paddingRight = gutter > 0 ? `${gutter}px` : ''
+}
+
 onMounted(() => {
   measure()
-  if (typeof ResizeObserver !== 'undefined' && bodyRef.value) {
-    resizeObserver = new ResizeObserver(measure)
-    resizeObserver.observe(bodyRef.value)
+  syncHeaderGutter()
+  if (typeof ResizeObserver !== 'undefined') {
+    resizeObserver = new ResizeObserver(() => {
+      measure()
+      // 容器缩放 / max-height 切换（表体宽高变化）与数据增减（幻影高度变化导致
+      // 竖向滚动条出现或消失）都要重算表头槽位
+      syncHeaderGutter()
+    })
+    if (bodyRef.value) resizeObserver.observe(bodyRef.value)
+    if (phantomRef.value) resizeObserver.observe(phantomRef.value)
   }
   window.addEventListener('resize', measure)
 })
@@ -564,12 +612,22 @@ const tableClasses = computed(() =>
 
 const rootStyle = computed(() => sxToStyle(props.sx ?? {}))
 
+/**
+ * 尺寸归一化：纯数字（number 或 "200" 这类无单位数字串）补 px。
+ * CSSOM 会静默丢弃无单位长度（el.style.maxHeight = "200" 不生效，style 属性保持为空），
+ * 官方 demo 的 max-height="200" 曾因此完全失效。
+ */
+function normalizeSize(value: string | number | undefined): string | undefined {
+  if (value == null) return undefined
+  if (typeof value === 'number') return `${value}px`
+  const trimmed = value.trim()
+  return /^\d+(\.\d+)?$/.test(trimmed) ? `${trimmed}px` : value
+}
+
 const bodyStyle = computed(() => {
   if (props.height == null) {
-    return props.maxHeight == null
-      ? undefined
-      : { maxHeight: typeof props.maxHeight === 'number' ? `${props.maxHeight}px` : props.maxHeight }
+    return props.maxHeight == null ? undefined : { maxHeight: normalizeSize(props.maxHeight) }
   }
-  return { height: typeof props.height === 'number' ? `${props.height}px` : props.height }
+  return { height: normalizeSize(props.height) }
 })
 </script>

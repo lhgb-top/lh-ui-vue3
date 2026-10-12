@@ -1,5 +1,5 @@
 import type { LhComponentSize } from '@lh-ui/share/core/shared'
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 
 export interface LhTimePickerProps {
   modelValue?: Date | null
@@ -16,5 +16,5 @@ export interface LhTimePickerProps {
   stepMinute?: number
   stepSecond?: number
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }

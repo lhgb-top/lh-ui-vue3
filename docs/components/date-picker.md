@@ -271,6 +271,9 @@ export default {
 
 ## DatePicker API
 
+> **注意**：`datetime` / 区间选择目前**只有类型预留，没有对应的选择 UI**（时间列与区间面板未实现，
+> 见家族台账 P-08）。外部传入区间值 `[Date, Date]` 时面板可正常展示，但面板内确认不会覆盖区间值。
+
 | 属性            | 说明             | 类型                                                   | 默认值      |
 | --------------- | ---------------- | ------------------------------------------------------ | ----------- |
 | modelValue | 绑定的日期 | `Date \| [Date, Date]` | `null` |
@@ -284,7 +287,7 @@ export default {
 | rangeSeparator | 范围分隔符 | `string` | `'~'` |
 | cellClassName | — | `(date: Date) => string` | — |
 | popperClass | — | `string` | — |
-| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于触发器根元素（浮层面板不受影响） | `SxProps` | — |
+| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于触发器根元素（浮层面板不受影响） | `LhSxProps` | — |
 
 ## DatePicker Events
 
@@ -316,7 +319,7 @@ export interface LhDatePickerProps {
   cellClassName?: (date: Date) => string
   popperClass?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

@@ -116,7 +116,7 @@ export interface LhDatePickerProps {
   rangeSeparator?: string
   cellClassName?: (date: Date) => string
   popperClass?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -344,7 +344,7 @@ export default {
 | rangeSeparator | — | `string` | `'~'` |
 | cellClassName | — | `(date: Date) => string` | — |
 | popperClass | — | `string` | — |
-| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the trigger root element (the floating panel is not affected) | `SxProps` | — |
+| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the trigger root element (the floating panel is not affected) | `LhSxProps` | — |
 
 ## Events
 

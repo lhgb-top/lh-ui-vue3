@@ -4,6 +4,7 @@ import { useLhConfigContext } from '~/components/config-provider/src/index'
 import {
   useLhComponentTheme,
   useLhFocusTrap,
+  useLhOverlayStack,
   useLhPopper,
   useLhTrigger,
   useLhZIndex,
@@ -12,8 +13,8 @@ import {
 import { generateId } from '@lh-ui/share/utils'
 import { lhlocale } from '~/locale'
 import {
-  DEFAULT_POPCONFIRM_PLACEMENT,
-  DEFAULT_POPCONFIRM_TYPE,
+  LH_POPCONFIRM_PLACEMENT_DEFAULT,
+  LH_POPCONFIRM_TYPE_DEFAULT,
   getPopconfirmClass,
   getPopconfirmIconName,
   getDefaultDelay,
@@ -45,13 +46,13 @@ export function useLhPopconfirm(
   }
 
   const isControlled = computed(() => props.trigger === 'manual' && props.visible !== undefined)
-  const confirmType = computed(() => props.type ?? DEFAULT_POPCONFIRM_TYPE)
+  const confirmType = computed(() => props.type ?? LH_POPCONFIRM_TYPE_DEFAULT)
 
   const { popperStyle, actualPlacement, updatePosition } = useLhPopper({
     triggerRef,
     popperRef,
     visible: isVisible,
-    placement: computed(() => props.placement ?? DEFAULT_POPCONFIRM_PLACEMENT),
+    placement: computed(() => props.placement ?? LH_POPCONFIRM_PLACEMENT_DEFAULT),
     // 触发器滚出视口时必须收起：fixed 弹层不会随触发器离开，会悬浮在页面内容之上。
     // 受控模式同样收起，hide() 会抛出 update:visible 让外部状态保持同步。
     onScrollOut: () => {
@@ -93,12 +94,16 @@ export function useLhPopconfirm(
   }
 
   const { trap, release } = useLhFocusTrap()
+  // 弹层打开顺序栈：多弹层叠加时 Esc 只关栈顶（与 Dialog / Drawer / Popover 共用）
+  const overlay = useLhOverlayStack()
 
   watch(isVisible, (visible) => {
     if (visible) {
+      overlay.register()
       // 打开时焦点落「确定」，Tab 在两按钮间循环，关闭后归还
       nextTick(() => trap(popperRef.value, confirmRef.value))
     } else {
+      overlay.unregister()
       release()
     }
   })
@@ -112,6 +117,8 @@ export function useLhPopconfirm(
 
   function onKeydown(event: KeyboardEvent) {
     if (!isVisible.value || isControlled.value) return
+    // 多弹层叠加时只有栈顶响应（与 Dialog / Drawer / Popover 共用顺序栈）
+    if (!overlay.isTopmost()) return
     // Esc = 取消（对齐 APG alertdialog：Escape 关闭并视为否定）
     if (isEscapeKey(event)) handleCancel()
   }

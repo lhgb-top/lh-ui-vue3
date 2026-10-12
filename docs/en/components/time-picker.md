@@ -104,7 +104,7 @@ export interface LhTimePickerProps {
   stepHour?: number
   stepMinute?: number
   stepSecond?: number
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -232,7 +232,7 @@ export default {
 | stepHour | — | `number` | `1` |
 | stepMinute | — | `number` | `1` |
 | stepSecond | — | `number` | `1` |
-| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the trigger root element (the floating panel is not affected) | `SxProps` | — |
+| sx | Shorthand layout props (e.g. `{ mt: 2, w: '50%' }`), applied as inline styles on the trigger root element (the floating panel is not affected) | `LhSxProps` | — |
 
 ## Events
 

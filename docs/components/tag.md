@@ -318,7 +318,7 @@ export default {
 | round | 是否为圆角 | `boolean` | `false` |
 | hit | 是否有边框描边 | `boolean` | `false` |
 | onClose | 关闭时的自定义处理 | `(e: Event) => void` | — |
-| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于根元素 | `SxProps` | — |
+| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于根元素 | `LhSxProps` | — |
 
 ### Events
 
@@ -359,7 +359,7 @@ export interface LhTagProps {
   /** 关闭时的自定义处理 */
   onClose?: (e: Event) => void
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

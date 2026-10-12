@@ -238,7 +238,7 @@ export default {
 | panels | 同时展示的月面板数（flex 换行排列） | `number` | `1` |
 | placeholder | input 模式的占位文本 | `string` | — |
 | closeOnSelect | input 模式选中后是否自动收起面板 | `boolean` | `true` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -303,7 +303,7 @@ export interface LhCalendarProps {
   /** input 模式选中后是否自动收起面板 */
   closeOnSelect?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

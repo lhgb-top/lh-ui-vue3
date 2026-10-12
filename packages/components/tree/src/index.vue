@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="treeRef"
     :class="treeClasses"
     :style="treeStyle"
     role="tree"
@@ -276,10 +277,14 @@ function handleKeydown(event: KeyboardEvent): void {
   action()
 }
 
+// 键盘焦点查询限定在组件根内：document 级 querySelector 在同页多棵树
+// （key 相同很常见，如两棵部门树）时会把焦点落到别的实例
+const treeRef = ref<HTMLElement | null>(null)
+
 function focusNode(key: string | null): void {
   if (!key) return
   focusedKey.value = key
-  const el = document.querySelector<HTMLElement>(`[data-tree-key="${key}"]`)
+  const el = treeRef.value?.querySelector<HTMLElement>(`[data-tree-key="${key}"]`)
   el?.focus()
 }
 

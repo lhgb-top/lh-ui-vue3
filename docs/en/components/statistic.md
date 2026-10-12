@@ -158,7 +158,7 @@ export default {}
 | separator | Thousand separator; an empty string disables grouping | `string` | `','` |
 | prefix | Value prefix, e.g. a currency symbol | `string` | — |
 | suffix | Value suffix, e.g. a unit | `string` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### Slots
 
@@ -189,7 +189,7 @@ export interface LhStatisticProps {
   separator?: string
   prefix?: string
   suffix?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

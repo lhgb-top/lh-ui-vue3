@@ -109,7 +109,7 @@ export default {}
 | Attribute | Description | Type | Default |
 | --- | --- | --- | --- |
 | mode | Layout mode | `"left" \| "alternate"` | `'left'` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhTimelineItem Props
 
@@ -118,7 +118,7 @@ export default {}
 | timestamp | Timestamp | `string` | — |
 | type | Node semantic type | `'primary' \| 'success' \| 'warning' \| 'danger'` | — |
 | hollow | Hollow dot | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 Slots: `default`, `timestamp`, `dot`.
 
@@ -141,7 +141,7 @@ export interface LhTimelineItemProps {
   timestamp?: string
   type?: 'primary' | 'success' | 'warning' | 'danger'
   hollow?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -153,7 +153,7 @@ export interface LhTimelineItemProps {
 ```ts
 export interface LhTimelineProps {
   mode?: LhTimelineMode
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

@@ -300,7 +300,7 @@ export default {
 | closeOnEsc | Whether to close on Esc | `boolean` | `true` |
 | themeVars | Component-level theme variables, overriding ConfigProvider configuration | `{ [x: string]: string; }` | — |
 | bgPattern | Component-level background pattern, overriding ConfigProvider configuration | `string` | — |
-| sx | sx quick-layout props (applied to the panel) | `SxProps` | — |
+| sx | sx quick-layout props (applied to the panel) | `LhSxProps` | — |
 
 ### Events
 
@@ -355,7 +355,7 @@ export interface LhDrawerProps {
   closeOnEsc?: boolean
   themeVars?: Record<string, string>
   bgPattern?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

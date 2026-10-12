@@ -431,7 +431,7 @@ export default {
 | hideAfter | 延迟隐藏时间（ms） | `number` | — |
 | themeVars | 组件级主题变量，覆盖 ConfigProvider 配置 | `{ [x: string]: string; }` | — |
 | bgPattern | 组件级背景花纹，覆盖 ConfigProvider 配置 | `string` | — |
-| sx | sx 快速布局属性（作用于触发器根元素） | `SxProps` | — |
+| sx | sx 快速布局属性（作用于触发器根元素） | `LhSxProps` | — |
 
 ### Events
 
@@ -510,7 +510,7 @@ export interface LhPopoverProps {
   /** 组件级背景花纹，覆盖 ConfigProvider 配置 */
   bgPattern?: string
   /** sx 快速布局属性（作用于触发器根元素） */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

@@ -1,16 +1,17 @@
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import type { LhDropdownProps, LhDropdownContext, DropdownItemRecord } from './types'
+import type { LhDropdownProps, LhDropdownContext, LhDropdownItemRecord } from './types'
 import { useLhConfigContext } from '~/components/config-provider/src/index'
 import {
   useLhClickOutside,
   useLhComponentTheme,
+  useLhOverlayStack,
   useLhPopper,
   useLhTrigger,
   useLhZIndex,
 } from '~/composables'
 import { generateId } from '@lh-ui/share/utils'
 import {
-  DEFAULT_DROPDOWN_PLACEMENT,
+  LH_DROPDOWN_PLACEMENT_DEFAULT,
   getDropdownClass,
   getDropdownMenuStyle,
 } from '@lh-ui/share/core/dropdown/logic'
@@ -36,7 +37,7 @@ export function useLhDropdown(
   const popperRef = ref<HTMLElement | null>(null)
   const isVisible = ref(props.visible ?? false)
 
-  const items = ref<DropdownItemRecord[]>([])
+  const items = ref<LhDropdownItemRecord[]>([])
   const activeIndex = ref(-1)
 
   // 传入 visible 即视为受控：触发器与外部点击不再自行切换显隐。
@@ -45,7 +46,7 @@ export function useLhDropdown(
   const vm = getCurrentInstance()
   const isControlled = computed(() => !!vm?.vnode.props && 'visible' in vm.vnode.props)
 
-  const placement = computed(() => props.placement ?? DEFAULT_DROPDOWN_PLACEMENT)
+  const placement = computed(() => props.placement ?? LH_DROPDOWN_PLACEMENT_DEFAULT)
 
   const { popperStyle, actualPlacement, updatePosition } = useLhPopper({
     triggerRef,
@@ -127,6 +128,8 @@ export function useLhDropdown(
    */
   function onDocumentKeydown(event: KeyboardEvent) {
     if (!isEscapeKey(event) || !isVisible.value || isControlled.value) return
+    // 多弹层叠加时只有栈顶响应（与 Dialog / Drawer / Popover 共用顺序栈）
+    if (!overlay.isTopmost()) return
     hide()
     returnFocus()
   }
@@ -192,7 +195,7 @@ export function useLhDropdown(
     }
   }
 
-  function focusItem(item: DropdownItemRecord) {
+  function focusItem(item: LhDropdownItemRecord) {
     item.el.focus()
     activeIndex.value = items.value.indexOf(item)
   }
@@ -205,13 +208,20 @@ export function useLhDropdown(
     }
   )
 
+  // 弹层打开顺序栈：多弹层叠加时 Esc 只关栈顶（与 Dialog / Drawer / Popover 共用）
+  const overlay = useLhOverlayStack()
+  watch(isVisible, (visible) => {
+    if (visible) overlay.register()
+    else overlay.unregister()
+  })
+
   const context: LhDropdownContext = {
     items,
     activeIndex,
-    registerItem(item: DropdownItemRecord) {
+    registerItem(item: LhDropdownItemRecord) {
       items.value.push(item)
     },
-    unregisterItem(item: DropdownItemRecord) {
+    unregisterItem(item: LhDropdownItemRecord) {
       const index = items.value.indexOf(item)
       if (index > -1) items.value.splice(index, 1)
       if (activeIndex.value >= items.value.length) activeIndex.value = -1

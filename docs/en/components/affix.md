@@ -77,7 +77,7 @@ export default {}
 | offsetTop | Trigger pinning when the top edge is within this px | `number` | `0` |
 | offsetBottom | Trigger bottom pinning (takes precedence) | `number` | `0` |
 | target | Scroll container (selector or element) | `string \| HTMLElement` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhAffix Events
 
@@ -104,7 +104,7 @@ export interface LhAffixProps {
   offsetTop?: number
   offsetBottom?: number
   target?: string | HTMLElement
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

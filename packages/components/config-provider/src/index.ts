@@ -1,7 +1,7 @@
 import { computed, provide, watch, inject } from 'vue'
 import type { ComputedRef } from 'vue'
 import type { LhConfigProviderProps, LhConfigContext } from './types'
-import { CONFIG_PROVIDER_KEY } from './types'
+import { LH_CONFIG_PROVIDER_KEY } from './types'
 import { lhlocale } from '~/locale'
 import { cssVars as buildCssVars } from '@lh-ui/share/utils/css-var'
 
@@ -27,7 +27,7 @@ export function useLhConfigProvider(props: LhConfigProviderProps) {
   }))
 
   // 注入 provide（键类型为 ComputedRef<LhConfigContext>，见 types.ts）
-  provide(CONFIG_PROVIDER_KEY, configContext)
+  provide(LH_CONFIG_PROVIDER_KEY, configContext)
 
   // locale 变化时同步更新全局 locale（含首次）
   watch(
@@ -54,5 +54,5 @@ export function useLhConfigProvider(props: LhConfigProviderProps) {
 export type LhConfigContextRef = ComputedRef<LhConfigContext> | null
 
 export function useLhConfigContext(): LhConfigContextRef | null {
-  return inject(CONFIG_PROVIDER_KEY, null)
+  return inject(LH_CONFIG_PROVIDER_KEY, null)
 }

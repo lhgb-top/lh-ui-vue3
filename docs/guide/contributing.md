@@ -106,7 +106,26 @@ pnpm docs:build
 pnpm docs:build
 ```
 
-构建产物上传到服务器 `/home/webuser/nginx/lh-ui/plus/`（Nginx 配置见前端工作区 `docs/nginx-proxy.conf` 的 `/lhui/plus/` location）。后续新增库（Vue 2 / React / Uniapp）按 `/lhui/{库名}/` 各自扩展。
+构建产物上传到服务器 `/home/webuser/nginx/lh-ui/plus/`（Nginx location 片段的权威参考副本见
+家族 [`docs/部署/nginx-lhui.conf.md`](../../../docs/部署/nginx-lhui.conf.md)，线上真身在前端工作区
+`docs/nginx-proxy.conf`）。家族八站已全部按此约定部署：
+
+| 仓库 | base | alias 目录 | cleanUrls |
+| --- | --- | --- | --- |
+| lh-ui-plus（本库） | `/lhui/plus/` | `/home/webuser/nginx/lh-ui/plus/` | 否 |
+| lh-ui-vue2 | `/lhui/vue2/` | `/home/webuser/nginx/lh-ui/vue2/` | 否（VuePress 1.x） |
+| lh-ui-react | `/lhui/react/` | `/home/webuser/nginx/lh-ui/react/` | 否 |
+| lh-ui-uniapp | `/lhui/uniapp/` | `/home/webuser/nginx/lh-ui/uniapp/` | 是 |
+| lh-ui-android | `/lhui/android/` | `/home/webuser/nginx/lh-ui/android/` | 是 |
+| lh-ui-ios | `/lhui/ios/` | `/home/webuser/nginx/lh-ui/ios/` | 是 |
+| lh-ui-harmony | `/lhui/harmony/` | `/home/webuser/nginx/lh-ui/harmony/` | 是 |
+| lh-ui-windows | `/lhui/windows/` | `/home/webuser/nginx/lh-ui/windows/` | 是 |
+
+原生血脉四站（android / ios / harmony / windows）是 VitePress 站内嵌静态 HTML 模拟器，部署方式与
+web 血脉四站完全相同。新增库仍按 `/lhui/{库名}/` 各自扩展 location 与 `.env.production`。
+
+> cleanUrls 站（uniapp 及原生四端）的 Nginx `try_files` 必须含 `$uri.html`，否则无后缀 URL
+> 取不到预渲染的 `.html`；非 cleanUrls 站不需要这一段。详见参考副本的「三条契约」节。
 
 ## 代码规范
 

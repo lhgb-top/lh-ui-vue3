@@ -421,7 +421,7 @@ export default {
 | name | — | `string` | — |
 | ariaLabel | 无可见标签时的辅助文本 | `string` | — |
 | popperContainer | — | `string \| HTMLElement` | `'body'` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -474,7 +474,7 @@ export interface LhSelectProps {
   ariaLabel?: string
   popperContainer?: 'body' | HTMLElement | string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

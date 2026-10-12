@@ -23,7 +23,7 @@
 ```vue composition
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { LhForm, LhFormItem, LhInput, LhButton } from '@lh-ui/vue3'
+import { LhForm, LhFormItem, LhInput, LhButton, LhMessage } from '@lh-ui/vue3'
 
 const formRef = ref()
 const formModel = reactive({
@@ -39,6 +39,7 @@ const formRules = {
 async function submitForm() {
   const valid = await formRef.value.validate()
   if (valid) {
+    LhMessage.success('提交成功')
     console.log('提交成功', formModel)
   }
 }
@@ -66,7 +67,7 @@ function resetForm() {
 
 ```vue options
 <script>
-import { LhForm, LhFormItem, LhInput, LhButton } from '@lh-ui/vue3'
+import { LhForm, LhFormItem, LhInput, LhButton, LhMessage } from '@lh-ui/vue3'
 
 export default {
   components: { LhForm, LhFormItem, LhInput, LhButton },
@@ -82,7 +83,10 @@ export default {
   methods: {
     async submitForm() {
       const valid = await this.$refs.formRef.validate()
-      if (valid) console.log('提交成功', this.formModel)
+      if (valid) {
+        LhMessage.success('提交成功')
+        console.log('提交成功', this.formModel)
+      }
     },
     resetForm() { this.$refs.formRef?.resetFields() },
   },
@@ -322,7 +326,7 @@ export default {
 | labelPosition | 标签位置 | `"left" \| "right" \| "top"` | `'right'` |
 | labelWidth | 标签宽度 | `string \| number` | — |
 | inline | 是否使用行内布局 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ## LhFormItem Props
 
@@ -378,7 +382,7 @@ export interface LhFormProps {
   labelWidth?: string | number
   inline?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -416,7 +420,7 @@ export interface LhFormRule {
 import { reactive, ref } from 'vue'
 import zhCN from '@lh-ui/share/locales/lang/zh-CN'
 import enUS from '@lh-ui/share/locales/lang/en-US'
-import { LhConfigProvider } from '~/components'
+import { LhConfigProvider, LhMessage } from '~/components'
 import '@lh-ui/share/styles/config-provider'
 
 const formRef = ref()
@@ -440,6 +444,8 @@ const cerblueTheme = {
 async function submitForm() {
   const valid = await formRef.value.validate()
   if (valid) {
+    // 校验通过给一个可见反馈：只 console.log 用户在界面上看不到任何变化
+    LhMessage.success('提交成功')
     console.log('提交成功', formModel)
   }
 }

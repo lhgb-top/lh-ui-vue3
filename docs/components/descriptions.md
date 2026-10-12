@@ -318,7 +318,7 @@ export default {
 | column | 每行展示的条目列数 | `number` | `3` |
 | border | 是否展示边框 | `boolean` | `false` |
 | items | 条目列表 | `[LhDescriptionsItem](#type-LhDescriptionsItem)`[] | `() => []` |
-| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于根元素 | `SxProps` | — |
+| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于根元素 | `LhSxProps` | — |
 
 ### LhDescriptionsItem
 
@@ -360,7 +360,7 @@ export interface LhDescriptionsProps {
   /** 条目列表；label/value/span 三元组 */
   items: LhDescriptionsItem[]
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

@@ -108,7 +108,7 @@ export default {
 | offset | Offset used when resolving the active anchor | `number` | `0` |
 | direction | Layout direction | `"vertical" \| "horizontal"` | `'vertical'` |
 | smooth | Smooth scrolling | `boolean` | `true` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhAnchor Events
 
@@ -147,7 +147,7 @@ export interface LhAnchorProps {
   offset?: number
   direction?: 'vertical' | 'horizontal'
   smooth?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

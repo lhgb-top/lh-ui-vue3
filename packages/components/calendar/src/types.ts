@@ -1,4 +1,4 @@
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhCalendarRange, LhCalendarSelection } from '@lh-ui/share/core/calendar'
 
 /** 展示形态：panel 常驻面板（默认）/ input 点击输入框展开的折叠面板 */
@@ -24,6 +24,6 @@ export interface LhCalendarProps {
   /** input 模式选中后是否自动收起面板 */
   closeOnSelect?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 

@@ -1,6 +1,6 @@
 # Steps
 
-Process step indicator with wait/process/finish/error states, horizontal/vertical directions and optional clickable navigation.
+Process step indicator with wait/process/finish/error states, horizontal/vertical directions and optional clickable navigation. Horizontal steps wrap at a fixed basis width, and titles always stay on a single line.
 
 ## Basic Usage
 
@@ -233,6 +233,52 @@ export default {}
 </template>
 ```
 
+## Fixed-Width Wrapping
+
+Horizontal steps are laid out at the `--lh-steps-item-basis` basis width (default `160px`): when they fit, the steps share one row evenly; when they do not, whole steps wrap to the next line instead of breaking the title. Titles are always single-line and truncate with an ellipsis when too long. After wrapping, the connector of the last step on each line is hidden so it does not point into empty space.
+
+<DemoBlock title="Fixed-Width Wrapping">
+  <div class="demo-steps-narrow">
+    <LhSteps :current="1">
+      <LhStep title="Pick" description="Choose a model" />
+      <LhStep title="Trace" description="Trace or recall" />
+      <LhStep title="Inscribe" description="Sign and seal" />
+      <LhStep title="Mount" description="Mount the work" />
+    </LhSteps>
+  </div>
+</DemoBlock>
+
+```vue composition
+<script setup lang="ts">
+</script>
+
+<template>
+  <LhSteps :current="1">
+    <LhStep title="Pick" description="Choose a model" />
+    <LhStep title="Trace" description="Trace or recall" />
+    <LhStep title="Inscribe" description="Sign and seal" />
+    <LhStep title="Mount" description="Mount the work" />
+  </LhSteps>
+</template>
+```
+
+```vue options
+<script>
+export default {}
+</script>
+
+<template>
+  <LhSteps :current="1">
+    <LhStep title="Pick" description="Choose a model" />
+    <LhStep title="Trace" description="Trace or recall" />
+    <LhStep title="Inscribe" description="Sign and seal" />
+    <LhStep title="Mount" description="Mount the work" />
+  </LhSteps>
+</template>
+```
+
+> The demo above is constrained to `280px` to show the wrapping. To change the wrapping rhythm, override `steps-item-basis` via `themeVars` (the `--lh-` prefix is added automatically): `<LhSteps :theme-vars="{ 'steps-item-basis': '220px' }">`, or configure it globally through `LhConfigProvider`'s `componentTheme.steps`.
+
 ## Steps API
 
 ### LhSteps Props
@@ -243,7 +289,8 @@ export default {}
 | direction | Direction | `"horizontal" \| "vertical"` | `'horizontal'` |
 | clickable | Whether steps can be clicked for navigation | `boolean` | `false` |
 | status | Overrides the status of all steps globally (for custom presentations) | `"wait" \| "process" \| "finish" \| "error"` | — |
-| sx | Quick layout props | `SxProps` | — |
+| themeVars | Component-level theme variables (keys get the --lh- prefix automatically) | `{ [x: string]: string; }` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhSteps Events
 
@@ -270,6 +317,14 @@ export default {}
 | icon | Custom icon (overrides the `icon` prop's default rendering) | LhStep |
 | description | Custom description | LhStep |
 
+### Component Variables
+
+The following CSS variables are defined with defaults on `.lh-steps` and can be overridden globally or per component via `themeVars` (keys get the `--lh-` prefix automatically):
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `--lh-steps-item-basis` | Basis width of each horizontal step; steps wrap at this width when they no longer fit | `160px` |
+
 ### Accessibility
 
 - The container is `<ol role="list">`; semantic order matches the process order
@@ -292,7 +347,8 @@ export interface LhStepsProps {
   direction?: LhStepsDirection
   clickable?: boolean
   status?: LhStepStatus
-  sx?: SxProps
+  themeVars?: Record<string, string>
+  sx?: LhSxProps
 }
 ```
 
@@ -343,3 +399,10 @@ export type LhStepStatus = 'wait' | 'process' | 'finish' | 'error'
 import { ref } from 'vue'
 const current = ref(1)
 </script>
+
+<style scoped>
+.demo-steps-narrow {
+  width: 280px;
+  max-width: 100%;
+}
+</style>

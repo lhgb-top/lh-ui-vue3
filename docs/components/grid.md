@@ -248,7 +248,7 @@ export default {}
 | align | 交叉轴上对齐 | `'top' \| 'middle' \| 'bottom'` | `'top'` |
 | gutter | 列间距（px 或 [横向, 纵向]） | `number \| [number, number]` | `0` |
 | wrap | 是否换行 | `boolean` | `true` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### LhCol Props
 
@@ -264,7 +264,7 @@ export default {}
 | lg | ≥1024px 生效 | `LhColSize` | — |
 | xl | ≥1280px 生效 | `LhColSize` | — |
 | sizes | 按断点批量声明（与 xs~xl 等价，任选其一） | `Partial<Record<LhGridBreakpoint, LhColSize>>` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ## 无障碍
 
@@ -310,7 +310,7 @@ export interface LhRowProps {
   /** 是否换行 */
   wrap?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -342,7 +342,7 @@ export interface LhColProps {
   /** 按断点批量声明的响应式尺寸（与 xs~xl 等价，任选其一） */
   sizes?: LhBreakpointSizes
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

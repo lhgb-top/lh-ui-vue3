@@ -1,22 +1,38 @@
 name: Release
 
-# 推送到 main 且 changeset 或版本号有变动时自动执行 version + publish；
-# 没有待发布的 changeset 时 changesets/action 什么都不做，所以挂在 push 上是安全的。
-# 也可在仓库 Actions 页面手动触发。
+# 双通道（家族统一发包流程，见 docs/发包流程.md §4.3）：
+#
+# ① 自动发版通道——推送到 master 且 changeset 或版本号有变动时自动执行 version + publish；
+#   没有待发布的 changeset 时 changesets/action 什么都不做，所以挂在 push 上是安全的。
+#   publish 完成后把 changeset publish 本地创建的 tag（<包名>@<版本>）推到 origin，
+#   触发 ② 留档通道。
+# ② 留档通道——推送 @lh-ui/vue3@x.y.z 格式的 tag 时，从 npm 拉已发布的原版 tarball 建
+#   GitHub Release（与用户 npm i 装到的内容逐字节一致，不重新构建），再同步 tag 与发行版到 Gitee。
+#
+# 注意：GitHub Actions 的 tag 过滤里 * 不匹配 /，带作用域的 tag 必须用 **。
+# 也可在仓库 Actions 页面手动触发留档（workflow_dispatch 传入已有 tag，用于重跑）。
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - '.changeset/**'
       - 'package.json'
+    tags:
+      - '@lh-ui/vue3@**'
   workflow_dispatch:
+    inputs:
+      tag:
+        description: '要重建发行版的已有 tag，如 @lh-ui/vue3@1.0.0'
+        required: true
 
 permissions:
   contents: write
   id-token: write
 
 jobs:
-  release:
+  # ① 自动发版（push 到 master）
+  publish:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')
     runs-on: ubuntu-latest
 
     steps:
@@ -45,6 +61,7 @@ jobs:
         run: pnpm verify:dts
 
       - name: Version and publish
+        id: changesets
         uses: changesets/action@v1
         with:
           version: pnpm changeset:version
@@ -55,3 +72,94 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # changeset publish 在本地创建了 <包名>@<版本> tag，推到 origin 触发留档通道
+      - name: 推送发版 tag
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          TAG="$(git tag --points-at HEAD | grep '^@lh-ui/vue3@' | head -n 1 || true)"
+          if [ -z "$TAG" ]; then echo '未找到 @lh-ui/vue3@* tag，跳过'; exit 0; fi
+          git push origin "$TAG"
+
+  # ② 留档（tag 推送或手动重跑）
+  archive:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 解析 tag 并做格式守卫
+        id: meta
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          if [[ ! "$TAG" =~ ^@lh-ui/vue3@[0-9]+\.[0-9]+\.[0-9]+([-+].+)?$ ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "tag [$TAG] 不是 @lh-ui/vue3@x.y.z 格式，跳过"
+            exit 0
+          fi
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#@lh-ui/vue3@}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        if: steps.meta.outputs.skip != 'true'
+        with:
+          node-version: 20
+
+      # CHANGELOG 只增不减，master 上含全部历史版本段落，两条路径都能提取
+      - name: 生成 release notes
+        if: steps.meta.outputs.skip != 'true'
+        run: node scripts/release-notes.mjs "${{ steps.meta.outputs.version }}" > release-notes.md
+
+      # 新版本刚发布后 npm 注册表可能还没传播开，重试等一会儿
+      - name: 拉取已发布的安装包（npm pack）
+        if: steps.meta.outputs.skip != 'true'
+        run: |
+          VERSION="${{ steps.meta.outputs.version }}"
+          for i in 1 2 3 4 5 6; do
+            if npm pack "@lh-ui/vue3@${VERSION}"; then exit 0; fi
+            echo "npm 上尚未出现 @lh-ui/vue3@${VERSION}，${i}/6，30s 后重试"
+            sleep 30
+          done
+          echo "❌ npm 上拉取 @lh-ui/vue3@${VERSION} 失败，请确认已发布"
+          exit 1
+
+      - name: 创建 GitHub Release 并挂载 .tgz
+        if: steps.meta.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.meta.outputs.tag }}"
+          TGZ="lh-ui-vue3-${{ steps.meta.outputs.version }}.tgz"
+          # 已存在（重跑场景）只重传资产，不重复创建
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$TGZ" --clobber
+          else
+            gh release create "$TAG" "$TGZ" --title "$TAG" --notes-file release-notes.md --verify-tag
+          fi
+
+      # Gitee 的 tag 与发行版由本流程统一接管，避免双写冲突
+      - name: 推送 tag 到 Gitee
+        if: steps.meta.outputs.skip != 'true'
+        run: |
+          TAG="${{ steps.meta.outputs.tag }}"
+          git fetch origin "refs/tags/${TAG}:refs/tags/${TAG}" || true
+          git remote add gitee "https://oauth2:${{ secrets.GITEE_TOKEN }}@gitee.com/lh-ui/vue3.git" || true
+          git push gitee "${TAG}" 2>/dev/null \
+            || echo "⚠️ Gitee 上已存在该 tag，跳过推送"
+
+      # Gitee 发行版正文带 GitHub Release 的 tgz 下载链接（Gitee 附件 API 不稳定，不依赖）
+      - name: 创建 Gitee 发行版
+        if: steps.meta.outputs.skip != 'true'
+        continue-on-error: true # GitHub Release 已成功，Gitee 侧失败不阻塞主流程
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+        run: |
+          TAG="${{ steps.meta.outputs.tag }}"
+          printf '\n\n> 📦 安装包（.tgz）：https://github.com/${{ github.repository }}/releases/download/%s/lh-ui-vue3-%s.tgz\n' \
+            "$TAG" "${{ steps.meta.outputs.version }}" >> release-notes.md
+          jq -n --arg token "$GITEE_TOKEN" --arg tag "$TAG" --rawfile notes release-notes.md \
+            '{access_token:$token, tag_name:$tag, name:$tag, body:$notes, target_commitish:"master"}' \
+            | curl -sS -f -X POST "https://gitee.com/api/v5/repos/lh-ui/vue3/releases" \
+                -H "Content-Type: application/json" -d @-

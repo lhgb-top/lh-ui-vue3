@@ -66,7 +66,7 @@
 
     <!-- 下拉面板 -->
     <Teleport to="body">
-      <Transition name="lh-cascader-panel-enter">
+      <Transition name="lh-cascader-panel">
         <div
           v-if="internalVisible"
           :id="panelId"
@@ -180,6 +180,8 @@ import type {
   LhCascaderNode,
   LhCascaderSearchResult,
 } from '@lh-ui/share/core/cascader'
+import { generateId } from '@lh-ui/share/utils'
+import { useLhZIndex } from '~/composables'
 import type { LhCascaderProps } from './types'
 import { lhlocale } from '~/locale'
 import { LH_FORM_ITEM_CONTEXT_KEY } from '~/components/form/src/types'
@@ -223,11 +225,12 @@ const t = (path: string, fallback?: string) => {
   return lhlocale.t(path, fallback)
 }
 
-// Instance tracking
-let nextUid = 0
-nextUid++
-const uid = nextUid
-const panelId = `lh-cascader-panel-${uid}`
+// 每实例唯一 ID：必须走 generateId——旧实现 let nextUid=0; nextUid++ 写在 setup 内，
+// 每个实例独立执行，uid 恒为 1，多实例 panelId 全部撞名（aria-controls 与 closest 歧义）
+// generateId 已带「lh-cascader_」前缀，panelId 只需补「panel-」段，避免前缀重复
+const uid = generateId('lh-cascader')
+const { zIndex } = useLhZIndex()
+const panelId = `lh-cascader-panel-${uid.slice('lh-cascader_'.length)}`
 
 const internalVisible = ref(false)
 // Escape 关闭后把焦点还给输入框会再次触发 focus，此时不能重开面板
@@ -283,7 +286,7 @@ function columnLabel(panelIndex: number): string {
 
 function handleClear(e: Event) {
   e.stopPropagation()
-  emit('update:modelValue', props.multiple ? [] : [])
+  emit('update:modelValue', [])
   emit('change', [], null)
   multiSelected.value = []
   filterKeyword.value = ''
@@ -633,7 +636,7 @@ const panelStyle = computed<StyleValue>(() => ({
   position: 'fixed',
   top: `${panelPosition.value.top}px`,
   left: `${panelPosition.value.left}px`,
-  zIndex: 3000 + uid,
+  zIndex: zIndex.value,
 }))
 
 const showClear = computed(() => {
@@ -661,13 +664,17 @@ const visibleTags = computed(() => {
 watch(
   () => props.modelValue,
   (newVal) => {
-    if (props.multiple && newVal && newVal.length > 0) {
-      // Reconstruct multiSelected from newVal
-      multiSelected.value = newVal.map((v) => {
-        const expanded = expandLastValue(resolvedOptions.value, v)
-        return expanded || [v]
-      })
+    if (!props.multiple) return
+    // 受控清空（[] / undefined）也要落到内部态，否则已选 tag 残留展示
+    if (!newVal || newVal.length === 0) {
+      multiSelected.value = []
+      return
     }
+    // Reconstruct multiSelected from newVal
+    multiSelected.value = newVal.map((v) => {
+      const expanded = expandLastValue(resolvedOptions.value, v)
+      return expanded || [v]
+    })
   },
   { immediate: true },
 )

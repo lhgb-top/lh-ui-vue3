@@ -250,7 +250,7 @@ export default {
 | closable | 页签是否可关闭 | `boolean` | `false` |
 | addable | 是否显示新增按钮 | `boolean` | `false` |
 | tabPosition | 页签位置 | `"top" \| "bottom"` | `'top'` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### LhTabs Events
 
@@ -308,7 +308,7 @@ export interface LhTabsProps {
   /** 页签位置 */
   tabPosition?: LhTabsPosition
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

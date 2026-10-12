@@ -202,7 +202,7 @@ export default {
 | showJumper | Show the jumper input | `boolean` | `false` |
 | simple | Compact mode | `boolean` | `false` |
 | disabled | Disable everything | `boolean` | `false` |
-| sx | sx quick-layout props | `SxProps` | — |
+| sx | sx quick-layout props | `LhSxProps` | — |
 
 ### Events
 
@@ -242,7 +242,7 @@ export interface LhPaginationProps {
   showJumper?: boolean
   simple?: boolean
   disabled?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

@@ -409,7 +409,7 @@ export default {
 | showInput | 是否显示输入框 | `boolean` | `false` |
 | size | 尺寸 | `"small" \| "medium" \| "large" \| "mini" \| "x-large"` | `'medium'` |
 | marks | 标记点 | `{ [x: number]: string; }` | — |
-| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于根元素 | `SxProps` | — |
+| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于根元素 | `LhSxProps` | — |
 
 ### Events
 
@@ -440,7 +440,7 @@ export interface LhSliderProps {
   size?: LhComponentSize
   marks?: Record<number, string>
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

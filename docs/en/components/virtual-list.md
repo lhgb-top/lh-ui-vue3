@@ -159,7 +159,7 @@ export default {
 | itemHeight | Item height in fixed-height mode | `number` | — |
 | itemSize | Dynamic mode: returns each item's height | `(index: number) => number` | — |
 | overscan | Overscan item count | `number` | `LH_VIRTUAL_OVERSCAN` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 Slot: `default` (scope `{ item, index }`).
 
@@ -184,7 +184,7 @@ export interface LhVirtualListProps {
   itemHeight?: number
   itemSize?: (index: number) => number
   overscan?: number
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

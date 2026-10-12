@@ -48,7 +48,7 @@ Full-stack TypeScript type safety:
 - Strong Props/Emit type definitions
 - Type-safe event callback payloads
 - IDE auto-completion
-- Type coverage guarded by `pnpm typecheck` (controlled index signatures remain for dynamic utility types like `SxProps`)
+- Type coverage guarded by `pnpm typecheck` (controlled index signatures remain for dynamic utility types like `LhSxProps`)
 
 ## CSS Variable Theme System
 

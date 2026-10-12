@@ -49,10 +49,12 @@
         :class="{ 'lh-select__dropdown--teleported': shouldTeleport }"
         :style="dropdownStyle"
         role="listbox"
+        :aria-activedescendant="highlightedIndex >= 0 ? `${listboxId}-option-${highlightedIndex}` : undefined"
       >
         <button
           v-for="(option, index) in props.options"
-          :key="index"
+          :key="option.value"
+          :id="`${listboxId}-option-${index}`"
           class="lh-select__option"
           :class="{
             'lh-select__option--selected': isSelected(option),
@@ -80,6 +82,8 @@
 import { computed, inject, onMounted, onUnmounted, ref, type StyleValue } from 'vue'
 import { isEscapeKey, LH_KEYS, sxToStyle } from '@lh-ui/share/core/shared'
 import { findSelectOption, getNextEnabledIndex } from '@lh-ui/share/core/select'
+import { generateId } from '@lh-ui/share/utils'
+import { useLhZIndex } from '~/composables'
 import type { LhSelectOption, LhSelectProps } from './types'
 import { lhlocale } from '~/locale'
 import { LH_FORM_ITEM_CONTEXT_KEY } from '~/components/form/src/types'
@@ -120,6 +124,9 @@ const formItem = inject(LH_FORM_ITEM_CONTEXT_KEY, null)
 const isOpen = ref(false)
 const highlightedIndex = ref(-1)
 const selectedOption = computed(() => findSelectOption(props.options, props.modelValue))
+// 弹层走全局递增 z-index 体系；listbox id 供 aria-activedescendant 关联键盘高亮项
+const { zIndex } = useLhZIndex()
+const listboxId = generateId('lh-select-listbox')
 
 const shouldTeleport = computed(() => !!props.popperContainer)
 
@@ -131,14 +138,16 @@ const teleportTarget = computed(() => {
 })
 
 const dropdownStyle = computed<StyleValue>(() => {
-  if (!shouldTeleport.value || !rootRef.value) return {}
+  // 依赖 isOpen：弹层 v-if 卸载后 computed 会缓存，重开时必须强制重算，
+  // 否则沿用上一次打开时的矩形，移动触发器（无滚动的布局变化）后错位
+  if (!isOpen.value || !shouldTeleport.value || !rootRef.value) return {}
   const rect = rootRef.value.getBoundingClientRect()
   return {
     position: 'fixed',
     top: `${rect.bottom + 4}px`,
     left: `${rect.left}px`,
     width: `${rect.width}px`,
-    zIndex: 2000,
+    zIndex: zIndex.value,
   }
 })
 

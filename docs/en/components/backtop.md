@@ -115,7 +115,7 @@ export default {
 | right | Right offset px | `number` | `40` |
 | bottom | Bottom offset px | `number` | `40` |
 | smooth | Smooth scrolling | `boolean` | `true` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhBackTop Events
 
@@ -145,7 +145,7 @@ export interface LhBackTopProps {
   right?: number
   bottom?: number
   smooth?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

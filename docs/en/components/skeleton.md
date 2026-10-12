@@ -143,7 +143,7 @@ export default {}
 | rows | Number of text rows | `number` | `3` |
 | avatar | Include a circle avatar placeholder | `boolean` | `false` |
 | animated | Enable the pulse animation | `boolean` | `true` |
-| sx | sx quick-layout properties | `SxProps` | — |
+| sx | sx quick-layout properties | `LhSxProps` | — |
 
 ### Slots
 
@@ -159,7 +159,7 @@ export default {}
 | ---- | ----------- | ---- | ------- |
 | variant | Placeholder shape | `'text' \| 'rect' \| 'circle'` | `'text'` |
 | animated | Enable the pulse animation | `boolean` | `true` |
-| sx | sx quick-layout properties | `SxProps` | — |
+| sx | sx quick-layout properties | `LhSxProps` | — |
 
 ### Theme Variables
 
@@ -190,7 +190,7 @@ export interface LhSkeletonProps {
   rows?: number
   avatar?: boolean
   animated?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -203,7 +203,7 @@ export interface LhSkeletonProps {
 export interface LhSkeletonItemProps {
   variant?: LhSkeletonVariant
   animated?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

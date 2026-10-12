@@ -1,4 +1,4 @@
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhAlertType } from '@lh-ui/share/core/alert'
 
 export interface LhAlertProps {
@@ -15,5 +15,5 @@ export interface LhAlertProps {
   /** 关闭按钮的无障碍名称（未传时取语言包 alert.close） */
   closeLabel?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }

@@ -7,7 +7,7 @@
 > 垂直内联模式支持键盘遍历：展开子菜单后 ↑/↓ 可跨「叶子项 ↔ 子菜单标题 ↔ 面板内项」边界移动（Home/End 跳首末），禁用项与收起面板内的项自动跳过。
 
 <DemoBlock title="垂直布局">
-  <LhMenu v-model="active">
+  <LhMenu v-model="activeVertical">
     <LhMenuItem index="home">首页</LhMenuItem>
     <LhSubMenu index="settings" title="设置">
       <LhMenuItem index="settings-basic">基本设置</LhMenuItem>
@@ -68,7 +68,7 @@ export default {
 
 <DemoBlock title="展开控制">
   <LhMenu
-    v-model="active2"
+    v-model="activeOpen"
     :default-openeds="['settings2']"
     unique-opened
     style="max-width: 240px"
@@ -140,7 +140,7 @@ export default {
 ```
 
 <DemoBlock title="受控展开集合">
-  <LhMenu v-model="active2" :openeds="['settings2']">
+  <LhMenu v-model="activeOpen" :openeds="['settings2']">
     <LhSubMenu index="settings2" title="设置">
       <LhMenuItem index="settings2-basic">基本设置</LhMenuItem>
     </LhSubMenu>
@@ -186,7 +186,7 @@ export default {
 ## 水平布局（飞出子菜单）
 
 <DemoBlock title="水平布局">
-  <LhMenu v-model="active" mode="horizontal">
+  <LhMenu v-model="activeHorizontal" mode="horizontal">
     <LhMenuItem index="home">首页</LhMenuItem>
     <LhSubMenu index="settings" title="设置">
       <LhMenuItem index="settings-basic">基本设置</LhMenuItem>
@@ -235,7 +235,7 @@ export default {
 ## 折叠态与分组
 
 <DemoBlock title="折叠 + 分组">
-  <LhMenu v-model="active" collapse>
+  <LhMenu v-model="activeCollapse" collapse>
     <LhMenuItemGroup title="内容">
       <LhMenuItem index="home">首页</LhMenuItem>
     </LhMenuItemGroup>
@@ -290,7 +290,7 @@ export default {
 | defaultOpeneds | 默认展开的子菜单键（非受控） | `string[]` | `() => []` |
 | openeds | 受控展开的子菜单键 | `string[]` | — |
 | uniqueOpened | 手风琴：同时只展开一个子菜单 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Events
 
@@ -308,7 +308,7 @@ export default {
 |--------|------|------|--------|
 | index | 唯一标识（必填） | `string` | — |
 | disabled | 禁用 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 事件：`click(index)`；插槽：`default`。
 
@@ -319,7 +319,7 @@ export default {
 | index | 唯一标识（必填） | `string` | — |
 | title | 标题（也可用 title 插槽） | `string` | — |
 | disabled | 禁用 | `boolean` | `false` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 事件：`select(index, indexPath)`（冒泡）；插槽：`title`、`default`（可再嵌套 LhSubMenu）。
 
@@ -328,7 +328,7 @@ export default {
 | 属性名 | 说明 | 类型 | 默认值 |
 |--------|------|------|--------|
 | title | 分组标题（也可用 title 插槽） | `string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 插槽：`title`、`default`。
 
@@ -364,7 +364,7 @@ export interface LhMenuProps {
   /** 手风琴：同时只展开一个子菜单 */
   uniqueOpened?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -380,7 +380,7 @@ export interface LhMenuItemProps {
   index: string
   disabled?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -398,7 +398,7 @@ export interface LhSubMenuProps {
   title?: string
   disabled?: boolean
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -413,7 +413,7 @@ export interface LhMenuItemGroupProps {
   /** 分组标题（也可用 title 插槽） */
   title?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -432,6 +432,10 @@ export type LhMenuMode = 'horizontal' | 'vertical'
 <!-- lh-types:end -->
 <script setup>
 import { ref } from 'vue'
-const active = ref('home')
-const active2 = ref('settings2-basic')
+// 页级共享 ref 拆成每个 demo 独立：同一页所有 DemoBlock 共用这份 setup，
+// 一个 demo 里选中项会联动其他 demo 的高亮
+const activeVertical = ref('home')
+const activeHorizontal = ref('home')
+const activeCollapse = ref('home')
+const activeOpen = ref('settings2-basic')
 </script>

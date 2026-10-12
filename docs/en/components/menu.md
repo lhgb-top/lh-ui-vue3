@@ -7,7 +7,7 @@ Page navigation. Horizontal / vertical layouts, nested submenus, collapse mode, 
 > Vertical inline mode supports keyboard traversal: once a submenu is expanded, ↑/↓ move across boundaries between leaf items, submenu titles and panel items (Home/End jump to the ends), skipping disabled items and items inside collapsed panels.
 
 <DemoBlock title="Vertical">
-  <LhMenu v-model="active">
+  <LhMenu v-model="activeVertical">
     <LhMenuItem index="home">Home</LhMenuItem>
     <LhSubMenu index="settings" title="Settings">
       <LhMenuItem index="settings-basic">Basic</LhMenuItem>
@@ -64,7 +64,7 @@ export default {
 
 <DemoBlock title="Expansion control">
   <LhMenu
-    v-model="active2"
+    v-model="activeOpen"
     :default-openeds="['settings2']"
     unique-opened
     style="max-width: 240px"
@@ -133,7 +133,7 @@ export default {
 ```
 
 <DemoBlock title="Controlled open set">
-  <LhMenu v-model="active2" :openeds="['settings2']">
+  <LhMenu v-model="activeOpen" :openeds="['settings2']">
     <LhSubMenu index="settings2" title="Settings">
       <LhMenuItem index="settings2-basic">Basic</LhMenuItem>
     </LhSubMenu>
@@ -179,7 +179,7 @@ export default {
 ## Horizontal (flyout submenus)
 
 <DemoBlock title="Horizontal">
-  <LhMenu v-model="active" mode="horizontal">
+  <LhMenu v-model="activeHorizontal" mode="horizontal">
     <LhMenuItem index="home">Home</LhMenuItem>
     <LhSubMenu index="settings" title="Settings">
       <LhMenuItem index="settings-basic">Basic</LhMenuItem>
@@ -228,7 +228,7 @@ export default {
 ## Collapse and groups
 
 <DemoBlock title="Collapse + group">
-  <LhMenu v-model="active" collapse>
+  <LhMenu v-model="activeCollapse" collapse>
     <LhMenuItemGroup title="Content">
       <LhMenuItem index="home">Home</LhMenuItem>
     </LhMenuItemGroup>
@@ -283,7 +283,7 @@ export default {
 | defaultOpeneds | Opened submenu keys (uncontrolled) | `string[]` | `() => []` |
 | openeds | Opened submenu keys (controlled) | `string[]` | — |
 | uniqueOpened | Accordion: only one submenu open at a time | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhMenu Events
 
@@ -301,7 +301,7 @@ export default {
 | --- | --- | --- | --- |
 | index | Unique key (required) | `string` | — |
 | disabled | Disabled | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhMenuItem Events
 
@@ -318,7 +318,7 @@ Slot: `default`.
 | index | Unique key (required) | `string` | — |
 | title | Title (or title slot) | `string` | — |
 | disabled | Disabled | `boolean` | `false` |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 ### LhSubMenu Events
 
@@ -333,7 +333,7 @@ Slots: `title`, `default` (nest LhSubMenu recursively).
 | Attribute | Description | Type | Default |
 | --- | --- | --- | --- |
 | title | Group title (or title slot) | `string` | — |
-| sx | Quick layout props | `SxProps` | — |
+| sx | Quick layout props | `LhSxProps` | — |
 
 Slots: `title`, `default`.
 
@@ -361,7 +361,7 @@ export interface LhMenuProps {
   defaultOpeneds?: string[]
   openeds?: string[]
   uniqueOpened?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -374,7 +374,7 @@ export interface LhMenuProps {
 export interface LhMenuItemProps {
   index: string
   disabled?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -388,7 +388,7 @@ export interface LhSubMenuProps {
   index: string
   title?: string
   disabled?: boolean
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -400,7 +400,7 @@ export interface LhSubMenuProps {
 ```ts
 export interface LhMenuItemGroupProps {
   title?: string
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -418,6 +418,10 @@ export type LhMenuMode = 'horizontal' | 'vertical'
 <!-- lh-types:end -->
 <script setup>
 import { ref } from 'vue'
-const active = ref('home')
-const active2 = ref('settings2-basic')
+// Page-level shared refs split per demo: every DemoBlock on the page shares this
+// one setup scope, so a selection in one demo would also highlight the others
+const activeVertical = ref('home')
+const activeHorizontal = ref('home')
+const activeCollapse = ref('home')
+const activeOpen = ref('settings2-basic')
 </script>

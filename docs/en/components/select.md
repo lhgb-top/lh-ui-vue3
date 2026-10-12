@@ -32,7 +32,7 @@ export interface LhSelectProps {
   ariaLabel?: string
   popperContainer?: 'body' | HTMLElement | string
 
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 
@@ -333,7 +333,7 @@ export default {
 | name | — | `string` | — |
 | ariaLabel | — | `string` | — |
 | popperContainer | — | `string \| HTMLElement` | `'body'` |
-| sx | sx quick-layout props | `SxProps` | — |
+| sx | sx quick-layout props | `LhSxProps` | — |
 
 ## Events
 

@@ -1,4 +1,4 @@
-import type { SxProps } from '@lh-ui/share/core/shared'
+import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhUploadRequest } from '@lh-ui/share/core/upload'
 
 export interface LhUploadProps {
@@ -17,7 +17,7 @@ export interface LhUploadProps {
   /** 上传请求函数（不传则只做本地选择与校验） */
   request?: LhUploadRequest
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 
 export type { LhUploadFile, LhUploadFileStatus, LhUploadRequest } from '@lh-ui/share/core/upload'

@@ -125,7 +125,7 @@ export default {}
 | ---- | ---- | ---- | ------ |
 | description | 描述文案（未传时取语言包 `empty.description`） | `string` | — |
 | image | 自定义图片 URL（替代默认内联插画） | `string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Slots
 
@@ -159,7 +159,7 @@ export interface LhEmptyProps {
   /** 自定义图片 URL（替代默认内联插画） */
   image?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

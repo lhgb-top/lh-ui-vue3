@@ -334,7 +334,7 @@ export default {
 | indeterminate | 是否为半选状态 | `boolean` | `false` |
 | name | — | `string` | — |
 | size | 尺寸 | `"small" \| "medium" \| "large"` | `'medium'` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### LhCheckboxGroup Props
 
@@ -387,7 +387,7 @@ export interface LhCheckboxProps {
   name?: string
   size?: LhCheckboxSize
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

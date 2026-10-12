@@ -1,9 +1,10 @@
 import { defineConfig, loadEnv } from 'vitepress'
 import { resolve } from 'node:path'
+import { createLocalShareAliases } from '../../scripts/local-share-alias.mjs'
 import {
-  THEME_PRESETS,
+  LH_THEME_PRESETS,
   buildPresetStyleText,
-  PRESET_THEME_STYLE_ID,
+  LH_PRESET_THEME_STYLE_ID,
 } from '@lh-ui/share/theme'
 
 // 部署 base：单一数据源 / deployment base — single source of truth.
@@ -27,12 +28,12 @@ const hostname = (env.DOCS_HOSTNAME || 'https://www.lhgb.top').replace(/\/$/, ''
 const siteUrl = hostname + base
 
 // 防闪烁：构建期把「预设名 → 样式文本」序列化为 JSON，供 head 同步脚本读取。
-// 与 usePresetTheme 共用同一个 <style id="lh-preset-theme"> 元素（同一机制、同一特异性），
+// 与 useLhPresetTheme 共用同一个 <style id="lh-preset-theme"> 元素（同一机制、同一特异性），
 // 不能写 documentElement 内联 style——内联特异性 1,0,0,0 恒压样式表，
 // 会导致运行时切换预设只改了样式表、页面仍读旧内联值（必须刷新才生效），
 // 且会压过 var-dark.scss 的整段暗色变量。
 const PRESET_STYLE_JSON = JSON.stringify(
-  Object.fromEntries(THEME_PRESETS.map((p) => [p.name, buildPresetStyleText(p.vars)])),
+  Object.fromEntries(LH_THEME_PRESETS.map((p) => [p.name, buildPresetStyleText(p.vars)])),
 )
 
 const PRESET_FOUC_SCRIPT = `
@@ -41,10 +42,10 @@ const PRESET_FOUC_SCRIPT = `
     var presets = ${PRESET_STYLE_JSON}
     var saved = localStorage.getItem('lh-docs-preset')
     var text = saved && presets[saved] ? presets[saved] : presets['cerblue']
-    var styleEl = document.getElementById('${PRESET_THEME_STYLE_ID}')
+    var styleEl = document.getElementById('${LH_PRESET_THEME_STYLE_ID}')
     if (!styleEl) {
       styleEl = document.createElement('style')
-      styleEl.id = '${PRESET_THEME_STYLE_ID}'
+      styleEl.id = '${LH_PRESET_THEME_STYLE_ID}'
     }
     styleEl.textContent = text
     document.head.appendChild(styleEl)
@@ -103,13 +104,16 @@ export default defineConfig({
       },
     },
     resolve: {
-      alias: {
+      alias: [
         // 与 tsconfig.json compilerOptions.paths 保持一致
-        '~': resolve(__dirname, '../../packages'),
-        '@': resolve(__dirname, '../../src'),
-        '@lh-ui/vue3': resolve(__dirname, '../../src/index.ts'),
-        types: resolve(__dirname, '../../types'),
-      },
+        { find: '~', replacement: resolve(__dirname, '../../packages') },
+        { find: '@', replacement: resolve(__dirname, '../../src') },
+        { find: '@lh-ui/vue3', replacement: resolve(__dirname, '../../src/index.ts') },
+        { find: 'types', replacement: resolve(__dirname, '../../types') },
+        // 家族布局下解析到同级 lh-ui-share 源码（改 share 即时在 docs 生效）；
+        // 兄弟仓不存在时（CI 单仓 clone）守卫返回空、回退 node_modules 的 npm 包
+        ...createLocalShareAliases(resolve(__dirname, '../..')),
+      ],
     },
     optimizeDeps: {
       include: ['vue'],
@@ -138,6 +142,7 @@ export default defineConfig({
                 { text: '安装', link: '/guide/installation' },
                 { text: '快速开始', link: '/guide/getting-started' },
                 { text: '主题定制', link: '/guide/theme-customization' },
+                { text: '主题定制台', link: '/guide/theme-studio' },
                 { text: '预设主题', link: '/guide/themes' },
                 { text: '花纹背景系统', link: '/guide/theme-patterns' },
                 { text: '国际化', link: '/guide/i18n' },
@@ -277,6 +282,7 @@ export default defineConfig({
                 { text: 'Installation', link: '/en/guide/installation' },
                 { text: 'Getting Started', link: '/en/guide/getting-started' },
                 { text: 'Theme Customization', link: '/en/guide/theme-customization' },
+                { text: 'Theme Studio', link: '/en/guide/theme-studio' },
                 { text: 'Theme Presets', link: '/en/guide/themes' },
                 { text: 'Pattern Background', link: '/en/guide/theme-patterns' },
                 { text: 'Internationalization', link: '/en/guide/i18n' },

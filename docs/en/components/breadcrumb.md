@@ -209,7 +209,7 @@ export default {}
 |------|-------------|------|---------|
 | separator | Separator character | `string` | `'/'` |
 | maxItems | Max visible items (first + ellipsis + trailing items); collapses beyond it | `number` | `0` |
-| sx | sx quick-layout props | `SxProps` | — |
+| sx | sx quick-layout props | `LhSxProps` | — |
 
 ### LhBreadcrumbItem Props
 
@@ -246,7 +246,7 @@ The TypeScript type structures exported by this component (auto-extracted from `
 export interface LhBreadcrumbProps {
   separator?: string
   maxItems?: number
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

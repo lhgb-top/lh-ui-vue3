@@ -11,11 +11,13 @@
       v-if="props.label"
       class="lh-form-item__label"
       :style="labelStyle"
+      @click.prevent="focusControl"
     >
       <span v-if="props.required" class="lh-form-item__required">*</span>
       {{ props.label }}
     </label>
     <div
+      ref="contentRef"
       class="lh-form-item__content"
       :aria-describedby="errorMessage ? errorId : undefined"
     >
@@ -76,7 +78,10 @@ const labelStyle = computed(() => {
 async function validate() {
   if (!props.prop || !form) return true
   // 必填兜底文案走语言包（form.required），core 层不再含文案字面量
-  const message = validateFormField(
+  // validateFormField 对含异步 validator 的规则返回 Promise，必须 await：
+  // 不 await 会把 Promise 塞进 ref<string> 渲染成 "[object Promise]"，
+  // 且 !message 恒为 false（Promise 恒 truthy）导致异步规则永远校验失败
+  const message = await validateFormField(
     getFormFieldValue(form.model, props.prop),
     rules.value,
     form.model,
@@ -96,7 +101,24 @@ onUnmounted(() => {
   unregisterField?.()
 })
 
-function handleFocusout() {
+const contentRef = ref<HTMLElement | null>(null)
+
+/**
+ * 点击标签聚焦控件：slot 里的控件 id 无法静态得知，退而求其次
+ * 聚焦内容区第一个可聚焦元素（label 的 for 关联需要控件 id，此处不适用）
+ */
+function focusControl() {
+  const target = contentRef.value?.querySelector<HTMLElement>(
+    'input:not([type="hidden"]), textarea, select, button, [tabindex]:not([tabindex="-1"])'
+  )
+  target?.focus()
+}
+
+function handleFocusout(event: FocusEvent) {
+  // 焦点在 item 内部移动（控件 ↔ 控件 / 标签）不触发校验，只有真正离开才校验，
+  // 否则中途焦点切换会闪出错误态
+  const next = event.relatedTarget as Node | null
+  if (next && (event.currentTarget as HTMLElement).contains(next)) return
   void validate()
 }
 

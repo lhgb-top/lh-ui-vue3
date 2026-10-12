@@ -2,7 +2,7 @@ import { isLoadingFullscreen, resolveLoadingTarget, ensurePositioned } from '@lh
 import { supportsInert } from '@lh-ui/share/core/shared/focus-trap'
 import { lhlocale } from '~/locale'
 import { useLhZIndex } from '~/composables'
-import { mountComponent } from '~/imperative'
+import { mountLhComponent } from '~/imperative'
 import LhLoadingMask from './index.vue'
 import type { LhLoadingHandle, LhLoadingOptions } from './types'
 
@@ -30,14 +30,14 @@ function resolveText(text?: string): string | undefined {
  * 打开加载遮罩：全屏（不传 target）或指定容器。
  * 返回 close 句柄；lock 时锁目标滚动，inert 可用时让局部目标对交互不可达。
  */
-export function showLoading(options: LhLoadingOptions = {}): LhLoadingHandle {
+export function showLhLoading(options: LhLoadingOptions = {}): LhLoadingHandle {
   const target = resolveLoadingTarget(options.target)
   const fullscreen = isLoadingFullscreen(target)
   const id = ++loadingSeq
 
   const restorePosition = fullscreen ? () => {} : ensurePositioned(target).restore
 
-  const instance = mountComponent(
+  const instance = mountLhComponent(
     LhLoadingMask,
     {
       fullscreen,
@@ -70,11 +70,11 @@ export function showLoading(options: LhLoadingOptions = {}): LhLoadingHandle {
   })
 
   return {
-    close: () => closeLoading(id),
+    close: () => closeLhLoading(id),
   }
 }
 
-export function closeLoading(id: number): void {
+export function closeLhLoading(id: number): void {
   const instance = activeInstances.get(id)
   if (!instance) return
   activeInstances.delete(id)
@@ -85,9 +85,9 @@ export function closeLoading(id: number): void {
 }
 
 /** 关闭该容器上的全部遮罩（指令卸载时兜底） */
-export function closeLoadingOn(target: HTMLElement): void {
+export function closeLhLoadingOn(target: HTMLElement): void {
   for (const [id, instance] of [...activeInstances]) {
-    if (instance.target === target) closeLoading(id)
+    if (instance.target === target) closeLhLoading(id)
   }
 }
 
@@ -95,9 +95,9 @@ export function closeLoadingOn(target: HTMLElement): void {
  * 加载服务：`LhLoading.show({ target?, text?, background?, lock? })`，返回 `{ close }`。
  * 不传 target 即全屏遮罩；`app.use(LhLoading)` 注册 v-loading 指令。
  */
-export const LhLoading = Object.assign(showLoading, {
-  show: showLoading,
-  close: closeLoading,
+export const LhLoading = Object.assign(showLhLoading, {
+  show: showLhLoading,
+  close: closeLhLoading,
 })
 
 Object.defineProperty(LhLoading, 'name', { value: 'LhLoading' })

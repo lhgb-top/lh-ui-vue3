@@ -602,7 +602,7 @@ export default {
 | collapseTags | 多选模式下是否折叠标签 | `boolean` | `false` |
 | filterable | 是否可搜索 | `boolean` | `false` |
 | itemConfig | 节点字段别名 | `[LhCascaderItemConfig](#type-LhCascaderItemConfig)` | `() => ({})` |
-| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于触发器根元素（浮层面板不受影响） | `SxProps` | — |
+| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于触发器根元素（浮层面板不受影响） | `LhSxProps` | — |
 
 ## Events
 
@@ -654,7 +654,7 @@ export interface LhCascaderProps {
   filterable?: boolean
   itemConfig?: LhCascaderItemConfig
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

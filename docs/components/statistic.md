@@ -158,7 +158,7 @@ export default {}
 | separator | 千位分隔符；空串关闭分组 | `string` | `','` |
 | prefix | 数值前缀，如货币符号 | `string` | — |
 | suffix | 数值后缀，如单位 | `string` | — |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 ### Slots
 
@@ -197,7 +197,7 @@ export interface LhStatisticProps {
   /** 数值后缀，如单位 */
   suffix?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

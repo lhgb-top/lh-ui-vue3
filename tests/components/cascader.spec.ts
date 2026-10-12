@@ -340,7 +340,7 @@ describe('LhCascader keyboard / ARIA', () => {
     expect(input.attributes('role')).toBe('combobox')
     expect(input.attributes('aria-expanded')).toBe('false')
     expect(input.attributes('aria-haspopup')).toBe('dialog')
-    expect(input.attributes('aria-controls')).toMatch(/^lh-cascader-panel-\d+$/)
+    expect(input.attributes('aria-controls')).toMatch(/^lh-cascader-panel-\d+_\d+$/)
     restoreLocale()
   })
 

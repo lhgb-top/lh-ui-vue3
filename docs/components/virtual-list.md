@@ -163,7 +163,7 @@ export default {
 | itemHeight | 定高模式的项高 | `number` | — |
 | itemSize | 动态高度模式：由调用方返回每项高度 | `(index: number) => number` | — |
 | overscan | 过扫描项数 | `number` | `LH_VIRTUAL_OVERSCAN` |
-| sx | sx 快速布局属性 | `SxProps` | — |
+| sx | sx 快速布局属性 | `LhSxProps` | — |
 
 插槽：`default`（作用域 `{ item, index }`）。
 
@@ -194,7 +194,7 @@ export interface LhVirtualListProps {
   /** 过扫描项数 */
   overscan?: number
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

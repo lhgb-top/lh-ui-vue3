@@ -78,7 +78,7 @@ export default {}
 
 ## 带文案
 
-文案只支持水平方向，可通过 `label-position` 控制对齐。
+文案支持水平与垂直方向：水平方向通过 `label-position` 控制左右对齐，垂直方向文案恒居中。
 
 <DemoBlock title="带文案">
   <LhDivider label-position="left">少年听雨歌楼上</LhDivider>
@@ -146,17 +146,17 @@ export default {}
 
 | 属性 | 说明 | 类型 | 默认值 |
 | ---- | ---- | ---- | ------ |
-| direction | 分割线方向（垂直方向不渲染文案） | `"horizontal" \| "vertical"` | `'horizontal'` |
+| direction | 分割线方向 | `"horizontal" \| "vertical"` | `'horizontal'` |
 | dashed | 是否虚线 | `boolean` | `false` |
-| labelPosition | 带文案时的对齐位置 | `"left" \| "center" \| "right"` | `'center'` |
+| labelPosition | 带文案时的对齐位置（水平方向生效，垂直恒居中） | `"left" \| "center" \| "right"` | `'center'` |
 | borderStyle | 边框样式（如 `'dotted'`），预留 | `string` | — |
-| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于根元素 | `SxProps` | — |
+| sx | 快速布局属性（如 `{ mt: 2, w: '50%' }`），转内联样式作用于根元素 | `LhSxProps` | — |
 
 ### Slots
 
 | 插槽  | 说明           | 默认内容 |
 | ----- | -------------- | -------- |
-| default | 分割线文案（仅水平方向渲染） | — |
+| default | 分割线文案（水平方向排在左右，垂直方向排在上下） | — |
 
 ### 无障碍
 
@@ -184,7 +184,7 @@ export interface LhDividerProps {
   /** 边框样式（如 'solid' / 'dashed' / 'dotted'），优先于 dashed */
   borderStyle?: string
   /** sx 快速布局属性 */
-  sx?: SxProps
+  sx?: LhSxProps
 }
 ```
 

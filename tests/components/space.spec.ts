@@ -22,7 +22,8 @@ describe('LhSpace', () => {
   it('applies preset size as spacing token', () => {
     const wrapper = mount(LhSpace, { props: { size: 'large' } })
     expect(wrapper.classes()).toContain('lh-space--large')
-    expect(wrapper.attributes('style')).toContain('var(--lh-spacing-large')
+    // 'large' 档映射 --lh-spacing-xl（var.scss 的令牌真值；不存在 --lh-spacing-large）
+    expect(wrapper.attributes('style')).toContain('var(--lh-spacing-xl')
   })
 
   it('applies numeric size as pixels', () => {

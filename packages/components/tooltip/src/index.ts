@@ -123,7 +123,8 @@ export function useLhTooltip(props: LhTooltipProps) {
     const bg = props.bgColor || (props.type ? `var(--lh-${props.type}-color, var(--lh-primary-color))` : undefined)
     if (bg) {
       style['--lh-tooltip-bg'] = bg
-      style['--lh-tooltip-text'] = '#fff'
+      // 彩底上的文字色走语义令牌（浅主色预设下写死 #fff 对比度不足 AA）
+      style['--lh-tooltip-text'] = 'var(--lh-color-on-primary, #fff)'
       // 箭头颜色同步
       style['--lh-tooltip-arrow-color'] = bg
     }
