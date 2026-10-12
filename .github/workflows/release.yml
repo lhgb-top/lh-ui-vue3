@@ -30,6 +30,9 @@ on:
 permissions:
   contents: write
   id-token: write
+  # changesets/action 把 version 产物推到 changeset-release/master 并开 PR，
+  # 缺这个权限会报 "Resource not accessible by integration"，PR 建不出来
+  pull-requests: write
 
 jobs:
   # ① 自动发版（push 到 master）

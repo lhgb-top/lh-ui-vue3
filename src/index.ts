@@ -294,7 +294,7 @@ function install(app: App): void {
  */
 const lhUiPlus: Plugin & { version: string } = {
   install,
-  version: '1.0.0',
+  version: '1.1.0',
 }
 
 // 默认导出（支持 app.use(lhUiPlus)）

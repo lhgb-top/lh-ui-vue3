@@ -22,8 +22,8 @@
 - **反域名根**：`top.lhgb`（反写 `www.lhgb.top`），是 lh-ui 家族所有仓的命名根。
 - **JS / npm 端**：包名维持 `@lh-ui/*` scope——npm 包名不允许点号，`top.lhgb` 无法直接做包名；
   反域名落在元信息层，`package.json` 的 `homepage` / `repository` / `author` 统一用 `lhgb.top`。
-- **原生端**：`lh-ui-android` / `lh-ui-ios` / `lh-ui-harmony` / `lh-ui-c` 的 applicationId /
-  bundleId / package 才使用 `top.lhgb.*` 形式（不在本仓）。
+- **原生端**：`lh-ui-android` / `lh-ui-ios` / `lh-ui-harmony` / `lh-ui-windows` 的 applicationId /
+  bundleId / package / 根命名空间才使用 `top.lhgb.*` 形式（不在本仓）。
 - **`LH` 前缀（非第三方符号必须带）**：常量 `LH_XXX`；类型 / 接口 `LhXxx`；composable `useLhXxx`；
   模块级单例或小写对象 `lhXxx`。BEM 类名 `lh-xxx`、组件 `name: 'LhXxx'` 同属此规范。
   `@lh-ui/share`（兄弟仓）与第三方依赖的导出符号不强制，本仓只约束自己声明的符号。

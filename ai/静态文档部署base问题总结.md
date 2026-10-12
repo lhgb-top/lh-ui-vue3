@@ -180,8 +180,11 @@ vue2 站一开始就用对了（`docs/public/`），dist 根目录能看到 `log
 /lhui/android/  → alias /home/webuser/nginx/lh-ui/android/   （lh-ui-android 构建产物）
 /lhui/ios/      → alias /home/webuser/nginx/lh-ui/ios/       （lh-ui-ios 构建产物）
 /lhui/harmony/  → alias /home/webuser/nginx/lh-ui/harmony/   （lh-ui-harmony 构建产物）
-/lhui/c/        → alias /home/webuser/nginx/lh-ui/c/         （lh-ui-c 构建产物）
+/lhui/windows/  → alias /home/webuser/nginx/lh-ui/windows/   （lh-ui-windows 构建产物）
 ```
+
+> 2026-10-12 修订：`/lhui/c/`（lh-ui-c 构建产物）一行随 C 仓废弃移除，由
+> `/lhui/windows/`（端口 5186）取代；下文所有「c 端」字样为历史记录，不再有效。
 
 统一约定 `/lhui/{库名}/`：各组件库文档站是**独立项目**，以 `DOCS_BASE=/lhui/{库名}/` 构建后
 整目录上传到对应 alias 目录。八站已全部按此约定配置完毕（web 血脉四站 + 原生血脉四站，
@@ -190,7 +193,7 @@ vue2 站一开始就用对了（`docs/public/`），dist 根目录能看到 `log
 两条 try_files 契约：
 
 1. fallback 路径**必须带 base 前缀**（alias 下 fallback 相对于 alias 根），否则刷新深链路 404。
-2. **cleanUrls 站必须加 `$uri.html`**：uniapp / android / ios / harmony / c 五站开了
+2. **cleanUrls 站必须加 `$uri.html`**：uniapp / android / ios / harmony / windows 五站开了
    `cleanUrls: true`，链接不带 `.html` 但产物仍是 `xxx.html`，缺这一段会 fallback 到
    index.html 由前端路由兜底，首屏闪烁且 SEO 取不到预渲染内容。plus / vue2 / react 不需要。
 
@@ -202,6 +205,9 @@ vue2 站一开始就用对了（`docs/public/`），dist 根目录能看到 `log
 > 已实测带前缀，ios / c 尚未构建过，部署前需先跑一次 `pnpm docs:build`。
 > 同期另修 ios / c 的本地搜索配置位置（`search` 从 `locales.root.themeConfig` 移到顶层
 > `themeConfig`，否则搜索框空壳，见各自 changeset）。
+>
+> 2026-10-12 追加：c 端已废弃（由 lh-ui-windows 取代），上文「ios / c 尚未构建过」中的
+> c 站不再存在；windows 站（`/lhui/windows/`，端口 5186）沿用同一部署约定。
 
 构建前：
 
