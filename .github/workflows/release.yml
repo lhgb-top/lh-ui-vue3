@@ -98,7 +98,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # checkout master 而非 tag commit：CHANGELOG 只增不减、master 含全部历史版本段落，
+      # 且 scripts/release-notes.mjs 随 master 演进；tag 点的旧 commit 可能两者都没有
       - uses: actions/checkout@v4
+        with:
+          ref: master
 
       - name: 解析 tag 并做格式守卫
         id: meta
