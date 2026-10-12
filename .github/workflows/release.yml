@@ -53,7 +53,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # jsdom 30（vitest 环境）要求 Node ^22.22.2，其依赖的 undici 需要
+          # node:worker_threads 的 markAsUncloneable（Node 22+），Node 20 下 jsdom 一加载就炸
+          node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
@@ -111,7 +113,7 @@ jobs:
       - uses: actions/setup-node@v4
         if: steps.meta.outputs.skip != 'true'
         with:
-          node-version: 20
+          node-version: 22
 
       # CHANGELOG 只增不减，master 上含全部历史版本段落，两条路径都能提取
       - name: 生成 release notes

@@ -27,7 +27,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # jsdom 30（vitest 环境）要求 Node ^22.22.2；undici 8 的 webidl 需要
+          # node:worker_threads 的 markAsUncloneable（Node 22+），Node 20 下加载即炸
+          node-version: 22
           cache: pnpm
 
       - name: Install dependencies
